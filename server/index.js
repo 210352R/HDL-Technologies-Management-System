@@ -2,8 +2,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import QRCode from "qrcode";
-import generateQRCode from "./utils/qrcode_handler.js";
+import { qr_router } from "./controllers/qr_controller.js";
 
 // create express app ---
 const app = express();
@@ -18,16 +17,8 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.get("/generate-qr", async (req, res) => {
-  const itemCode = req.query.item_code; // Extract item_code from the request
-
-  try {
-    const qrCode = await QRCode.toDataURL(itemCode);
-    res.status(200).json({ qrcode: qrCode }); // Send the QR code as a JSON response
-  } catch (err) {
-    res.status(500).json({ error: "Failed to generate QR code" });
-  }
-});
+// Use the routes
+app.use("/qr", qr_router);
 
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---
