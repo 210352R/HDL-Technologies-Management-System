@@ -1,0 +1,52 @@
+import React from "react";
+
+const LoginPage = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-400">
+      <div className="card w-full max-w-sm shadow-md bg-white">
+        <div className="card-body">
+          <h2 className="text-center text-2xl font-bold text-gray-700">
+            Login
+          </h2>
+
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div className="form-control mt-4">
+            <label className="label">
+              <span className="label-text">Password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div className="form-control mt-6">
+            <button className="btn btn-primary w-full">Login</button>
+          </div>
+
+          <div className="text-center mt-4">
+            <a
+              href="/forgot-password"
+              className="text-sm text-gray-600 hover:underline"
+            >
+              Forgot Password?
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;
