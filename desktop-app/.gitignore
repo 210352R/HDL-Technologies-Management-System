@@ -1,0 +1,58 @@
+# Node.js dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Optional npm cache directory
+.npm
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Debug files
+*.swp
+*.swo
+
+# Operating system-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Optional build directory
+/dist
+/build
+
+# Test coverage reports
+/coverage
+
+# Temporary files
+/tmp
+/temp
+
+# Generated lock files
+package-lock.json
+yarn.lock
+
+# Docker related files
+.dockerignore
+
+# Production environment files
+/.env.production
+
+# Miscellaneous
+*.bak
+*.orig
