@@ -10,6 +10,7 @@ qr_router.get("/generate-qr", async (req, res) => {
 
   try {
     const qrCode = await generateQRCode(itemCode);
+    // console.log(qrCode); // Log the QR code
     res.status(200).json({ qrcode: qrCode }); // Send the QR code as a JSON response
   } catch (err) {
     res.status(500).json({ error: "Failed to generate QR code" });
