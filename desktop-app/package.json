@@ -2,7 +2,7 @@
   "name": "desktop-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "react-build": "cd app && npm run build",
     "start": "npm run react-build && electron .",
