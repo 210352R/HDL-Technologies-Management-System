@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Navigate, Link, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
+import { useAuth } from "../../context/auth/index";
+import { doCreateUserWithEmailAndPassword } from "../../firebase/auth";
 
 const RegisterPage = () => {
   // State for email, password, and confirm password
@@ -8,6 +10,8 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [isRegistering, setIsRegistering] = useState(false);
+
+  const { userLoggedIn } = useAuth();
 
   // Handle form submission
   const handleSubmit = async (e) => {
