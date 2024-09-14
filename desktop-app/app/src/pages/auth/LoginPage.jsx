@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Navigate, Link } from "react-router-dom"; // Import Link from react-router-dom
+import { doSignInWithEmailAndPassword } from "../../firebase/auth";
 
 const LoginPage = () => {
   const { userLoggedIn } = useAuth();
@@ -8,11 +9,23 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from refreshing the page
     console.log("Email:", email);
     console.log("Password:", password);
+    e.preventDefault();
+    if (!isSigningIn) {
+      setIsSigningIn(true);
+      await doSignInWithEmailAndPassword(email, password);
+      console.log(
+        "Sign in successful ------------------------------------------------"
+      );
+      // doSendEmailVerification()
+    }
   };
 
   return (
