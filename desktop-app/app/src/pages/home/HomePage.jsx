@@ -1,7 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { doSignOut } from "../../firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate(); // useNavigate hook for navigation
+
+  const logOutHandler = async () => {
+    // Handle logout logic here
+    await doSignOut();
+    console.log("User signed out ------------------ ");
+    navigate("/"); // Redirect to login page
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <header className="bg-blue-600 w-full py-4">
@@ -33,9 +44,9 @@ const HomePage = () => {
           business thrive. Our expertise spans across various domains to deliver
           results that matter.
         </p>
-        <Link to="/services" className="btn btn-primary text-white">
-          Explore Our Services
-        </Link>
+        <button onClick={logOutHandler} className="btn btn-primary text-white">
+          Log Out
+        </button>
       </main>
 
       <footer className="bg-gray-800 text-white w-full py-4 text-center">
