@@ -5,10 +5,12 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  SafeAreaView,
   Alert,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
 // Validation schema using Yup
 const RegisterSchema = Yup.object().shape({
@@ -23,13 +25,23 @@ const RegisterSchema = Yup.object().shape({
 });
 
 export default function RegisterScreen() {
+  const navigation = useNavigation(); // Initialize navigation
+
   const handleRegister = (values) => {
     // Example registration action
     Alert.alert("Registration Successful", `Welcome, ${values.name}!`);
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      {/* Back Button */}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.backButtonText}> Back</Text>
+      </TouchableOpacity>
+
       <Text style={styles.title}>Register</Text>
 
       <Formik
@@ -108,7 +120,7 @@ export default function RegisterScreen() {
           </>
         )}
       </Formik>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -162,5 +174,15 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  backButton: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+    padding: 10,
+  },
+  backButtonText: {
+    color: "#007BFF", // Blue color for back button text
+    fontSize: 20,
   },
 });
