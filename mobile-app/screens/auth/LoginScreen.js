@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Pressable,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -18,7 +19,7 @@ const LoginSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   //Login Handler
   const handleLogin = (values) => {
     // Example login action
@@ -78,7 +79,9 @@ const LoginScreen = () => {
 
       <Text style={styles.footerText}>
         Don't have an account?{" "}
-        <Text style={styles.signupText}>Sign up here</Text>
+        <Pressable onPress={() => navigation.navigate("Register")}>
+          <Text style={styles.signupText}>Sign up here</Text>
+        </Pressable>
       </Text>
     </View>
   );
