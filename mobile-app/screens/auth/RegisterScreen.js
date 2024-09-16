@@ -11,6 +11,7 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
+import Icon from "react-native-vector-icons/Ionicons"; // Import Ionicons
 
 // Validation schema using Yup
 const RegisterSchema = Yup.object().shape({
@@ -39,7 +40,13 @@ export default function RegisterScreen() {
         style={styles.backButton}
         onPress={() => navigation.goBack()}
       >
-        <Text style={styles.backButtonText}> Back</Text>
+        <Icon
+          name="arrow-back"
+          size={24}
+          color="#007BFF"
+          style={styles.backIcon}
+        />
+        <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
 
       <Text style={styles.title}>Register</Text>
@@ -180,9 +187,16 @@ const styles = StyleSheet.create({
     top: 40,
     left: 20,
     padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
   backButtonText: {
     color: "#007BFF", // Blue color for back button text
+    fontSize: 20,
+  },
+  backIcon: {
+    marginTop: 1,
+    marginRight: 5, // Space between icon and text
     fontSize: 20,
   },
 });
