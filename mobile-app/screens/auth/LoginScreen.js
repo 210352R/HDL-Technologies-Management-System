@@ -39,17 +39,22 @@ const LoginScreen = ({ navigation }) => {
   //Login Handler
   const handleLogin = async (values) => {
     if (!isSigningIn) {
-      console.log("Email:", values.email);
-      console.log("Password:", values.password);
-      // Call doSignInWithEmailAndPassword function from auth context
-      await doSignInWithEmailAndPassword(values.email, values.password);
-      setIsSigningIn(true);
-      console.log(
-        "Sign in successful ------------------------------------------------"
-      );
+      try {
+        // Call doSignInWithEmailAndPassword function from auth context
+        await doSignInWithEmailAndPassword(values.email, values.password);
+        setIsSigningIn(true);
+        console.log(
+          "Sign in successful ------------------------------------------------"
+        );
 
-      // Example login action
-      Alert.alert("Login Successful", `Welcome, ${values.email}!`);
+        // Example login action
+        Alert.alert("Login Successful", `Welcome, ${values.email}!`);
+      } catch (error) {
+        console.log("Login failed", error);
+        Alert.alert("Login failed", "Please try again!");
+      }
+    } else {
+      console.log("Already signed in");
     }
   };
   return (

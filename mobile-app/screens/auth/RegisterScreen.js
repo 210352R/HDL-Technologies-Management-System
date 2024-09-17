@@ -12,6 +12,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 import Icon from "react-native-vector-icons/Ionicons"; // Import Ionicons
+import { doCreateUserWithEmailAndPassword } from "../../firebase/auth";
 
 // Validation schema using Yup
 const RegisterSchema = Yup.object().shape({
