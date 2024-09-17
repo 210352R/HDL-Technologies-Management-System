@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+//import useeffect
+import { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,6 +13,10 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 
+// for authentication
+import { useAuth } from "../../context/auth";
+import { doSignInWithEmailAndPassword } from "../../firebase/auth";
+
 // Validation schema using Yup
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -20,10 +26,31 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({ navigation }) => {
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const { userLoggedIn } = useAuth();
+
+  useEffect(() => {
+    if (userLoggedIn) {
+      setIsSigningIn(true);
+      navigation.replace("Home"); // Navigate to 'Home' screen if logged in
+    }
+  }, [userLoggedIn, navigation]);
+
   //Login Handler
-  const handleLogin = (values) => {
-    // Example login action
-    Alert.alert("Login Successful", `Welcome, ${values.email}!`);
+  const handleLogin = async (values) => {
+    if (!isSigningIn) {
+      console.log("Email:", values.email);
+      console.log("Password:", values.password);
+      // Call doSignInWithEmailAndPassword function from auth context
+      await doSignInWithEmailAndPassword(values.email, values.password);
+      setIsSigningIn(true);
+      console.log(
+        "Sign in successful ------------------------------------------------"
+      );
+
+      // Example login action
+      Alert.alert("Login Successful", `Welcome, ${values.email}!`);
+    }
   };
   return (
     <View style={styles.container}>

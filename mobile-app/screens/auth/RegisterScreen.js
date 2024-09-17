@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -28,7 +28,13 @@ const RegisterSchema = Yup.object().shape({
 export default function RegisterScreen() {
   const navigation = useNavigation(); // Initialize navigation
 
+  const [isRegistering, setIsRegistering] = useState(false);
+
   const handleRegister = (values) => {
+    console.log("Name:", values.name);
+    console.log("Email:", values.email);
+    console.log("Password:", values.password);
+
     // Example registration action
     Alert.alert("Registration Successful", `Welcome, ${values.name}!`);
   };
