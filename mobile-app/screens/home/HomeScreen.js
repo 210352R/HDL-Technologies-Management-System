@@ -1,14 +1,46 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import React from "react";
+import { doSignOut } from "../../firebase/auth";
+import { useAuth } from "../../context/auth";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
+  const { userLoggedIn } = useAuth();
+  const logOutHandler = async () => {
+    // Handle logout logic here
+    await doSignOut();
+    console.log("User signed out ------------------ ");
+    navigation.replace("Login"); // Redirect to login page
+  };
+  console.log("User logged in: ", userLoggedIn);
+
   return (
-    <View>
-      <Text>HomeScreen</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Welcome to the Home Screen!</Text>
+
+      <>
+        <Text style={styles.message}>You are logged in!</Text>
+        <Button title="Logout" onPress={logOutHandler} />
+      </>
     </View>
   );
 };
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  message: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+});

@@ -27,11 +27,13 @@ const LoginSchema = Yup.object().shape({
 
 const LoginScreen = ({ navigation }) => {
   const [isSigningIn, setIsSigningIn] = useState(false);
+
   const { userLoggedIn } = useAuth();
 
   useEffect(() => {
+    console.log("User logged in: ", userLoggedIn);
     if (userLoggedIn) {
-      setIsSigningIn(true);
+      console.log("User is logged in ------ ");
       navigation.replace("Home"); // Navigate to 'Home' screen if logged in
     }
   }, [userLoggedIn, navigation]);
@@ -40,21 +42,20 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async (values) => {
     if (!isSigningIn) {
       try {
+        setIsSigningIn(true);
         // Call doSignInWithEmailAndPassword function from auth context
         await doSignInWithEmailAndPassword(values.email, values.password);
-        setIsSigningIn(true);
         console.log(
           "Sign in successful ------------------------------------------------"
         );
 
         // Example login action
         Alert.alert("Login Successful", `Welcome, ${values.email}!`);
+        navigation.replace("Home");
       } catch (error) {
         console.log("Login failed", error);
         Alert.alert("Login failed", "Please try again!");
       }
-    } else {
-      console.log("Already signed in");
     }
   };
   return (

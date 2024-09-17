@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../../firebase/firebase";
 // import { GoogleAuthProvider } from "firebase/auth";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "@firebase/auth";
 
 const AuthContext = React.createContext();
 
@@ -17,15 +17,19 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Auth Provider ------------------ > ");
+
     // listen for auth state changes in firebase
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
     return unsubscribe;
   }, []);
 
   async function initializeUser(user) {
+    console.log("Initialize User ------------------ > ", user);
     if (user) {
+      console.log("User ------------------ > ", user);
       setCurrentUser({ ...user });
-
+      console.log("Set User ------------------ > ", user);
       // check if provider is email and password login
       const isEmail = user.providerData.some(
         (provider) => provider.providerId === "password"
@@ -33,6 +37,7 @@ export function AuthProvider({ children }) {
       setIsEmailUser(isEmail);
       setUserLoggedIn(true);
     } else {
+      console.log("User ------------------ > ", user);
       setCurrentUser(null);
       setUserLoggedIn(false);
     }
