@@ -143,9 +143,12 @@ const LoginScreen = ({ navigation }) => {
 
       <Text style={styles.footerText}>
         Don't have an account?{" "}
-        <Pressable onPress={() => navigation.navigate("Register")}>
-          <Text style={styles.signupText}>Sign up here</Text>
-        </Pressable>
+        <Text
+          onPress={() => navigation.navigate("Register")}
+          style={styles.signupText}
+        >
+          Sign up here
+        </Text>
       </Text>
     </View>
   );
