@@ -5,6 +5,16 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import { AuthProvider } from "./context/auth";
 import HomePage from "./pages/home/HomePage";
 
+// firebase configuration
+import { initializeApp } from "@firebase/app";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "@firebase/auth";
+
 function App() {
   return (
     <div className="App">

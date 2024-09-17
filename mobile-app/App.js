@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import LoginScreen from "./screens/auth/LoginScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
+import { app, auth } from "./firebase/firebase";
 
 const Stack = createNativeStackNavigator();
 
