@@ -16,6 +16,7 @@ import * as Yup from "yup";
 // for authentication
 import { useAuth } from "../../context/auth";
 import { doSignInWithEmailAndPassword } from "../../firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Validation schema using Yup
 const LoginSchema = Yup.object().shape({
@@ -31,12 +32,37 @@ const LoginScreen = ({ navigation }) => {
   const { userLoggedIn } = useAuth();
 
   useEffect(() => {
-    console.log("User logged in: ", userLoggedIn);
-    if (userLoggedIn) {
-      console.log("User is logged in ------ ");
-      navigation.replace("Home"); // Navigate to 'Home' screen if logged in
+    console.log("Login Screen ------------------ > ");
+    //get email from storage check it is not null then navigate to home
+    getData("email").then((email) => {
+      if (email) {
+        console.log("Email retrieved successfully:", email);
+        navigation.replace("Home");
+      }
+    });
+  }, []);
+
+  // Retrieve data from storage
+  const getData = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      if (value !== null) {
+        console.log("Data retrieved successfully:", value);
+        return value;
+      }
+    } catch (error) {
+      console.log("Error retrieving data:", error);
     }
-  }, [userLoggedIn, navigation]);
+  };
+
+  const storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+      console.log("Data stored successfully");
+    } catch (error) {
+      console.log("Error storing data:", error);
+    }
+  };
 
   //Login Handler
   const handleLogin = async (values) => {
@@ -44,13 +70,18 @@ const LoginScreen = ({ navigation }) => {
       try {
         setIsSigningIn(true);
         // Call doSignInWithEmailAndPassword function from auth context
-        await doSignInWithEmailAndPassword(values.email, values.password);
-        console.log(
-          "Sign in successful ------------------------------------------------"
+        const res = await doSignInWithEmailAndPassword(
+          values.email,
+          values.password
         );
-
+        console.log(
+          "Sign in successful ------------------------------------------------",
+          res
+        );
+        storeData("email", values.email);
         // Example login action
         Alert.alert("Login Successful", `Welcome, ${values.email}!`);
+
         navigation.replace("Home");
       } catch (error) {
         console.log("Login failed", error);

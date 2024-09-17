@@ -3,11 +3,24 @@ import React from "react";
 import { doSignOut } from "../../firebase/auth";
 import { useAuth } from "../../context/auth";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const HomeScreen = ({ navigation }) => {
   const { userLoggedIn } = useAuth();
+
+  // Remove data from storage
+  const removeData = async (key) => {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.log("Error removing data:", error);
+    }
+  };
+
   const logOutHandler = async () => {
     // Handle logout logic here
     await doSignOut();
+    await removeData("email");
     console.log("User signed out ------------------ ");
     navigation.replace("Login"); // Redirect to login page
   };
