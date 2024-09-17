@@ -30,13 +30,22 @@ export default function RegisterScreen() {
 
   const [isRegistering, setIsRegistering] = useState(false);
 
-  const handleRegister = (values) => {
+  const handleRegister = async (values) => {
     console.log("Name:", values.name);
     console.log("Email:", values.email);
     console.log("Password:", values.password);
 
-    // Example registration action
-    Alert.alert("Registration Successful", `Welcome, ${values.name}!`);
+    if (!isRegistering) {
+      await doCreateUserWithEmailAndPassword(values.email, values.password);
+      setIsRegistering(true);
+      console.log(
+        "Registration successful ------------------------------------------------"
+      );
+      // Example registration action
+      Alert.alert("Registration Successful", `Welcome, ${values.name}!`);
+    } else {
+      Alert.alert("Registration Failed", `Please try again!`);
+    }
   };
 
   return (
