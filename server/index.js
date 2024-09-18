@@ -4,6 +4,9 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { qr_router } from "./controllers/qr_controller.js";
 
+// prisma
+import prisma from "./database/prisma.js";
+
 // create express app ---
 const app = express();
 
@@ -15,6 +18,25 @@ app.use(bodyParser.json());
 // create simple endpoint ------
 app.get("/", (req, res) => {
   res.send("Hello World");
+});
+// Create a new user
+app.post("/users", async (req, res) => {
+  const { name, email } = req.body;
+  try {
+    const user = await prisma.user.create({
+      data: { name, email },
+    });
+    res.status(201).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "User could not be created" });
+  }
+});
+
+// Get all users
+app.get("/users", async (req, res) => {
+  const users = await prisma.user.findMany();
+  res.json(users);
 });
 
 // Use the routes
