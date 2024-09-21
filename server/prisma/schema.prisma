@@ -17,26 +17,26 @@ model User {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   name  String
   phone String
-  address String
+  address String?
 
 }
 
 model Bill{
   id        String @id @default(auto()) @map("_id") @db.ObjectId
-  lapId     String
+  lapId     String 
   issue     String
   amount    Float
   date      DateTime
   user      User
-  announce_date  DateTime
-  handover_date  DateTime
+  announce_date  DateTime?
+  handover_date  DateTime?
   status    String
-  images    String[]
+  images    String[]?
 }
 
 model Lap {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   brand     String
   model     String
-  bills     Bill[]
+  qrcode    String
 }
