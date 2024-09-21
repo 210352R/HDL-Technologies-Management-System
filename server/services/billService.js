@@ -1,5 +1,6 @@
 import prisma from "../database/prisma.js";
 import { createLap } from "./lapService.js";
+import { createUser } from "./userService.js";
 
 // create a new bill with lap id
 export const createNewBill = async (bill) => {
