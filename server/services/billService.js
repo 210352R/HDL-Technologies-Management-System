@@ -1,5 +1,5 @@
 import prisma from "../database/prisma.js";
-import { createLap } from "./lapService.js";
+import { createLap, getQRCode } from "./lapService.js";
 import { createUser } from "./userService.js";
 
 // create a new bill with lap id
@@ -50,6 +50,7 @@ export const createBillForExistingLap = async (bill) => {
     status,
     images,
   } = bill;
+
   const userId = await createUser({ name, phone, address });
   const date = new Date().toISOString(); // current date
   const newBill = await prisma.bill.create({
@@ -65,5 +66,6 @@ export const createBillForExistingLap = async (bill) => {
       images,
     },
   });
-  return newBill;
+  const qrcode = await getQRCode(lapId);
+  return { bill: newBill, qr_code: qrcode };
 };

@@ -18,3 +18,13 @@ export const createLap = async (laptop) => {
   });
   return newLap;
 };
+
+// create a function that get qrcode from given lap id
+export const getQRCode = async (lapId) => {
+  const lap = await prisma.lap.findUnique({
+    where: {
+      lapId,
+    },
+  });
+  return lap.qrcode;
+};
