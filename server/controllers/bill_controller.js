@@ -1,5 +1,5 @@
 import express from "express";
-import { createLap } from "../services/lapService";
+import { createLap } from "../services/lapService.js";
 
 export const bill_router = express.Router();
 
@@ -8,7 +8,7 @@ bill_router.post("/add-lap", async (req, res) => {
   const { brand, model } = req.body;
   try {
     const laptop = { brand, model };
-    newLap = await createLap(laptop);
+    const newLap = await createLap(laptop);
     res.status(201).json(newLap);
   } catch (error) {
     console.log(error);

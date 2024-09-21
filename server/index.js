@@ -6,6 +6,7 @@ import { qr_router } from "./controllers/qr_controller.js";
 
 // prisma
 import prisma from "./database/prisma.js";
+import { bill_router } from "./controllers/bill_controller.js";
 
 // create express app ---
 const app = express();
@@ -20,26 +21,27 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 // Create a new user
-app.post("/users", async (req, res) => {
-  const { name, email } = req.body;
-  try {
-    const user = await prisma.user.create({
-      data: { name, email },
-    });
-    res.status(201).json(user);
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ error: "User could not be created" });
-  }
-});
+// app.post("/users", async (req, res) => {
+//   const { name, email } = req.body;
+//   try {
+//     const user = await prisma.user.create({
+//       data: { name, email },
+//     });
+//     res.status(201).json(user);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).json({ error: "User could not be created" });
+//   }
+// });
 
 // Get all users
-app.get("/users", async (req, res) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
-});
+// app.get("/users", async (req, res) => {
+//   const users = await prisma.user.findMany();
+//   res.json(users);
+// });
 
 // Use the routes
+app.use("/bill", bill_router);
 app.use("/qr", qr_router);
 
 const port = process.env.PORT || 8000;

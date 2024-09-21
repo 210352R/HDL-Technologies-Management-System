@@ -1,6 +1,6 @@
 // prisma
 import generateQRCode from "../utils/qrcode_handler.js";
-import prisma from "./database/prisma.js";
+import prisma from "../database/prisma.js";
 import { v4 as uuidv4 } from "uuid";
 
 // create a new lap with uniq id and qr code
@@ -13,7 +13,7 @@ export const createLap = async (laptop) => {
       lapId: lap_id,
       brand,
       model,
-      qr_code,
+      qrcode: qr_code,
     },
   });
   return newLap;
