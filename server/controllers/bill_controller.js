@@ -47,7 +47,9 @@ bill_router.post("/add-new-bill", async (req, res) => {
       images,
     };
     const newBill = await createNewBill(bill);
-    res.status(201).json({ success: true, qr_code: newBill.qr_code });
+    res
+      .status(201)
+      .json({ success: true, bill: newBill.bill.id, qr_code: newBill.qr_code });
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Bill could not be added" });
