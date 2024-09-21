@@ -27,15 +27,15 @@ model Bill{
   issue     String
   amount    Float
   date      DateTime
-  user      User
   announce_date  DateTime?
   handover_date  DateTime?
   status    String
-  images    String[]?
+  images    String[]
 }
 
 model Lap {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
+  lapId     String @unique
   brand     String
   model     String
   qrcode    String
