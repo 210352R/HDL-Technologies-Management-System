@@ -30,9 +30,9 @@ model Bill{
   date      DateTime
   user      User
   announce_date  DateTime
+  handover_date  DateTime
   status    String
-
-
+  images    String[]
 }
 
 model Lap {
