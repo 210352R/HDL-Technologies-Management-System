@@ -7,6 +7,7 @@ import { qr_router } from "./controllers/qr_controller.js";
 // prisma
 import prisma from "./database/prisma.js";
 import { bill_router } from "./controllers/bill_controller.js";
+import { createUser } from "./services/userService.js";
 
 // create express app ---
 const app = express();

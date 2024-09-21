@@ -23,7 +23,8 @@ model User {
 
 model Bill{
   id        String @id @default(auto()) @map("_id") @db.ObjectId
-  lapId     String 
+  lapId     String
+  userId    String
   issue     String
   amount    Float
   date      DateTime

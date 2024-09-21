@@ -15,3 +15,5 @@ bill_router.post("/add-lap", async (req, res) => {
     res.status(400).json({ error: "Laptop could not be added" });
   }
 });
+
+// create post method for add bill for new laptop
