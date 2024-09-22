@@ -8,6 +8,7 @@ import RegisterScreen from "./screens/auth/RegisterScreen";
 import { AuthProvider } from "./context/auth";
 import { app, auth } from "./firebase/firebase";
 import HomeScreen from "./screens/home/HomeScreen";
+import QrScreen from "./screens/qr_code/QrScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,11 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Qrcode"
+            component={QrScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

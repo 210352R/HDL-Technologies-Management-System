@@ -33,6 +33,12 @@ const HomeScreen = ({ navigation }) => {
       <>
         <Text style={styles.message}>You are logged in!</Text>
         <Button title="Logout" onPress={logOutHandler} />
+
+        <Text>{"\n"}</Text>
+        <Button
+          title="QR Scanner"
+          onPress={() => navigation.navigate("Qrcode")}
+        />
       </>
     </View>
   );

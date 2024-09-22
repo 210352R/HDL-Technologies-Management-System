@@ -31,10 +31,7 @@ export const doSignInWithEmailAndPassword = async (email, password) => {
       password
     );
     const user = userCredential.user;
-    console.log(
-      "User signed in -------- **********************************:",
-      user
-    );
+
     return user; // Return the user object
   } catch (error) {
     const errorMessage = error.message;
