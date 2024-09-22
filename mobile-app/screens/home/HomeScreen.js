@@ -5,8 +5,14 @@ import { useAuth } from "../../context/auth";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { useCameraPermissions } from "expo-camera";
+
 const HomeScreen = ({ navigation }) => {
   const { userLoggedIn } = useAuth();
+
+  const [permission, requestPermission] = useCameraPermissions();
+
+  const isPermissionGranted = Boolean(permission?.granted); // Check if permission is granted
 
   // Remove data from storage
   const removeData = async (key) => {
