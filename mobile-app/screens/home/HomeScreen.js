@@ -26,6 +26,10 @@ const HomeScreen = ({ navigation }) => {
   };
   console.log("User logged in: ", userLoggedIn);
 
+  const handleQrScan = () => {
+    navigation.navigate("Qrcode");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to the Home Screen!</Text>
@@ -35,10 +39,7 @@ const HomeScreen = ({ navigation }) => {
         <Button title="Logout" onPress={logOutHandler} />
 
         <Text>{"\n"}</Text>
-        <Button
-          title="QR Scanner"
-          onPress={() => navigation.navigate("Qrcode")}
-        />
+        <Button title="QR Scanner" onPress={handleQrScan} />
       </>
     </View>
   );
