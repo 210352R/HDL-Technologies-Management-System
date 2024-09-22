@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
   Text,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -49,6 +50,9 @@ const QrScreen = () => {
         onPress={handleBackPress}
         style={styles.backIcon}
       />
+      <View style={styles.overlayTextContainer}>
+        <Text style={styles.overlayText}>Scan QR Code</Text>
+      </View>
       <CameraView
         style={styles.camera}
         facing="back"
@@ -62,7 +66,9 @@ const QrScreen = () => {
       />
       <Overlay />
       <View style={styles.overlayTextContainer}>
-        <Text style={styles.overlayText}>Scan QR Code</Text>
+        <Pressable onPress={handleBackPress}>
+          <Text style={styles.overlayText}>Go to Home</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
