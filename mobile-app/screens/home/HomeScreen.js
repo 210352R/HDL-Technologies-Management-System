@@ -32,8 +32,13 @@ const HomeScreen = ({ navigation }) => {
   };
   console.log("User logged in: ", userLoggedIn);
 
-  const handleQrScan = () => {
-    navigation.navigate("Qrcode");
+  const handleQrScan = async () => {
+    // navigation.navigate("Qrcode");
+    if (isPermissionGranted) {
+      navigation.navigate("Qrcode");
+    } else {
+      await requestPermission();
+    }
   };
 
   return (
