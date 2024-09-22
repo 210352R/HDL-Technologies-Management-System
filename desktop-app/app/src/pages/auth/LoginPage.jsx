@@ -18,14 +18,33 @@ const LoginPage = () => {
     e.preventDefault(); // Prevent form from refreshing the page
     console.log("Email:", email);
     console.log("Password:", password);
-    e.preventDefault();
+
     if (!isSigningIn) {
-      setIsSigningIn(true);
-      await doSignInWithEmailAndPassword(email, password);
-      console.log(
-        "Sign in successful ------------------------------------------------"
-      );
-      // doSendEmailVerification()
+      setIsSigningIn(true); // Set signing state
+
+      try {
+        const res = await doSignInWithEmailAndPassword(email, password);
+        console.log("res", res);
+        console.log(
+          "Sign in successful ------------------------------------------------"
+        );
+
+        // Check if the response is valid
+        if (!res) {
+          console.log(
+            "Sign in failed ------------------------------------------------"
+          );
+          setErrorMessage("Invalid email or password");
+          alert("Invalid email or password"); // Show alert
+        }
+      } catch (error) {
+        // Handle errors here
+        console.error("Error during sign in:", error);
+        setErrorMessage(error.message || "An error occurred during sign in");
+        alert(error.message || "An error occurred during sign in"); // Show alert
+      } finally {
+        setIsSigningIn(false); // Reset signing state
+      }
     }
   };
 

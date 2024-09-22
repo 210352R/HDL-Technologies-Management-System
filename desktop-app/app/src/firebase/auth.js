@@ -22,18 +22,21 @@ export const doCreateUserWithEmailAndPassword = async (email, password) => {
     });
 };
 
-export const doSignInWithEmailAndPassword = (email, password) => {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      console.log("User signed in -------- :", user);
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+export const doSignInWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+
+    return user; // Return the user object
+  } catch (error) {
+    const errorMessage = error.message;
+    console.log("Error signing in:", errorMessage);
+    throw new Error(errorMessage); // Rethrow the error
+  }
 };
 
 export const doSignOut = () => {
