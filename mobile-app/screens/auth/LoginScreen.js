@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-//import useeffect
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,12 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  Pressable,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
-// for authentication
 import { useAuth } from "../../context/auth";
 import { doSignInWithEmailAndPassword } from "../../firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -66,29 +61,28 @@ const LoginScreen = ({ navigation }) => {
 
   //Login Handler
   const handleLogin = async (values) => {
-    if (!isSigningIn) {
-      try {
-        setIsSigningIn(true);
-        // Call doSignInWithEmailAndPassword function from auth context
-        const res = await doSignInWithEmailAndPassword(
-          values.email,
-          values.password
-        );
-        console.log(
-          "Sign in successful ------------------------------------------------",
-          res
-        );
+    try {
+      setIsSigningIn(true);
+      // Call doSignInWithEmailAndPassword function from auth context
+      const res = await doSignInWithEmailAndPassword(
+        values.email,
+        values.password
+      );
+
+      if (res) {
         storeData("email", values.email);
         // Example login action
         Alert.alert("Login Successful", `Welcome, ${values.email}!`);
-
         navigation.replace("Home");
-      } catch (error) {
-        console.log("Login failed", error);
+      } else {
         Alert.alert("Login failed", "Please try again!");
       }
+    } catch (error) {
+      console.log("Login failed", error);
+      Alert.alert("Login failed", "Please try again!");
     }
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
