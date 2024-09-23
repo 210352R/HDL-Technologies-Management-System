@@ -70,6 +70,12 @@ export const createBillForExistingLap = async (bill) => {
   return { bill: newBill, qr_code: qrcode };
 };
 
+// create method for get all bills
+export const getAllBills = async () => {
+  const bills = await prisma.bill.findMany();
+  return bills;
+};
+
 // update announce_date and status of bill use bill id
 export const updateBillAnnounceDate = async (billId, announce_date) => {
   const updatedBill = await prisma.bill.update({
