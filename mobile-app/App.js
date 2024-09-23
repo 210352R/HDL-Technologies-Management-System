@@ -9,6 +9,7 @@ import { AuthProvider } from "./context/auth";
 import { app, auth } from "./firebase/firebase";
 import HomeScreen from "./screens/home/HomeScreen";
 import QrScreen from "./screens/qr_code/QrScreen";
+import LapBillDetails from "./screens/lap/LapDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,11 @@ export default function App() {
           <Stack.Screen
             name="Qrcode"
             component={QrScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="LapBillDetails"
+            component={LapBillDetails}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

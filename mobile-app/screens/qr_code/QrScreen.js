@@ -60,6 +60,11 @@ const QrScreen = () => {
           if (data && !qrLock.current) {
             qrLock.current = true;
             console.log("Scanned data: ", data);
+            if (data) {
+              navigation.navigate("LapBillDetails", { lapId: data });
+            } else {
+              alert("No QR data found");
+            }
             // Handle scanned data (e.g., open URL)
           }
         }}

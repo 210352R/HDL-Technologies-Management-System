@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.4)", // Dimmed background
   },
   focusArea: {
-    width: 250, // Diameter of the focus area
-    height: 250,
+    width: 220, // Diameter of the focus area
+    height: 200,
     borderWidth: 5,
     borderColor: "green",
     position: "absolute",
