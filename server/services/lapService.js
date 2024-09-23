@@ -39,3 +39,13 @@ export const getBillDetails = async (lapId) => {
   console.log(bill);
   return bill;
 };
+
+// get lap details by lap id
+export const getLapDetails = async (lapId) => {
+  const lap = await prisma.lap.findUnique({
+    where: {
+      lapId,
+    },
+  });
+  return lap;
+};
