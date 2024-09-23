@@ -10,6 +10,6 @@ export const createUser = async (user) => {
       address,
     },
   });
-  console.log(newUser);
+
   return newUser.id;
 };

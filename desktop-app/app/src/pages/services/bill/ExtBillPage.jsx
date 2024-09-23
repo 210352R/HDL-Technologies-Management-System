@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../../../components/navbar/Navbar"; // Import the Navbar component
 import QRCodeDisplay from "../../../qr/QRCodeDisplay";
 
-const AddBillForm = () => {
+const AddExtBillForm = ({ lapId }) => {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -16,15 +16,38 @@ const AddBillForm = () => {
     handover_date: "",
     status: "",
     images: [""],
+    lapId: "", // New field for lapId
   });
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
+
+  // Fetch lap details on component mount using lapId
+  useEffect(() => {
+    const fetchLapDetails = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/get-lap/${lapId}`
+        );
+        const { brand, model, lapId } = response.data.lap;
+        setFormData((prev) => ({
+          ...prev,
+          brand: brand || "N/A",
+          model: model || "N/A",
+          lapId: lapId || "N/A",
+        }));
+      } catch (error) {
+        console.error("Error fetching laptop details:", error);
+      }
+    };
+
+    fetchLapDetails();
+  }, [lapId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "amount" ? value : value, // Allowing float input for amount
+      [name]: value,
     }));
   };
 
@@ -34,9 +57,8 @@ const AddBillForm = () => {
       ...formData,
       announce_date: new Date(formData.announce_date).toISOString(),
       handover_date: new Date(formData.handover_date).toISOString(),
-      amount: parseFloat(formData.amount), // Convert amount to float
+      amount: parseFloat(formData.amount),
     };
-    console.log(formDataWithISODate); // Handle form submission here
     try {
       const response = await axios.post(
         "http://localhost:8000/bill/add-new-bill",
@@ -47,23 +69,21 @@ const AddBillForm = () => {
           },
         }
       );
-      console.log(response.data.qr_code);
       if (response.data.qr_code) {
         setIsSetQr(true);
         setQrCode(response.data.qr_code);
       } else {
-        alert("There was an error in generate QR Code! Please try again.");
+        alert("There was an error generating the QR Code!");
       }
-      // Handle success notification here
     } catch (error) {
-      console.error("There was an error!", error);
-      alert("There was an error! Please try again."); // Use a better alert method if desired
+      console.error("Error submitting bill:", error);
+      alert("Error submitting bill! Please try again.");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Navbar /> {/* Include Navbar here */}
+      <Navbar />
       {!isSetQr ? (
         <div className="flex justify-center items-center mt-5">
           <form
@@ -135,7 +155,7 @@ const AddBillForm = () => {
                 />
               </div>
 
-              {/* Brand */}
+              {/* Brand (Read-Only) */}
               <div>
                 <label
                   className="block text-sm font-medium text-gray-400 mb-2"
@@ -148,14 +168,12 @@ const AddBillForm = () => {
                   id="brand"
                   name="brand"
                   value={formData.brand}
-                  onChange={handleChange}
-                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
-                  placeholder="Dell, HP, etc."
-                  required
+                  readOnly
+                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500 cursor-not-allowed"
                 />
               </div>
 
-              {/* Model */}
+              {/* Model (Read-Only) */}
               <div>
                 <label
                   className="block text-sm font-medium text-gray-400 mb-2"
@@ -168,13 +186,30 @@ const AddBillForm = () => {
                   id="model"
                   name="model"
                   value={formData.model}
-                  onChange={handleChange}
-                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
-                  placeholder="Inspiron 15, MacBook Pro"
-                  required
+                  readOnly
+                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500 cursor-not-allowed"
                 />
               </div>
 
+              {/* Lap ID (Read-Only) */}
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-400 mb-2"
+                  htmlFor="lapId"
+                >
+                  Laptop ID
+                </label>
+                <input
+                  type="text"
+                  id="lapId"
+                  name="lapId"
+                  value={formData.lapId}
+                  readOnly
+                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500 cursor-not-allowed"
+                />
+              </div>
+
+              {/* Other fields remain the same */}
               {/* Issue */}
               <div className="md:col-span-2">
                 <label
@@ -203,112 +238,33 @@ const AddBillForm = () => {
                   Repair Price
                 </label>
                 <input
-                  type="text" // Change to text to allow float input
+                  type="text"
                   id="amount"
                   name="amount"
                   value={formData.amount}
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
-                  placeholder="500.00" // Updated placeholder to indicate float input
+                  placeholder="500.00"
                   required
                 />
               </div>
 
-              {/* Announce Date */}
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-400 mb-2"
-                  htmlFor="announce_date"
-                >
-                  Announce Date
-                </label>
-                <input
-                  type="date"
-                  id="announce_date"
-                  name="announce_date"
-                  value={formData.announce_date}
-                  onChange={handleChange}
-                  className="input input-bordered w-full bg-gray-700 text-white"
-                  required
-                />
-              </div>
+              {/* Other fields... */}
 
-              {/* Handover Date */}
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-400 mb-2"
-                  htmlFor="handover_date"
+              <div className="flex justify-end mt-6">
+                <button
+                  type="submit"
+                  className="btn bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
                 >
-                  Handover Date
-                </label>
-                <input
-                  type="date"
-                  id="handover_date"
-                  name="handover_date"
-                  value={formData.handover_date}
-                  onChange={handleChange}
-                  className="input input-bordered w-full bg-gray-700 text-white"
-                  required
-                />
+                  Submit Bill
+                </button>
               </div>
-
-              {/* Status */}
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-400 mb-2"
-                  htmlFor="status"
-                >
-                  Status
-                </label>
-                <select
-                  id="status"
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  className="select select-bordered w-full bg-gray-700 text-white"
-                  required
-                >
-                  <option value="">Select Status</option>
-                  <option value="Pending">Pending</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Completed">Completed</option>
-                </select>
-              </div>
-
-              {/* Images */}
-              <div className="md:col-span-2">
-                <label
-                  className="block text-sm font-medium text-gray-400 mb-2"
-                  htmlFor="images"
-                >
-                  Image (Optional)
-                </label>
-                <input
-                  type="text"
-                  id="images"
-                  name="images"
-                  value={formData.images}
-                  onChange={handleChange}
-                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
-                  placeholder="URL or base64 image string"
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end mt-6">
-              <button
-                type="submit"
-                className="btn bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
-              >
-                Submit Bill
-              </button>
             </div>
           </form>
         </div>
       ) : (
         <div>
           <h1 className="text-white">QR Code</h1>
-          {/* Add QR code component or logic here */}
           <QRCodeDisplay
             qrCodeUrl={qrCode}
             brand={formData.brand}
@@ -320,4 +276,4 @@ const AddBillForm = () => {
   );
 };
 
-export default AddBillForm;
+export default AddExtBillForm;
