@@ -36,7 +36,7 @@ const AddBillForm = () => {
     };
     try {
       const response = await axios.post(
-        "http://localhost:8000/add-new-bill",
+        "http://localhost:8000/bill/add-new-bill",
         formData,
         {
           headers: {
