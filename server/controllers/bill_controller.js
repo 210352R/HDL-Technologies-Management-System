@@ -1,6 +1,9 @@
 import express from "express";
 import { createLap } from "../services/lapService.js";
-import { createNewBill } from "../services/billService.js";
+import {
+  createNewBill,
+  updateBillAnnounceDate,
+} from "../services/billService.js";
 
 export const bill_router = express.Router();
 
@@ -90,5 +93,17 @@ bill_router.post("/add-existing-bill", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Bill could not be added" });
+  }
+});
+
+// add put route for update announce date
+bill_router.put("/update-announce-date", async (req, res) => {
+  const { billId, announce_date } = req.body;
+  try {
+    const updatedBill = await updateBillAnnounceDate(billId, announce_date);
+    res.status(200).json({ bill: updatedBill });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Announce date could not be updated" });
   }
 });

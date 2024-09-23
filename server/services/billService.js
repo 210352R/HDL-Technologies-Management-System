@@ -69,3 +69,17 @@ export const createBillForExistingLap = async (bill) => {
   const qrcode = await getQRCode(lapId);
   return { bill: newBill, qr_code: qrcode };
 };
+
+// update announce_date and status of bill use bill id
+export const updateBillAnnounceDate = async (billId, announce_date) => {
+  const updatedBill = await prisma.bill.update({
+    where: {
+      id: billId,
+    },
+    data: {
+      announce_date,
+      status: "announced",
+    },
+  });
+  return updatedBill;
+};

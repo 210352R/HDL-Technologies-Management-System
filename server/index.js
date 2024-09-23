@@ -8,6 +8,7 @@ import { qr_router } from "./controllers/qr_controller.js";
 import prisma from "./database/prisma.js";
 import { bill_router } from "./controllers/bill_controller.js";
 import { createUser } from "./services/userService.js";
+import { lap_router } from "./controllers/lap_controller.js";
 
 // create express app ---
 const app = express();
@@ -44,6 +45,7 @@ app.get("/", (req, res) => {
 // Use the routes
 app.use("/bill", bill_router);
 app.use("/qr", qr_router);
+app.use("/lap", lap_router);
 
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---
