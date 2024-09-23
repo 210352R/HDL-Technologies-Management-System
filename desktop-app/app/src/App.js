@@ -14,6 +14,7 @@ import {
   onAuthStateChanged,
   signOut,
 } from "@firebase/auth";
+import AddBillForm from "./pages/services/bill/NewBillPage";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
             <Route path="/" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/home" element={<HomePage />} />
-            <Route path="/admin/newbill" element={<HomePage />} />
+            <Route path="/admin/newbill" element={<AddBillForm />} />
           </Routes>
         </Router>
       </AuthProvider>

@@ -42,16 +42,19 @@ const AddBillForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-gray-900">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg"
+        className="w-full max-w-lg bg-gray-800 p-8 rounded-lg shadow-lg"
       >
-        <h2 className="text-2xl font-semibold mb-6">Add New Bill</h2>
+        <h2 className="text-2xl font-semibold text-white mb-6">Add New Bill</h2>
 
         {/* Name */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="name">
+          <label
+            className="block text-sm font-medium text-gray-400 mb-2"
+            htmlFor="name"
+          >
             Customer Name
           </label>
           <input
@@ -60,7 +63,7 @@ const AddBillForm = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
             placeholder="John Doe"
             required
           />
@@ -68,7 +71,10 @@ const AddBillForm = () => {
 
         {/* Phone */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="phone">
+          <label
+            className="block text-sm font-medium text-gray-400 mb-2"
+            htmlFor="phone"
+          >
             Phone
           </label>
           <input
@@ -77,7 +83,7 @@ const AddBillForm = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
             placeholder="(555) 555-5555"
             required
           />
@@ -85,7 +91,10 @@ const AddBillForm = () => {
 
         {/* Address */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="address">
+          <label
+            className="block text-sm font-medium text-gray-400 mb-2"
+            htmlFor="address"
+          >
             Address
           </label>
           <input
@@ -94,7 +103,7 @@ const AddBillForm = () => {
             name="address"
             value={formData.address}
             onChange={handleChange}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
             placeholder="123 Main St."
             required
           />
@@ -102,7 +111,10 @@ const AddBillForm = () => {
 
         {/* Brand */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="brand">
+          <label
+            className="block text-sm font-medium text-gray-400 mb-2"
+            htmlFor="brand"
+          >
             Laptop Brand
           </label>
           <input
@@ -111,7 +123,7 @@ const AddBillForm = () => {
             name="brand"
             value={formData.brand}
             onChange={handleChange}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
             placeholder="Dell, HP, etc."
             required
           />
@@ -119,7 +131,10 @@ const AddBillForm = () => {
 
         {/* Model */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="model">
+          <label
+            className="block text-sm font-medium text-gray-400 mb-2"
+            htmlFor="model"
+          >
             Laptop Model
           </label>
           <input
@@ -128,7 +143,7 @@ const AddBillForm = () => {
             name="model"
             value={formData.model}
             onChange={handleChange}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
             placeholder="Inspiron 15, MacBook Pro"
             required
           />
@@ -136,7 +151,10 @@ const AddBillForm = () => {
 
         {/* Issue */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="issue">
+          <label
+            className="block text-sm font-medium text-gray-400 mb-2"
+            htmlFor="issue"
+          >
             Issue Description
           </label>
           <textarea
@@ -144,7 +162,7 @@ const AddBillForm = () => {
             name="issue"
             value={formData.issue}
             onChange={handleChange}
-            className="textarea textarea-bordered w-full"
+            className="textarea textarea-bordered w-full bg-gray-700 text-white placeholder-gray-500"
             placeholder="Laptop not turning on"
             required
           />
@@ -152,7 +170,10 @@ const AddBillForm = () => {
 
         {/* Amount */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="amount">
+          <label
+            className="block text-sm font-medium text-gray-400 mb-2"
+            htmlFor="amount"
+          >
             Repair Amount
           </label>
           <input
@@ -161,7 +182,7 @@ const AddBillForm = () => {
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
             placeholder="500"
             required
           />
@@ -170,7 +191,7 @@ const AddBillForm = () => {
         {/* Announce Date */}
         <div className="mb-4">
           <label
-            className="block text-sm font-medium mb-2"
+            className="block text-sm font-medium text-gray-400 mb-2"
             htmlFor="announce_date"
           >
             Announce Date
@@ -181,7 +202,7 @@ const AddBillForm = () => {
             name="announce_date"
             value={formData.announce_date}
             onChange={handleChange}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-700 text-white"
             required
           />
         </div>
@@ -189,7 +210,7 @@ const AddBillForm = () => {
         {/* Handover Date */}
         <div className="mb-4">
           <label
-            className="block text-sm font-medium mb-2"
+            className="block text-sm font-medium text-gray-400 mb-2"
             htmlFor="handover_date"
           >
             Handover Date
@@ -200,14 +221,17 @@ const AddBillForm = () => {
             name="handover_date"
             value={formData.handover_date}
             onChange={handleChange}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-700 text-white"
             required
           />
         </div>
 
         {/* Status */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="status">
+          <label
+            className="block text-sm font-medium text-gray-400 mb-2"
+            htmlFor="status"
+          >
             Status
           </label>
           <select
@@ -215,7 +239,7 @@ const AddBillForm = () => {
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-gray-700 text-white"
             required
           >
             <option value="">Select Status</option>
@@ -227,7 +251,10 @@ const AddBillForm = () => {
 
         {/* Images */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="images">
+          <label
+            className="block text-sm font-medium text-gray-400 mb-2"
+            htmlFor="images"
+          >
             Image (Optional)
           </label>
           <input
@@ -236,13 +263,16 @@ const AddBillForm = () => {
             name="images"
             value={formData.images}
             onChange={handleChange}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
             placeholder="URL or base64 image string"
           />
         </div>
 
         <div className="flex justify-end">
-          <button type="submit" className="btn btn-primary">
+          <button
+            type="submit"
+            className="btn bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
+          >
             Submit Bill
           </button>
         </div>
