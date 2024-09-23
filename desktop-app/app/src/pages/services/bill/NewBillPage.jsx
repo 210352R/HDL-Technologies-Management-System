@@ -33,6 +33,8 @@ const AddBillForm = () => {
       ...formData,
       announce_date: new Date(formData.announce_date).toISOString(),
       handover_date: new Date(formData.handover_date).toISOString(),
+      // convert payment string to float
+      amount: parseFloat(formData.amount),
     };
     try {
       const response = await axios.post(
