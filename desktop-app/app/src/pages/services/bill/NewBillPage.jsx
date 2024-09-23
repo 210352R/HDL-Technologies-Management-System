@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "../../../components/navbar/Navbar"; // Import the Navbar component
+import QRCodeDisplay from "../../../qr/QRCodeDisplay";
 
 const AddBillForm = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const AddBillForm = () => {
     images: [""],
   });
   const [isSetQr, setIsSetQr] = useState(false);
+  const [qrCode, setQrCode] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +47,13 @@ const AddBillForm = () => {
           },
         }
       );
-      console.log(response.data);
+      console.log(response.data.qr_code);
+      if (response.data.qr_code) {
+        setIsSetQr(true);
+        setQrCode(response.data.qr_code);
+      } else {
+        alert("There was an error in generate QR Code! Please try again.");
+      }
       // Handle success notification here
     } catch (error) {
       console.error("There was an error!", error);
@@ -301,6 +309,7 @@ const AddBillForm = () => {
         <div>
           <h1 className="text-white">QR Code</h1>
           {/* Add QR code component or logic here */}
+          <QRCodeDisplay qrCodeUrl={qrCode} />
         </div>
       )}
     </div>

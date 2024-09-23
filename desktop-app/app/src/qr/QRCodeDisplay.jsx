@@ -1,38 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 
-const QRCodeDisplay = ({ itemCode }) => {
-  const [qrCodeUrl, setQrCodeUrl] = useState(null);
-  const [error, setError] = useState("");
+const QRCodeDisplay = ({ qrCodeUrl }) => {
+  console.log(qrCodeUrl); // Log the QR code URL to the console
 
-  useEffect(() => {
-    const fetchQRCode = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/qr/generate-qr",
-          {
-            params: { item_code: itemCode },
-          }
-        );
-        console.log("Data --", response.data); // Log the QR code URL
-        setQrCodeUrl(response.data.qrcode); // Set the QR code URL from backend response
-      } catch (err) {
-        setError("Failed to load QR code");
-        console.error(err);
-      }
-    };
-
-    fetchQRCode(); // Call the function to fetch QR code when the component mounts
-  }, []);
-  console.log(qrCodeUrl); // Add this line to log the QR code URL to the console
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-5">
+      <h1 className="text-2xl font-semibold text-white mb-4">QR Code</h1>
       {qrCodeUrl ? (
-        <img src={qrCodeUrl} alt="QR Code" />
-      ) : error ? (
-        <p>{error}</p>
+        <div className="bg-white p-4 rounded shadow-lg">
+          <img src={qrCodeUrl} alt="QR Code" className="w-48 h-48" />
+          <p className="mt-2 text-gray-700">Scan the QR code above.</p>
+        </div>
       ) : (
-        <p>Loading QR Code...</p>
+        <p className="text-gray-500">Loading QR Code...</p>
       )}
     </div>
   );
