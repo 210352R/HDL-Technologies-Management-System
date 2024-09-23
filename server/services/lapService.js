@@ -28,3 +28,14 @@ export const getQRCode = async (lapId) => {
   });
   return lap.qrcode;
 };
+
+// create a function that get all bill details by lapId
+export const getBillDetails = async (lapId) => {
+  const bill = await prisma.bill.findMany({
+    where: {
+      lapId,
+    },
+  });
+  console.log(bill);
+  return bill;
+};
