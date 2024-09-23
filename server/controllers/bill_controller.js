@@ -19,7 +19,6 @@ bill_router.post("/add-lap", async (req, res) => {
 
 // create post method for add bill for new laptop
 bill_router.post("/add-new-bill", async (req, res) => {
-  console.log("Callinb new bill ---------------- ", req.body);
   const {
     name,
     phone,

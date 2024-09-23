@@ -14,7 +14,7 @@ const AddBillForm = () => {
     announce_date: "",
     handover_date: "",
     status: "",
-    images: "",
+    images: [""],
   });
 
   const handleChange = (e) => {
