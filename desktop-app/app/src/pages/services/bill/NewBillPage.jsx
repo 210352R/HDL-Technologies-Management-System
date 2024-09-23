@@ -35,11 +35,15 @@ const AddBillForm = () => {
       handover_date: new Date(formData.handover_date).toISOString(),
     };
     try {
-      const response = await axios.post("/add-new-bill", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8000/add-new-bill",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(response.data);
       // Handle success notification here
     } catch (error) {
