@@ -1,57 +1,72 @@
+// src/pages/Dashboard.js
+
 import React from "react";
-import { Link } from "react-router-dom";
-import { doSignOut } from "../../firebase/auth";
+import { Link, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { doSignOut } from "../../firebase/auth";
 
 const HomePage = () => {
   const navigate = useNavigate(); // useNavigate hook for navigation
 
   const logOutHandler = async () => {
-    // Handle logout logic here
     await doSignOut();
     console.log("User signed out ------------------ ");
     navigate("/"); // Redirect to login page
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <header className="bg-blue-600 w-full py-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-white text-3xl font-bold">HDL Solutions</h1>
-          <nav className="space-x-4">
-            <Link to="/" className="text-white hover:underline">
-              Home
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
+      <aside className="w-64 bg-blue-700 text-white min-h-screen">
+        <div className="p-6">
+          <h1 className="text-2xl font-bold mb-6">HDL Admin</h1>
+          <nav className="space-y-4">
+            <Link
+              to="/admin/dashboard"
+              className="block hover:bg-blue-600 px-4 py-2 rounded"
+            >
+              Dashboard
             </Link>
-            <Link to="/about" className="text-white hover:underline">
-              About
+            <Link
+              to="/admin/newbill"
+              className="block hover:bg-blue-600 px-4 py-2 rounded"
+            >
+              New Bill
             </Link>
-            <Link to="/services" className="text-white hover:underline">
-              Services
+            <Link
+              to="/admin/users"
+              className="block hover:bg-blue-600 px-4 py-2 rounded"
+            >
+              Users
             </Link>
-            <Link to="/contact" className="text-white hover:underline">
-              Contact
+            <Link
+              to="/admin/settings"
+              className="block hover:bg-blue-600 px-4 py-2 rounded"
+            >
+              Settings
             </Link>
+            <button
+              onClick={logOutHandler}
+              className="w-full text-left hover:bg-red-600 px-4 py-2 rounded"
+            >
+              Log Out
+            </button>
           </nav>
         </div>
-      </header>
+      </aside>
 
-      <main className="flex flex-col items-center justify-center flex-1 text-center p-6">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-4">
-          Welcome to HDL Solutions
-        </h2>
-        <p className="text-lg text-gray-600 mb-6">
-          At HDL Solutions, we provide cutting-edge solutions to help your
-          business thrive. Our expertise spans across various domains to deliver
-          results that matter.
-        </p>
-        <button onClick={logOutHandler} className="btn btn-primary text-white">
-          Log Out
-        </button>
-      </main>
+      {/* Content Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <header className="bg-white shadow p-4">
+          <h2 className="text-3xl font-semibold text-gray-700">Dashboard</h2>
+        </header>
 
-      <footer className="bg-gray-800 text-white w-full py-4 text-center">
-        <p>&copy; 2024 HDL Solutions. All rights reserved.</p>
-      </footer>
+        {/* Main Content */}
+        <main className="p-6">
+          <Outlet /> {/* Placeholder for nested routes */}
+        </main>
+      </div>
     </div>
   );
 };
