@@ -1,12 +1,10 @@
 import React from "react";
-import Navbar from "../components/navbar/Navbar"; // Adjust the import path as needed
 
 const QRCodeDisplay = ({ qrCodeUrl, brand = "", model = "" }) => {
   console.log(qrCodeUrl); // Log the QR code URL to the console
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900">
-      <Navbar /> {/* Include the Navbar component */}
       <div className="flex flex-col items-center justify-center flex-grow p-5">
         {qrCodeUrl ? (
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">
