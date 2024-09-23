@@ -9,7 +9,8 @@
     
     "dev": "concurrently \"npm run react-start\" \"npm run electron-dev\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "react-start": "cd app && npm start"
+    "react-start": "cd app && npm start",
+    "electron-dev": "nodemon --watch main.js --exec electron ."
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,8 @@
     "electron": "^32.1.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "concurrently": "^7.0.0"
+
   }
 }
