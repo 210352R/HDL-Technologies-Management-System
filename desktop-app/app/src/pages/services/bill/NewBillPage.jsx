@@ -307,7 +307,6 @@ const AddBillForm = () => {
         </div>
       ) : (
         <div>
-          <h1 className="text-white">QR Code</h1>
           {/* Add QR code component or logic here */}
           <QRCodeDisplay
             qrCodeUrl={qrCode}
