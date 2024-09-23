@@ -27,7 +27,6 @@ const AddBillForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData); // Handle form submission here
     // convert date values to ISO format
     const formDataWithISODate = {
       ...formData,
@@ -36,10 +35,11 @@ const AddBillForm = () => {
       // convert payment string to float
       amount: parseFloat(formData.amount),
     };
+    console.log(formDataWithISODate); // Handle form submission here
     try {
       const response = await axios.post(
         "http://localhost:8000/bill/add-new-bill",
-        formData,
+        formDataWithISODate,
         {
           headers: {
             "Content-Type": "application/json",
