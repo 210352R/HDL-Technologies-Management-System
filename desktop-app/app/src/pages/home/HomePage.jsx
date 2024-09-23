@@ -65,7 +65,10 @@ const HomePage = () => {
         {/* Header */}
         <header className="bg-gray-800 dark:bg-gray-800 text-white shadow p-4 flex justify-between items-center">
           {/* Toggle Sidebar Button */}
-          <IoIosArrowBack onClick={toggleSidebar} className="">
+          <IoIosArrowBack
+            onClick={toggleSidebar}
+            style={{ fontSize: "26px", cursor: "pointer" }}
+          >
             {isSidebarOpen ? "Hide Sidebar" : "Show Sidebar"}
           </IoIosArrowBack>
           <h2 className="text-3xl font-semibold">Dashboard</h2>
