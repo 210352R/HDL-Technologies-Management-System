@@ -6,10 +6,9 @@
   "scripts": {
     "react-build": "cd app && npm run build",
     "start": "npm run react-build && electron .",
-    
     "dev": "concurrently \"npm run react-start\" \"npm run electron-dev\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "react-start": "cd app && npm start",
+    "react-start": "cd app && npm start",  
     "electron-dev": "nodemon --watch main.js --exec electron ."
   },
   "keywords": [],
