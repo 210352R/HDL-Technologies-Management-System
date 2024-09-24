@@ -1,5 +1,8 @@
-describe('logincomponent.cy.jsx', () => {
-  it('playground', () => {
-    // cy.mount()
-  })
-})
+import LoginPage from "../../src/pages/auth/LoginPage";
+
+describe("logincomponent.cy.jsx", () => {
+  it("mountpage", () => {
+    // Mount the LoginPage component
+    cy.mount(<LoginPage />);
+  });
+});
