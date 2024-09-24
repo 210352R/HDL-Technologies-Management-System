@@ -52,7 +52,7 @@ const LoginPage = () => {
     <div>
       {userLoggedIn && <Navigate to={"/home"} replace={true} />}
 
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-gray-400">
         <div className="card w-full max-w-sm shadow-md bg-white">
           <div className="card-body">
             <h2 className="text-center text-2xl font-bold text-gray-700">

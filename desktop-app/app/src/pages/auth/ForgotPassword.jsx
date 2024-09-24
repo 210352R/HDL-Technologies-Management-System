@@ -1,7 +1,8 @@
 import { sendPasswordResetEmail } from "firebase/auth";
 import React from "react";
-import { auth } from "../../firebase/firebase";
+
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase/firebase";
 
 function ForgotPassword() {
   const history = useNavigate();
@@ -11,7 +12,7 @@ function ForgotPassword() {
     const emailVal = e.target.email.value;
     sendPasswordResetEmail(auth, emailVal)
       .then((data) => {
-        alert("Check your email for password reset instructions ! ");
+        alert("Check your email for password reset instructions");
         history("/");
       })
       .catch((err) => {
@@ -20,11 +21,16 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-800 flex items-center justify-center">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h1 className="text-2xl font-semibold text-center mb-6 text-gray-700">
           Forgot Password
         </h1>
+        <p className="text-sm text-gray-600 mb-4">
+          Please enter your email address associated with your account. We will
+          send you an email with instructions to reset your password. Make sure
+          to check your inbox and follow the instructions.
+        </p>
         <form onSubmit={(e) => handleSubmit(e)} className="space-y-6">
           <div>
             <label
@@ -44,7 +50,7 @@ function ForgotPassword() {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
           >
-            Send Reset Link
+            Send Password Reset Link
           </button>
         </form>
       </div>
