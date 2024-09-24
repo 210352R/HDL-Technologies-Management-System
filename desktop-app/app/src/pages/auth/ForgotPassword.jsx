@@ -1,6 +1,6 @@
 import { sendPasswordResetEmail } from "firebase/auth";
 import React from "react";
-import { database } from "./FirebaseConfig";
+import { auth } from "../../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 
 function ForgotPassword() {
@@ -11,7 +11,7 @@ function ForgotPassword() {
     const emailVal = e.target.email.value;
     sendPasswordResetEmail(database, emailVal)
       .then((data) => {
-        alert("Check your email for password reset instructions");
+        alert("Check your email for password reset instructions ! ");
         history("/");
       })
       .catch((err) => {

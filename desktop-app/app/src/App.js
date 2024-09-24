@@ -15,6 +15,7 @@ import {
   signOut,
 } from "@firebase/auth";
 import AddBillForm from "./pages/services/bill/NewBillPage";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/admin/newbill" element={<AddBillForm />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </Router>
       </AuthProvider>
