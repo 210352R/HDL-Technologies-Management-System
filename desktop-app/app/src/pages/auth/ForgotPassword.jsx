@@ -9,7 +9,7 @@ function ForgotPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const emailVal = e.target.email.value;
-    sendPasswordResetEmail(database, emailVal)
+    sendPasswordResetEmail(auth, emailVal)
       .then((data) => {
         alert("Check your email for password reset instructions ! ");
         history("/");
