@@ -11,10 +11,24 @@ import { app, auth } from "./firebase/firebase";
 import HomeScreen from "./screens/home/HomeScreen";
 import QrScreen from "./screens/qr_code/QrScreen";
 import LapBillDetails from "./screens/lap/LapDetails";
+import SettingScreen from "./screens/settings/SettingScreen";
+import AddNewBill from "./screens/bill/AddNewBill";
 
 const Stack = createNativeStackNavigator();
 // Create the navigators
 const Drawer = createDrawerNavigator();
+
+function HomeDrawer() {
+  return (
+    <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="New Bill" component={AddNewBill} />
+      <Drawer.Screen name="Settings" component={SettingScreen} />
+      {/* <Drawer.Screen name="QrCode" component={QrScreen} />
+      <Drawer.Screen name="Lap Bill Details" component={LapBillDetails} /> */}
+    </Drawer.Navigator>
+  );
+}
 
 export default function App() {
   return (
@@ -33,8 +47,8 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Home"
-            component={HomeScreen}
+            name="HomeDrawer"
+            component={HomeDrawer}
             options={{ headerShown: false }}
           />
           <Stack.Screen

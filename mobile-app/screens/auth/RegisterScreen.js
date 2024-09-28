@@ -44,7 +44,7 @@ export default function RegisterScreen() {
       );
       // Example registration action
       Alert.alert("Registration Successful", `Welcome, ${values.name}!`);
-      navigation.replace("Home");
+      navigation.replace("HomeDrawer");
     } else {
       Alert.alert("Registration Failed", `Please try again!`);
     }

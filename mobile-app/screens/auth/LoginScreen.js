@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
     getData("email").then((email) => {
       if (email) {
         console.log("Email retrieved successfully:", email);
-        navigation.replace("Home");
+        navigation.replace("HomeDrawer");
       }
     });
   }, []);
