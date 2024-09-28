@@ -16,6 +16,7 @@ import QRCode from "react-native-qrcode-svg"; // For QR code generation
 // import RNFS from "react-native-fs"; // For saving the QR code image
 
 import { url } from "../../url";
+import QRCodeDisplayScreen from "../qr_code/QRCodeDisplayScreen";
 
 const AddNewBill = () => {
   const [formData, setFormData] = useState({
@@ -71,7 +72,6 @@ const AddNewBill = () => {
       if (response.data.qr_code) {
         setIsSetQr(true);
         setQrCode(response.data.qr_code);
-        console.log("QR Code", response.data.qr_code);
       } else {
         Alert.alert(
           "Error",
@@ -197,10 +197,7 @@ const AddNewBill = () => {
           </View>
         ) : (
           <View>
-            <Image
-              source={{ uri: qrCode }}
-              style={{ width: 200, height: 200 }}
-            />
+            <QRCodeDisplayScreen qrCode={qrCode} />
           </View>
         )}
       </ScrollView>
