@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import LoginScreen from "./screens/auth/LoginScreen";
@@ -12,6 +13,8 @@ import QrScreen from "./screens/qr_code/QrScreen";
 import LapBillDetails from "./screens/lap/LapDetails";
 
 const Stack = createNativeStackNavigator();
+// Create the navigators
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
