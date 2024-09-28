@@ -104,6 +104,10 @@ const AddNewBill = () => {
   //   }
   // };
 
+  const downloadQRCode = () => {
+    console.log("Download QR Code");
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -196,8 +200,14 @@ const AddNewBill = () => {
             <Button title="Submit Bill" onPress={handleSubmit} />
           </View>
         ) : (
-          <View>
-            <QRCodeDisplayScreen qrCode={qrCode} />
+          <View style={styles.centeredView}>
+            <QRCodeDisplayScreen
+              qrCode={qrCode}
+              customerName={formData.name}
+              laptopModel={formData.model}
+              laptopBrand={formData.brand}
+              onDownload={downloadQRCode}
+            />
           </View>
         )}
       </ScrollView>
@@ -209,6 +219,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#EAE9E9FF",
+    justifyContent: "center",
+    alignItems: "center",
   },
   scrollContainer: {
     padding: 16,
@@ -243,6 +255,10 @@ const styles = StyleSheet.create({
   downloadButtonText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  centeredView: {
+    justifyContent: "center", // Centers vertically
+    alignItems: "center", // Centers horizontally
   },
 });
 
