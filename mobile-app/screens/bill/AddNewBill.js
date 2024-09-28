@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -7,9 +7,13 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
+  Image,
+  TouchableOpacity,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
+import QRCode from "react-native-qrcode-svg"; // For QR code generation
+// import RNFS from "react-native-fs"; // For saving the QR code image
 
 import { url } from "../../url";
 
@@ -30,6 +34,7 @@ const AddNewBill = () => {
 
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
+  const qrCodeRef = useRef(null); // To reference the QR code component
 
   const handleChange = (name, value) => {
     setFormData((prev) => ({
@@ -66,6 +71,7 @@ const AddNewBill = () => {
       if (response.data.qr_code) {
         setIsSetQr(true);
         setQrCode(response.data.qr_code);
+        console.log("QR Code", response.data.qr_code);
       } else {
         Alert.alert(
           "Error",
@@ -78,21 +84,42 @@ const AddNewBill = () => {
     }
   };
 
+  // const downloadQRCode = () => {
+  //   if (qrCodeRef.current) {
+  //     qrCodeRef.current.toDataURL((data) => {
+  //       // Create a path where the file will be saved
+  //       const path = `${RNFS.DocumentDirectoryPath}/qr_code.png`;
+
+  //       // Write the QR code to the file system
+  //       RNFS.writeFile(path, data, "base64")
+  //         .then(() => {
+  //           Alert.alert("Success", "QR Code saved to gallery!");
+  //           console.log(`QR Code saved to: ${path}`);
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error saving QR Code:", error);
+  //           Alert.alert("Error", "Failed to save QR Code.");
+  //         });
+  //     });
+  //   }
+  // };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {!isSetQr ? (
           <View style={styles.formContainer}>
+            {/* Form fields */}
             <TextInput
               placeholder="Customer Name"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.name}
               onChangeText={(value) => handleChange("name", value)}
             />
             <TextInput
               placeholder="Phone"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.phone}
               onChangeText={(value) => handleChange("phone", value)}
@@ -100,28 +127,28 @@ const AddNewBill = () => {
             />
             <TextInput
               placeholder="Address"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.address}
               onChangeText={(value) => handleChange("address", value)}
             />
             <TextInput
               placeholder="Laptop Brand"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.brand}
               onChangeText={(value) => handleChange("brand", value)}
             />
             <TextInput
               placeholder="Laptop Model"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.model}
               onChangeText={(value) => handleChange("model", value)}
             />
             <TextInput
               placeholder="Issue Description"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.issue}
               onChangeText={(value) => handleChange("issue", value)}
@@ -129,7 +156,7 @@ const AddNewBill = () => {
             />
             <TextInput
               placeholder="Repair Price"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.amount}
               onChangeText={(value) => handleChange("amount", value)}
@@ -137,14 +164,14 @@ const AddNewBill = () => {
             />
             <TextInput
               placeholder="Announce Date"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.announce_date}
               onChangeText={(value) => handleChange("announce_date", value)}
             />
             <TextInput
               placeholder="Handover Date"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.handover_date}
               onChangeText={(value) => handleChange("handover_date", value)}
@@ -161,7 +188,7 @@ const AddNewBill = () => {
             </Picker>
             <TextInput
               placeholder="Image URL or Base64 String (Optional)"
-              placeholderTextColor="white" // Set placeholder text color to white
+              placeholderTextColor="white"
               style={styles.input}
               value={formData.images}
               onChangeText={(value) => handleChange("images", value)}
@@ -169,9 +196,11 @@ const AddNewBill = () => {
             <Button title="Submit Bill" onPress={handleSubmit} />
           </View>
         ) : (
-          <View style={styles.qrContainer}>
-            <Text style={styles.qrText}>QR Code for the Bill:</Text>
-            {/* <QRCode value={qrCode} size={200} /> */}
+          <View>
+            <Image
+              source={{ uri: qrCode }}
+              style={{ width: 200, height: 200 }}
+            />
           </View>
         )}
       </ScrollView>
@@ -188,7 +217,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   formContainer: {
-    backgroundColor: "#FFFFFFFF",
+    backgroundColor: "#FFFFFF",
     padding: 20,
     borderRadius: 8,
     elevation: 4,
@@ -205,8 +234,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   qrText: {
-    color: "#fff",
+    color: "#000",
     marginBottom: 10,
+  },
+  downloadButton: {
+    backgroundColor: "#333",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  downloadButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 
