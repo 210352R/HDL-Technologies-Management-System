@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import { FontAwesome } from "react-native-vector-icons";
 import LoginScreen from "./screens/auth/LoginScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
 import { AuthProvider } from "./context/auth";
@@ -17,15 +17,60 @@ import AddNewBill from "./screens/bill/AddNewBill";
 const Stack = createNativeStackNavigator();
 // Create the navigators
 const Drawer = createDrawerNavigator();
-
 function HomeDrawer() {
   return (
-    <Drawer.Navigator initialRouteName="Home">
-      <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="New Bill" component={AddNewBill} />
-      <Drawer.Screen name="Settings" component={SettingScreen} />
-      {/* <Drawer.Screen name="QrCode" component={QrScreen} />
-      <Drawer.Screen name="Lap Bill Details" component={LapBillDetails} /> */}
+    <Drawer.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        drawerStyle: {
+          paddingTop: 40, // Add padding to the top of the drawer
+          backgroundColor: "#F7F7F7FF", // Background color for the drawer
+          width: 240, // Width of the drawer
+          borderTopRightRadius: 20, // Add border radius to the top right
+          borderBottomRightRadius: 20, // Add border radius to the bottom right
+          borderWidth: 1, // Optional: Add border width if desired
+          borderColor: "#000", // Optional: Set border color
+        },
+        drawerLabelStyle: {
+          color: "#000", // Label color
+          fontSize: 20, // Font size for drawer items
+        },
+      }}
+    >
+      <Drawer.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <View style={styles.iconContainer}>
+              <FontAwesome name="home" size={size} color={color} />
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="New Bill"
+        component={AddNewBill}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <View style={styles.iconContainer}>
+              <FontAwesome name="file" size={size} color={color} />
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Settings"
+        component={SettingScreen}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <View style={styles.iconContainer}>
+              <FontAwesome name="cog" size={size} color={color} />
+            </View>
+          ),
+        }}
+      />
+      {/* Add more screens here as needed */}
     </Drawer.Navigator>
   );
 }
@@ -73,5 +118,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  iconContainer: {
+    width: 40, // Set the width of the container
+    height: 40, // Set the height of the container
+    borderRadius: 20, // Make it circular
+    backgroundColor: "#e0e0e0", // Background color for the circle
+    justifyContent: "center", // Center the icon
+    alignItems: "center", // Center the icon
   },
 });
