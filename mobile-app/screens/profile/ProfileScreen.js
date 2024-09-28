@@ -1,16 +1,51 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome"; // Ensure you have this installed
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { doSignOut } from "../../firebase/auth";
 
 const ProfileScreen = ({ navigation }) => {
-  const userName = "John Doe"; // Replace with dynamic user data if available
-  const userEmail = "johndoe@example.com"; // Replace with dynamic user email if available
+  // State for dynamic user data
+  const [userName, setUserName] = useState("HDL Computer Solutions"); // Replace with dynamic user data if available
+  const [userEmail, setUserEmail] = useState(""); // Replace with dynamic user email if available
 
-  const handleLogout = () => {
-    // Add your logout functionality here
-    console.log("User logged out");
+  useEffect(() => {
+    console.log("Login Screen ------------------ > ");
+    //get email from storage check it is not null then navigate to home
+    getData("email").then((email) => {
+      if (email) {
+        setUserEmail(email);
+      }
+    });
+  }, []);
+
+  // Retrieve data from storage
+  const getData = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      if (value !== null) {
+        console.log("Data retrieved successfully:", value);
+        return value;
+      }
+    } catch (error) {
+      console.log("Error retrieving data:", error);
+    }
   };
 
+  const handleLogout = async () => {
+    await doSignOut();
+    await removeData("email");
+    console.log("User signed out ------------------ ");
+    navigation.replace("Login"); // Redirect to login page
+  };
+
+  const removeData = async (key) => {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.log("Error removing data:", error);
+    }
+  };
   return (
     <View style={styles.container}>
       {/* Profile Header */}
@@ -19,8 +54,7 @@ const ProfileScreen = ({ navigation }) => {
           source={{ uri: "https://via.placeholder.com/100" }} // Replace with user's profile image URL
           style={styles.profileImage}
         />
-        <Text style={styles.userName}>{userName}</Text>
-        <Text style={styles.userEmail}>{userEmail}</Text>
+        <Text style={styles.userName}>{userEmail}</Text>
       </View>
 
       {/* Profile Options */}

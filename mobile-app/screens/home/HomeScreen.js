@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { doSignOut } from "../../firebase/auth";
+
 import { useAuth } from "../../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCameraPermissions } from "expo-camera";
@@ -22,6 +22,13 @@ const HomeScreen = ({ navigation }) => {
   const isPermissionGranted = Boolean(permission?.granted); // Check if permission is granted
 
   const [dropdownVisible, setDropdownVisible] = useState(false); // State for dropdown visibility
+
+  // const logOutHandler = async () => {
+  //   await doSignOut();
+  //   await removeData("email");
+  //   console.log("User signed out ------------------ ");
+  //   navigation.replace("Login"); // Redirect to login page
+  // };
 
   // Sample data for the chart
   const chartData = {
