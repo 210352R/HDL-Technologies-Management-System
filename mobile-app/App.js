@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -37,6 +37,15 @@ function HomeDrawer() {
         },
       }}
     >
+      <View style={styles.profileContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            /* Handle profile click, e.g., navigate to profile */
+          }}
+        >
+          <Icon name="person" size={30} color="#000" />
+        </TouchableOpacity>
+      </View>
       <Drawer.Screen
         name="Home"
         component={HomeScreen}
