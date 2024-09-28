@@ -6,6 +6,7 @@ import {
   Button,
   FlatList,
   TouchableOpacity,
+  ScrollView,
   Image,
 } from "react-native";
 import { doSignOut } from "../../firebase/auth";
@@ -13,6 +14,7 @@ import { useAuth } from "../../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCameraPermissions } from "expo-camera";
 import { LineChart } from "react-native-chart-kit";
+import CategoryButtons from "./CategoryButtons";
 // Adjust the path based on your project structure
 
 const HomeScreen = ({ navigation }) => {
@@ -147,12 +149,12 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const logOutHandler = async () => {
-    await doSignOut();
-    await removeData("email");
-    console.log("User signed out ------------------ ");
-    navigation.replace("Login"); // Redirect to login page
-  };
+  // const logOutHandler = async () => {
+  //   await doSignOut();
+  //   await removeData("email");
+  //   console.log("User signed out ------------------ ");
+  //   navigation.replace("Login"); // Redirect to login page
+  // };
 
   const handleQrScan = async () => {
     if (isPermissionGranted) {
@@ -168,6 +170,9 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View>
+        <CategoryButtons />
+      </View>
       {/* Line Chart */}
       <Text style={styles.chartTitle}>Overview</Text>
       <LineChart
