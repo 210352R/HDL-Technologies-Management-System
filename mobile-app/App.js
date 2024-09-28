@@ -14,6 +14,7 @@ import QrScreen from "./screens/qr_code/QrScreen";
 import LapBillDetails from "./screens/lap/LapDetails";
 import SettingScreen from "./screens/settings/SettingScreen";
 import AddNewBill from "./screens/bill/AddNewBill";
+import ProfileScreen from "./screens/profile/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 // Create the navigators
@@ -24,13 +25,15 @@ function HomeDrawer() {
       initialRouteName="Home"
       screenOptions={{
         drawerStyle: {
-          paddingTop: 40, // Add padding to the top of the drawer
-          backgroundColor: "#F7F7F7FF", // Background color for the drawer
+          paddingTop: 20, // Add padding to the top of the drawer
+          backgroundColor: "#FFFFFFFF", // Background color for the drawer
           width: 240, // Width of the drawer
           borderTopRightRadius: 20, // Add border radius to the top right
           borderBottomRightRadius: 20, // Add border radius to the bottom right
           borderWidth: 1, // Optional: Add border width if desired
           borderColor: "#000", // Optional: Set border color
+          marginTop: 20, // Optional: Add margin at the top
+          marginBottom: 20, // Optional: Add margin at the bottom
         },
         drawerLabelStyle: {
           color: "#000", // Label color
@@ -38,6 +41,26 @@ function HomeDrawer() {
         },
       }}
     >
+      {/* Custom Profile Section */}
+      <Drawer.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          drawerIcon: () => (
+            <View style={styles.profileIconContainer}>
+              <FontAwesome name="user-circle" size={60} color="#000" />
+              <Text
+                style={styles.profileEmail}
+                numberOfLines={1} // Limit to one line
+                ellipsizeMode="tail" // Show ellipsis at the end if text is too long
+              >
+                HDL Technologies
+              </Text>
+              {/* Replace with dynamic email */}
+            </View>
+          ),
+        }}
+      />
       <Drawer.Screen
         name="Home"
         component={HomeScreen}
@@ -127,5 +150,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#e0e0e0", // Background color for the circle
     justifyContent: "center", // Center the icon
     alignItems: "center", // Center the icon
+  },
+  profileIconContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    padding: 15,
+    backgroundColor: "#FFFFFFFF", // Light blue background for the profile area
+    borderRadius: 10,
+    width: "100%",
+    height: 100, // Occupy a quarter of the drawer height
+  },
+  profileEmail: {
+    marginLeft: 10,
+    fontSize: 20,
+    color: "#000",
   },
 });
