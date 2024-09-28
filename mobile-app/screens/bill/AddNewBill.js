@@ -11,6 +11,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
 import { Appbar } from "react-native-paper";
+import { url } from "../../url";
 
 const AddNewBill = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +48,7 @@ const AddNewBill = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/bill/add-new-bill",
+        `${url}/bill/add-new-bill`,
         formDataWithISODate,
         {
           headers: {
