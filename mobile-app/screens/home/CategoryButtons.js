@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Change to any icon set you prefer
 
 const categories = [
@@ -12,7 +18,11 @@ const categories = [
 
 const CategoryButtons = () => {
   return (
-    <View style={styles.container}>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.container}
+    >
       {categories.map((category, index) => (
         <TouchableOpacity
           key={index}
@@ -22,16 +32,13 @@ const CategoryButtons = () => {
           <Text style={styles.buttonText}>{category.name}</Text>
         </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 20,
-    flexWrap: "wrap",
+    paddingVertical: 20,
   },
   button: {
     alignItems: "center",
@@ -41,7 +48,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     borderWidth: 2,
     backgroundColor: "#fff",
-    margin: 10,
+    marginRight: 10, // Use marginRight instead of margin to space out buttons horizontally
   },
   buttonText: {
     marginTop: 5,
