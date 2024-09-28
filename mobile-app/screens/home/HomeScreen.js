@@ -33,7 +33,6 @@ const HomeScreen = ({ navigation }) => {
     ],
   };
 
-  // Sample orders data
   const orders = [
     {
       id: "1",
@@ -47,6 +46,96 @@ const HomeScreen = ({ navigation }) => {
       title: "Daniel Wellington Classic",
       amount: "$149.21",
       date: "Aug 11",
+    },
+    {
+      id: "4",
+      title: "Apple AirPods Pro",
+      amount: "$249.99",
+      date: "Aug 12",
+    },
+    {
+      id: "5",
+      title: "Sony WH-1000XM4",
+      amount: "$348.00",
+      date: "Aug 13",
+    },
+    {
+      id: "6",
+      title: "Samsung Galaxy S21",
+      amount: "$799.99",
+      date: "Aug 14",
+    },
+    {
+      id: "7",
+      title: "Bose SoundLink II",
+      amount: "$199.99",
+      date: "Aug 15",
+    },
+    {
+      id: "8",
+      title: "Nike Air Max 270",
+      amount: "$129.99",
+      date: "Aug 16",
+    },
+    {
+      id: "9",
+      title: "Levi's 511 Slim Jeans",
+      amount: "$69.50",
+      date: "Aug 17",
+    },
+    {
+      id: "10",
+      title: "Adidas Ultraboost 21",
+      amount: "$179.95",
+      date: "Aug 18",
+    },
+    {
+      id: "11",
+      title: "Apple MacBook Air",
+      amount: "$999.00",
+      date: "Aug 19",
+    },
+    {
+      id: "12",
+      title: "Dell XPS 13",
+      amount: "$949.99",
+      date: "Aug 20",
+    },
+    {
+      id: "13",
+      title: "Google Nest Hub",
+      amount: "$89.99",
+      date: "Aug 21",
+    },
+    {
+      id: "14",
+      title: "Fitbit Charge 5",
+      amount: "$149.95",
+      date: "Aug 22",
+    },
+    {
+      id: "15",
+      title: "Kindle Paperwhite",
+      amount: "$139.99",
+      date: "Aug 23",
+    },
+    {
+      id: "16",
+      title: "Instant Pot Duo 7-in-1",
+      amount: "$89.99",
+      date: "Aug 24",
+    },
+    {
+      id: "17",
+      title: "Ring Video Doorbell",
+      amount: "$99.99",
+      date: "Aug 25",
+    },
+    {
+      id: "18",
+      title: "HP Envy x360",
+      amount: "$899.99",
+      date: "Aug 26",
     },
   ];
 

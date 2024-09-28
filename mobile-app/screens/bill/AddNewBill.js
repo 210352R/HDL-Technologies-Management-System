@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
-import { Appbar } from "react-native-paper";
+
 import { url } from "../../url";
 
 const AddNewBill = () => {
@@ -25,7 +25,7 @@ const AddNewBill = () => {
     announce_date: "",
     handover_date: "",
     status: "",
-    images: "",
+    images: [""],
   });
 
   const [isSetQr, setIsSetQr] = useState(false);
@@ -41,10 +41,16 @@ const AddNewBill = () => {
   const handleSubmit = async () => {
     const formDataWithISODate = {
       ...formData,
-      announce_date: new Date(formData.announce_date).toISOString(),
-      handover_date: new Date(formData.handover_date).toISOString(),
+      announce_date: formData.announce_date
+        ? new Date(formData.announce_date).toISOString()
+        : null,
+      handover_date: formData.handover_date
+        ? new Date(formData.handover_date).toISOString()
+        : null,
       amount: parseFloat(formData.amount),
     };
+
+    console.log("Form Data", formData);
 
     try {
       const response = await axios.post(
