@@ -73,7 +73,7 @@ const LoginScreen = ({ navigation }) => {
         storeData("email", values.email);
         // Example login action
         Alert.alert("Login Successful", `Welcome, ${values.email}!`);
-        navigation.replace("Home");
+        navigation.replace("HomeDrawer");
       } else {
         Alert.alert("Login failed", "Please try again!");
       }
