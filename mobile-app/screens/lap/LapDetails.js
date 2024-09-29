@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { url } from "../../url.js";
+import { Button } from "react-native-elements/dist/buttons/Button.js";
 
 const LapBillDetails = ({ route }) => {
   const { lapId } = route.params; // Passed via navigation props
@@ -74,6 +75,12 @@ const LapBillDetails = ({ route }) => {
           <Text style={styles.noBillsText}>No bills available</Text>
         }
       />
+      <View>
+        <Button
+          title="Add New Bill"
+          onPress={() => navigation.navigate("ExtBillForm")}
+        />
+      </View>
     </View>
   );
 };
