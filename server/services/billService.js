@@ -84,7 +84,34 @@ export const updateBillAnnounceDate = async (billId, announce_date) => {
     },
     data: {
       announce_date,
-      status: "announced",
+      status: "Announced",
+    },
+  });
+  return updatedBill;
+};
+
+// update handover_date and status of bill use bill id
+export const updateBillHandoverDate = async (billId, handover_date) => {
+  const updatedBill = await prisma.bill.update({
+    where: {
+      id: billId,
+    },
+    data: {
+      handover_date,
+      status: "In Progress",
+    },
+  });
+  return updatedBill;
+};
+
+// update status of bill use bill id
+export const updateBillStatus = async (billId, status) => {
+  const updatedBill = await prisma.bill.update({
+    where: {
+      id: billId,
+    },
+    data: {
+      status,
     },
   });
   return updatedBill;
