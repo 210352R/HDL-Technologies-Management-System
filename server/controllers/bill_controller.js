@@ -101,7 +101,7 @@ bill_router.post("/add-existing-bill", async (req, res) => {
       images,
     };
     const newBill = await createBillForExistingLap(bill);
-    console.log("New bill: ", newBill); // Add this line
+
     res
       .status(201)
       .json({ success: true, bill: newBill.id, qr_code: newBill.qr_code });

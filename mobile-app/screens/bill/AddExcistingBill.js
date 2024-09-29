@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
-import QRCode from "react-native-qrcode-svg";
+
 import { url } from "../../url";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import QRCodeDisplayScreen from "../qr_code/QRCodeDisplayScreen";
@@ -122,14 +122,16 @@ const AddExtBillForm = ({ route }) => {
 
   if (isSetQr) {
     return (
-      <View style={styles.centeredView}>
-        <QRCodeDisplayScreen
-          qrCode={qrCode}
-          customerName={formData.name}
-          laptopModel={formData.model}
-          laptopBrand={formData.brand}
-          onDownload={downloadQRCode}
-        />
+      <View style={styles.container}>
+        <View style={styles.centeredView}>
+          <QRCodeDisplayScreen
+            qrCode={qrCode}
+            customerName={formData.name}
+            laptopModel={formData.model}
+            laptopBrand={formData.brand}
+            onDownload={downloadQRCode}
+          />
+        </View>
       </View>
     );
   }
@@ -282,6 +284,8 @@ const AddExtBillForm = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20,
     backgroundColor: "#F5F5F5", // Light background for the container
   },
