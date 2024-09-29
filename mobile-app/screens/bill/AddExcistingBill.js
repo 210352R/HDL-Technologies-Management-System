@@ -7,6 +7,7 @@ import {
   ScrollView,
   Alert,
   StyleSheet,
+  Picker,
 } from "react-native";
 import axios from "axios";
 import QRCode from "react-native-qrcode-svg";
@@ -34,10 +35,14 @@ const AddExtBillForm = ({ route }) => {
 
   // Fetch lap details on component mount using lapId
   useEffect(() => {
-    console.log("Fetching laptop details for lapId  --- : ", lapId); // Log lapId for debugging
-    const fetchLapDetails = async () => {
+    console.log("Fetching laptop details for lapId  ---  ** : ", lapId); // Log lapId for debugging
+    const fetchLapDetails = async (lapid) => {
       try {
-        const response = await axios.get(`${url}/get-lap/${lapId}`);
+        console.log(
+          "Fetching laptop details for lapId  ---  ** +++++++++++++: ",
+          lapid
+        ); // Log lapId for debugging
+        const response = await axios.get(`${url}/lap/get-lap/${lapid}`);
         const { brand, model, lapId } = response.data.lap;
         setFormData((prev) => ({
           ...prev,
@@ -51,7 +56,7 @@ const AddExtBillForm = ({ route }) => {
       }
     };
 
-    fetchLapDetails();
+    fetchLapDetails(lapId);
   }, [lapId]);
 
   const handleChange = (name, value) => {
@@ -105,7 +110,6 @@ const AddExtBillForm = ({ route }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Add New Bill</Text>
-
       {/* Name */}
       <TextInput
         style={styles.input}
@@ -181,6 +185,30 @@ const AddExtBillForm = ({ route }) => {
         value={formData.amount}
         onChangeText={(value) => handleChange("amount", value)}
       />
+      <TextInput
+        placeholder="Handover Date"
+        placeholderTextColor="white"
+        style={styles.input}
+        value={formData.handover_date}
+        onChangeText={(value) => handleChange("handover_date", value)}
+      />
+      <Picker
+        selectedValue={formData.status}
+        style={styles.input}
+        onValueChange={(itemValue) => handleChange("status", itemValue)}
+      >
+        <Picker.Item label="Select Status" value="" />
+        <Picker.Item label="Pending" value="Pending" />
+        <Picker.Item label="In Progress" value="In Progress" />
+        <Picker.Item label="Completed" value="Completed" />
+      </Picker>
+      <TextInput
+        placeholder="Image URL or Base64 String (Optional)"
+        placeholderTextColor="white"
+        style={styles.input}
+        value={formData.images}
+        onChangeText={(value) => handleChange("images", value)}
+      />
 
       {/* Submit Button */}
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
@@ -190,46 +218,50 @@ const AddExtBillForm = ({ route }) => {
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#F5F5F5", // Light background for the container
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#FFF",
+    color: "#000", // Black title text
     marginBottom: 20,
     textAlign: "center",
   },
   input: {
-    backgroundColor: "#333",
-    color: "#FFF",
+    backgroundColor: "#E0E0E0", // Light gray input background
+    color: "#000", // Black input text
     padding: 12,
     borderRadius: 8,
+    borderColor: "#000", // Black border
+    borderWidth: 1,
     marginBottom: 10,
   },
   inputReadOnly: {
-    backgroundColor: "#444",
-    color: "#AAA",
+    backgroundColor: "#D0D0D0", // Slightly darker gray for read-only fields
+    color: "#000", // Black text for read-only fields
     padding: 12,
     borderRadius: 8,
+    borderColor: "#000", // Black border
+    borderWidth: 1,
     marginBottom: 10,
   },
   textArea: {
     height: 100,
+    backgroundColor: "#E0E0E0", // Same as input background
   },
   submitButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#1E3A8A", // Dark Blue button
     padding: 15,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 20,
   },
   submitButtonText: {
-    color: "#FFF",
+    color: "#FFF", // White text on the button
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -238,16 +270,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#F5F5F5", // Light background
   },
   qrCodeTitle: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#FFF",
+    color: "#000", // Black title text
     marginBottom: 20,
   },
   qrCodeText: {
-    color: "#FFF",
+    color: "#000", // Black text below the QR code
     marginTop: 10,
   },
 });
