@@ -87,7 +87,7 @@ const LapBillDetails = ({ route, navigation }) => {
         title="Add New Bill"
         buttonStyle={styles.addButton}
         titleStyle={styles.addButtonText}
-        onPress={() => navigation.navigate("ExtBillForm")}
+        onPress={() => navigation.navigate("ExtBillForm", { lapId })}
       />
     </View>
   );

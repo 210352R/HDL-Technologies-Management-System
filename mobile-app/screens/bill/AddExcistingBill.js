@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import QRCode from "react-native-qrcode-svg";
+import { url } from "../../url";
 
 // AddExtBillForm Component
 const AddExtBillForm = ({ route }) => {
@@ -33,11 +34,10 @@ const AddExtBillForm = ({ route }) => {
 
   // Fetch lap details on component mount using lapId
   useEffect(() => {
+    console.log("Fetching laptop details for lapId  --- : ", lapId); // Log lapId for debugging
     const fetchLapDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/get-lap/${lapId}`
-        );
+        const response = await axios.get(`${url}/get-lap/${lapId}`);
         const { brand, model, lapId } = response.data.lap;
         setFormData((prev) => ({
           ...prev,
@@ -71,7 +71,7 @@ const AddExtBillForm = ({ route }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/bill/add-new-bill",
+        `${url}/bill/add-new-bill`,
         formDataWithISODate,
         {
           headers: {
