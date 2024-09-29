@@ -30,9 +30,11 @@ const io = new Server(server, {
 });
 
 // add connection event for web sockets
-// Handle client connections
+
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
+
+  io.emit("connection", "A user connected"); // Emit a message to all connected clients
 
   // Handle disconnection
   socket.on("disconnect", () => {
