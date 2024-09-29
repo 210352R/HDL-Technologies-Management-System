@@ -15,6 +15,7 @@ import axios from "axios";
 import QRCode from "react-native-qrcode-svg";
 import { url } from "../../url";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import QRCodeDisplayScreen from "../qr_code/QRCodeDisplayScreen";
 
 // AddExtBillForm Component
 const AddExtBillForm = ({ route }) => {
@@ -40,13 +41,8 @@ const AddExtBillForm = ({ route }) => {
 
   // Fetch lap details on component mount using lapId
   useEffect(() => {
-    console.log("Fetching laptop details for lapId  ---  ** : ", lapId); // Log lapId for debugging
     const fetchLapDetails = async (lapid) => {
       try {
-        console.log(
-          "Fetching laptop details for lapId  ---  ** +++++++++++++: ",
-          lapid
-        ); // Log lapId for debugging
         const response = await axios.get(`${url}/lap/get-lap/${lapid}`);
         const { brand, model, lapId } = response.data.lap;
         setFormData((prev) => ({
@@ -85,7 +81,7 @@ const AddExtBillForm = ({ route }) => {
 
     try {
       const response = await axios.post(
-        `${url}/bill/add-new-bill`,
+        `${url}/bill/add-existing-bill`,
         formDataWithISODate,
         {
           headers: {
@@ -120,13 +116,20 @@ const AddExtBillForm = ({ route }) => {
     }
   };
 
+  const downloadQRCode = () => {
+    console.log("Downloading QR Code");
+  };
+
   if (isSetQr) {
     return (
-      <View style={styles.qrCodeContainer}>
-        <Text style={styles.qrCodeTitle}>QR Code</Text>
-        <QRCode value={qrCode} size={200} />
-        <Text style={styles.qrCodeText}>{formData.brand}</Text>
-        <Text style={styles.qrCodeText}>{formData.model}</Text>
+      <View style={styles.centeredView}>
+        <QRCodeDisplayScreen
+          qrCode={qrCode}
+          customerName={formData.name}
+          laptopModel={formData.model}
+          laptopBrand={formData.brand}
+          onDownload={downloadQRCode}
+        />
       </View>
     );
   }
@@ -350,6 +353,10 @@ const styles = StyleSheet.create({
   },
   dateText: {
     color: "#000",
+  },
+  centeredView: {
+    justifyContent: "center", // Centers vertically
+    alignItems: "center", // Centers horizontally
   },
 });
 
