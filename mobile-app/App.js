@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons"; // Import Material Icons
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -20,6 +20,7 @@ import AddExtBillForm from "./screens/bill/AddExcistingBill";
 const Stack = createNativeStackNavigator();
 // Create the navigators
 const Drawer = createDrawerNavigator();
+
 function HomeDrawer() {
   return (
     <Drawer.Navigator

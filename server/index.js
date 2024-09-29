@@ -31,25 +31,27 @@ const io = new Server(server, {
 
 // add connection event for web sockets
 
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
-
-  io.emit("connection", "A user connected"); // Emit a message to all connected clients
-
-  // Handle disconnection
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-  });
-});
-
 // add in-built middlewears ----
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // create simple endpoint ------
-app.get("/", (req, res) => {
-  res.send("Hello World");
+app.get("/connection-rt", (req, res) => {
+  console.log("connection is working");
+
+  io.on("connection", (socket) => {
+    console.log("A user connected:", socket.id);
+
+    io.emit("message", "A user connected"); // Emit a message to all connected clients
+    console.log("messgae send -:", socket.id);
+
+    // Handle disconnection
+    socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+    });
+  });
+  res.json({ success: true });
 });
 
 // Use the routes

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,13 @@ import { useCameraPermissions } from "expo-camera";
 import { LineChart } from "react-native-chart-kit";
 import CategoryButtons from "./CategoryButtons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+
+// for websocket connection
+import { io } from "socket.io-client";
+import { url } from "../../url";
+import axios from "axios";
+
+const socket = io.connect(url);
 // Adjust the path based on your project structure
 
 const HomeScreen = ({ navigation }) => {
@@ -24,12 +31,30 @@ const HomeScreen = ({ navigation }) => {
 
   const [dropdownVisible, setDropdownVisible] = useState(false); // State for dropdown visibility
 
-  // const logOutHandler = async () => {
-  //   await doSignOut();
-  //   await removeData("email");
-  //   console.log("User signed out ------------------ ");
-  //   navigation.replace("Login"); // Redirect to login page
-  // };
+  // code for establish connection by calling url
+  const setConnection = async () => {
+    try {
+      const response = await axios.get(`${url}/connection-rt`);
+    } catch (error) {
+      console.log("Error in web socket connection:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("User Logged In: **--  -------- ");
+
+    setConnection();
+
+    // Listen for messages from the server
+    socket.on("message", (newMessage) => {
+      console.log(newMessage);
+    });
+
+    // Cleanup socket connection on component unmount
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket]);
 
   // Sample data for the chart
   const chartData = {
