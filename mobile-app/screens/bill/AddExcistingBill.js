@@ -7,11 +7,14 @@ import {
   ScrollView,
   Alert,
   StyleSheet,
-  Picker,
+  Platform,
+  Button,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
 import QRCode from "react-native-qrcode-svg";
 import { url } from "../../url";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 // AddExtBillForm Component
 const AddExtBillForm = ({ route }) => {
@@ -32,6 +35,8 @@ const AddExtBillForm = ({ route }) => {
   });
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
+  const [showHandoverDatePicker, setShowHandoverDatePicker] = useState(false);
+  const [showAnnounceDatePicker, setShowAnnounceDatePicker] = useState(false);
 
   // Fetch lap details on component mount using lapId
   useEffect(() => {
@@ -69,8 +74,12 @@ const AddExtBillForm = ({ route }) => {
   const handleSubmit = async () => {
     const formDataWithISODate = {
       ...formData,
-      announce_date: new Date(formData.announce_date).toISOString(),
-      handover_date: new Date(formData.handover_date).toISOString(),
+      announce_date: formData.announce_date
+        ? new Date(formData.announce_date).toISOString()
+        : null,
+      handover_date: formData.handover_date
+        ? new Date(formData.handover_date).toISOString()
+        : null,
       amount: parseFloat(formData.amount),
     };
 
@@ -93,6 +102,21 @@ const AddExtBillForm = ({ route }) => {
     } catch (error) {
       console.error("Error submitting bill:", error);
       Alert.alert("Error", "Error submitting bill! Please try again.");
+    }
+  };
+  const onChangeHandoverDate = (event, selectedDate) => {
+    setShowHandoverDatePicker(false);
+    if (selectedDate) {
+      const currentDate = selectedDate.toISOString().split("T")[0]; // Format the date
+      handleChange("handover_date", currentDate);
+    }
+  };
+
+  const onChangeAnnounceDate = (event, selectedDate) => {
+    setShowAnnounceDatePicker(false);
+    if (selectedDate) {
+      const currentDate = selectedDate.toISOString().split("T")[0]; // Format the date
+      handleChange("announce_date", currentDate);
     }
   };
 
@@ -185,13 +209,47 @@ const AddExtBillForm = ({ route }) => {
         value={formData.amount}
         onChangeText={(value) => handleChange("amount", value)}
       />
-      <TextInput
-        placeholder="Handover Date"
-        placeholderTextColor="white"
-        style={styles.input}
-        value={formData.handover_date}
-        onChangeText={(value) => handleChange("handover_date", value)}
-      />
+      <View>
+        {/* Handover Date */}
+        <TouchableOpacity
+          onPress={() => setShowHandoverDatePicker(true)}
+          style={styles.dateInput}
+        >
+          <Text style={styles.dateText}>
+            {formData.handover_date || "Select Handover Date"}
+          </Text>
+        </TouchableOpacity>
+
+        {/* Announce Date */}
+        <TouchableOpacity
+          onPress={() => setShowAnnounceDatePicker(true)}
+          style={styles.dateInput}
+        >
+          <Text style={styles.dateText}>
+            {formData.announce_date || "Select Announce Date"}
+          </Text>
+        </TouchableOpacity>
+
+        {/* DateTimePicker for Handover Date */}
+        {showHandoverDatePicker && (
+          <DateTimePicker
+            value={new Date()}
+            mode="date"
+            display={Platform.OS === "ios" ? "spinner" : "default"}
+            onChange={onChangeHandoverDate}
+          />
+        )}
+
+        {/* DateTimePicker for Announce Date */}
+        {showAnnounceDatePicker && (
+          <DateTimePicker
+            value={new Date()}
+            mode="date"
+            display={Platform.OS === "ios" ? "spinner" : "default"}
+            onChange={onChangeAnnounceDate}
+          />
+        )}
+      </View>
       <Picker
         selectedValue={formData.status}
         style={styles.input}
@@ -281,6 +339,17 @@ const styles = StyleSheet.create({
   qrCodeText: {
     color: "#000", // Black text below the QR code
     marginTop: 10,
+  },
+  dateInput: {
+    backgroundColor: "#E0E0E0",
+    padding: 12,
+    borderRadius: 8,
+    borderColor: "#000",
+    borderWidth: 1,
+    marginBottom: 10,
+  },
+  dateText: {
+    color: "#000",
   },
 });
 
