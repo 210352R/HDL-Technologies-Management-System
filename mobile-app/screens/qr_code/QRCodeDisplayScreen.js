@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Assuming you're using react-native-vector-icons
+import { useNavigation } from "@react-navigation/native"; // Import navigation hook
 
 const QRCodeDisplayScreen = ({
   qrCode,
@@ -16,8 +17,18 @@ const QRCodeDisplayScreen = ({
   laptopBrand,
   onDownload,
 }) => {
+  const navigation = useNavigation(); // Use the navigation hook
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* Top Left Home Button */}
+      <TouchableOpacity
+        style={styles.homeButton}
+        onPress={() => navigation.navigate("Home")}
+      >
+        <Icon name="home" size={28} color="#000" />
+      </TouchableOpacity>
+
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>QR Code</Text>
@@ -35,6 +46,7 @@ const QRCodeDisplayScreen = ({
       <View style={styles.qrCodeContainer}>
         <Image source={{ uri: qrCode }} style={styles.qrCodeImage} />
       </View>
+
       {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>
@@ -58,6 +70,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+  },
+  homeButton: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    padding: 10,
+    backgroundColor: "#f5f5f5", // Match background color
+    borderRadius: 20,
+    zIndex: 1,
   },
   header: {
     alignItems: "center",
