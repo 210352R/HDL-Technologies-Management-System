@@ -14,6 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCameraPermissions } from "expo-camera";
 import { LineChart } from "react-native-chart-kit";
 import CategoryButtons from "./CategoryButtons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 // Adjust the path based on your project structure
 
 const HomeScreen = ({ navigation }) => {
@@ -166,6 +167,12 @@ const HomeScreen = ({ navigation }) => {
 
       {/* QR Scanner Button */}
       <TouchableOpacity style={styles.qrButton} onPress={handleQrScan}>
+        <MaterialIcons
+          name="qr-code-scanner"
+          size={28}
+          color="#fff"
+          style={styles.qrIcon}
+        />
         <Text style={styles.qrButtonText}>QR Scanner</Text>
       </TouchableOpacity>
     </View>
@@ -219,9 +226,11 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
   },
   qrButton: {
+    flexDirection: "row",
     position: "absolute",
     bottom: 20,
     width: "90%",
+    justifyContent: "center",
     backgroundColor: "#4C56AFFF", // Button background color
     paddingVertical: 10, // Vertical padding
     paddingHorizontal: 20, // Horizontal padding
@@ -231,7 +240,10 @@ const styles = StyleSheet.create({
   },
   qrButtonText: {
     color: "#fff", // White text color
-    fontSize: 16, // Font size
+    fontSize: 18, // Font size
     fontWeight: "bold", // Bold text
+  },
+  qrIcon: {
+    marginRight: 20, // Optional: Adjust if necessary
   },
 });
