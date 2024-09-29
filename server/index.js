@@ -10,11 +10,24 @@ import { bill_router } from "./controllers/bill_controller.js";
 import { createUser } from "./services/userService.js";
 import { lap_router } from "./controllers/lap_controller.js";
 
+// for web sockets---------------------------------------------------
+import { Server } from "socket.io";
+import http from "http";
+
 //for cron jobs
 import cron from "node-cron";
 
 // create express app ---
 const app = express();
+
+//create web socket server
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*", // Allow CORS for all origins
+  },
+});
 
 // add in-built middlewears ----
 app.use(cors());
@@ -25,25 +38,6 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
-// Create a new user
-// app.post("/users", async (req, res) => {
-//   const { name, email } = req.body;
-//   try {
-//     const user = await prisma.user.create({
-//       data: { name, email },
-//     });
-//     res.status(201).json(user);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(400).json({ error: "User could not be created" });
-//   }
-// });
-
-// Get all users
-// app.get("/users", async (req, res) => {
-//   const users = await prisma.user.findMany();
-//   res.json(users);
-// });
 
 // Use the routes
 app.use("/bill", bill_router);
