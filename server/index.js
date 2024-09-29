@@ -31,17 +31,8 @@ const io = new Server(server, {
 });
 
 // add connection event for web sockets
-
-// add in-built middlewears ----
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
-
-  io.emit("message", "A user connected"); // Emit a message to all connected clients
-  console.log("messgae send -:", socket.id);
 
   // Handle disconnection
   socket.on("disconnect", () => {
@@ -49,11 +40,24 @@ io.on("connection", (socket) => {
   });
 });
 
-// create simple endpoint ------
-app.get("/connection-rt", (req, res) => {
-  console.log("connection is working");
+// add in-built middlewears ----
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-  res.json({ success: true });
+app.post("/user", async (req, res) => {
+  const { messaage } = req.body;
+  io.emit("message", messaage);
+  console.log("message sent to all connected users");
+  io.on("connection", (socket) => {
+    console.log("A user connected:", socket.id);
+
+    // Handle disconnection
+    socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+    });
+  });
+  res.json(messaage);
 });
 
 // Use the routes
@@ -63,10 +67,12 @@ app.use("/lap", lap_router);
 
 // set cron job for trigger every day ------------
 
-cron.schedule("15 9 * * *", () => {
+cron.schedule("4 19 * * *", () => {
   console.log(
     "Running a task every day at 9:15 AM *************************************************** "
   );
+
+  console.log("message sent to all connected users");
   // Your task logic here
 });
 const port = process.env.PORT || 8000;

@@ -27,28 +27,20 @@ const HomeScreen = ({ navigation }) => {
   const { userLoggedIn } = useAuth();
   const [permission, requestPermission] = useCameraPermissions();
   const isPermissionGranted = Boolean(permission?.granted); // Check if permission is granted
+  const [notification, setNotification] = useState(""); // State for notifications
 
   const [dropdownVisible, setDropdownVisible] = useState(false); // State for dropdown visibility
+
+  const socket = io(url);
 
   useEffect(() => {
     console.log(
       "Socker Server try to connect ----------****-------------------- "
     );
-    // Connect to the WebSocket server
-    const socket = io(url, {
-      transports: ["websocket"], // Specify websocket transport
-    });
-
-    // Listen for a connection event
-    socket.on("connect", () => {
-      console.log("Connected to WebSocket server:", socket.id);
-    });
-
-    console.log("Connect Web socket  ----- ");
 
     // Listen for messages from the server
     socket.on("message", (message) => {
-      console.log("Message received from server:", message);
+      setNotification(message);
     });
 
     // Clean up the connection when component unmounts

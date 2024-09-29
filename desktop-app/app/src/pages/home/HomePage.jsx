@@ -16,18 +16,30 @@ const HomePage = () => {
   const socket = io("http://localhost:8000");
 
   useEffect(() => {
-    // Listen for messages from the server
-    // Listen for the "message" event
-    socket.on("message", (data) => {
-      setNotification(data); // Set the notification message
-    });
+    console.log("use efeect work ****** connected ------------------ ");
+    socket.on(
+      "message",
+      (data) => {
+        console.log("Notify user ------------ ");
+        setNotification(data);
+        Notification.requestPermission().then((result) => {
+          if (result === "granted") {
+            new Notification(" Notification", { body: notification });
+          }
+        });
+        console.log("Message received from server:", data);
+      },
+      []
+    );
+
+    console.log("Notification received ------------------ ", notification);
 
     // Cleanup socket connection on component unmount
     console.log("Socket connected ------------------ ");
     return () => {
       socket.disconnect();
     };
-  }, [socket]);
+  });
 
   const logOutHandler = async () => {
     await doSignOut();
