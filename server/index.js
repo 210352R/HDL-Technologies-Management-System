@@ -29,6 +29,17 @@ const io = new Server(server, {
   },
 });
 
+// add connection event for web sockets
+// Handle client connections
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  // Handle disconnection
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
 // add in-built middlewears ----
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
