@@ -36,8 +36,12 @@ export const getBillDetails = async (lapId) => {
       lapId,
     },
   });
-  console.log(bill);
-  return bill;
+  const lap = await prisma.lap.findUnique({
+    where: {
+      lapId,
+    },
+  });
+  return { bill, lap };
 };
 
 // get lap details by lap id
