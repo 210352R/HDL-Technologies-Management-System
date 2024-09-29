@@ -26,6 +26,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*", // Allow CORS for all origins
+    methods: ["GET", "POST"], // Allow only GET and POST requests
   },
 });
 
@@ -36,21 +37,22 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  io.emit("message", "A user connected"); // Emit a message to all connected clients
+  console.log("messgae send -:", socket.id);
+
+  // Handle disconnection
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
 // create simple endpoint ------
 app.get("/connection-rt", (req, res) => {
   console.log("connection is working");
 
-  io.on("connection", (socket) => {
-    console.log("A user connected:", socket.id);
-
-    io.emit("message", "A user connected"); // Emit a message to all connected clients
-    console.log("messgae send -:", socket.id);
-
-    // Handle disconnection
-    socket.on("disconnect", () => {
-      console.log("User disconnected:", socket.id);
-    });
-  });
   res.json({ success: true });
 });
 
@@ -69,6 +71,6 @@ cron.schedule("15 9 * * *", () => {
 });
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---
-app.listen(port, () => {
+server.listen(port, () => {
   console.log("server is running on port " + port);
 });

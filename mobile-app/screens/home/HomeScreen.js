@@ -31,8 +31,11 @@ const HomeScreen = ({ navigation }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false); // State for dropdown visibility
 
   useEffect(() => {
+    console.log(
+      "Socker Server try to connect ----------****-------------------- "
+    );
     // Connect to the WebSocket server
-    const socket = io(SOCKET_SERVER_URL, {
+    const socket = io(url, {
       transports: ["websocket"], // Specify websocket transport
     });
 
@@ -40,6 +43,8 @@ const HomeScreen = ({ navigation }) => {
     socket.on("connect", () => {
       console.log("Connected to WebSocket server:", socket.id);
     });
+
+    console.log("Connect Web socket  ----- ");
 
     // Listen for messages from the server
     socket.on("message", (message) => {

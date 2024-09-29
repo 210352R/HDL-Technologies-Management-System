@@ -1,15 +1,33 @@
 // src/pages/Dashboard.js
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { doSignOut } from "../../firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
+import { io } from "socket.io-client";
 
 const HomePage = () => {
   const navigate = useNavigate(); // useNavigate hook for navigation
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to toggle sidebar
   const [isDarkMode, setIsDarkMode] = useState(true); // State to toggle dark mode
+  const [notification, setNotification] = useState(""); // State for notifications
+
+  const socket = io("http://localhost:8000");
+
+  useEffect(() => {
+    // Listen for messages from the server
+    // Listen for the "message" event
+    socket.on("message", (data) => {
+      setNotification(data); // Set the notification message
+    });
+
+    // Cleanup socket connection on component unmount
+    console.log("Socket connected ------------------ ");
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket]);
 
   const logOutHandler = async () => {
     await doSignOut();
@@ -78,6 +96,7 @@ const HomePage = () => {
         {/* Main Content */}
         <main className="p-6 text-white">
           <Outlet /> {/* Placeholder for nested routes */}
+          <h2>{notification}</h2>
         </main>
       </div>
     </div>
