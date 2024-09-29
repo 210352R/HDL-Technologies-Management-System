@@ -21,7 +21,6 @@ import { io } from "socket.io-client";
 import { url } from "../../url";
 import axios from "axios";
 
-const socket = io.connect(url);
 // Adjust the path based on your project structure
 
 const HomeScreen = ({ navigation }) => {
@@ -31,30 +30,28 @@ const HomeScreen = ({ navigation }) => {
 
   const [dropdownVisible, setDropdownVisible] = useState(false); // State for dropdown visibility
 
-  // code for establish connection by calling url
-  const setConnection = async () => {
-    try {
-      const response = await axios.get(`${url}/connection-rt`);
-    } catch (error) {
-      console.log("Error in web socket connection:", error);
-    }
-  };
-
   useEffect(() => {
-    console.log("User Logged In: **--  -------- ");
-
-    setConnection();
-
-    // Listen for messages from the server
-    socket.on("message", (newMessage) => {
-      console.log(newMessage);
+    // Connect to the WebSocket server
+    const socket = io(SOCKET_SERVER_URL, {
+      transports: ["websocket"], // Specify websocket transport
     });
 
-    // Cleanup socket connection on component unmount
+    // Listen for a connection event
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket server:", socket.id);
+    });
+
+    // Listen for messages from the server
+    socket.on("message", (message) => {
+      console.log("Message received from server:", message);
+    });
+
+    // Clean up the connection when component unmounts
     return () => {
       socket.disconnect();
+      console.log("Disconnected from WebSocket server");
     };
-  }, [socket]);
+  }, []);
 
   // Sample data for the chart
   const chartData = {
