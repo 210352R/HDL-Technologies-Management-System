@@ -1,7 +1,22 @@
 import express from "express";
-import { getBillDetails, getLapDetails } from "../services/lapService.js";
+import {
+  getAllLaps,
+  getBillDetails,
+  getLapDetails,
+} from "../services/lapService.js";
 
 export const lap_router = express.Router();
+
+// create get route for get all laps
+lap_router.get("/get-all-laps", async (req, res) => {
+  try {
+    const laps = await getAllLaps();
+    res.status(200).json({ laps: laps });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Laps could not be fetched" });
+  }
+});
 
 // create get route for get related bills by lap id
 lap_router.get("/get-bill/:lapId", async (req, res) => {

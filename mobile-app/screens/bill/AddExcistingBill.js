@@ -262,6 +262,7 @@ const AddExtBillForm = ({ route }) => {
       >
         <Picker.Item label="Select Status" value="" />
         <Picker.Item label="Pending" value="Pending" />
+        <Picker.Item label="Announced" value="Announced" />
         <Picker.Item label="In Progress" value="In Progress" />
         <Picker.Item label="Completed" value="Completed" />
       </Picker>

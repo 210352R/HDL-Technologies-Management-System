@@ -19,6 +19,12 @@ export const createLap = async (laptop) => {
   return newLap;
 };
 
+// create method for get all laps
+export const getAllLaps = async () => {
+  const laps = await prisma.lap.findMany();
+  return laps;
+};
+
 // create a function that get qrcode from given lap id
 export const getQRCode = async (lapId) => {
   const lap = await prisma.lap.findUnique({

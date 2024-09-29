@@ -10,6 +10,9 @@ import { bill_router } from "./controllers/bill_controller.js";
 import { createUser } from "./services/userService.js";
 import { lap_router } from "./controllers/lap_controller.js";
 
+//for cron jobs
+import cron from "node-cron";
+
 // create express app ---
 const app = express();
 
@@ -47,6 +50,14 @@ app.use("/bill", bill_router);
 app.use("/qr", qr_router);
 app.use("/lap", lap_router);
 
+// set cron job for trigger every day ------------
+
+cron.schedule("15 9 * * *", () => {
+  console.log(
+    "Running a task every day at 9:15 AM *************************************************** "
+  );
+  // Your task logic here
+});
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---
 app.listen(port, () => {

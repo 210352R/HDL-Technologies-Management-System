@@ -6,6 +6,7 @@ import {
   getAllBills,
   updateBillAnnounceDate,
   updateBillHandoverDate,
+  updateBillStatus,
 } from "../services/billService.js";
 
 export const bill_router = express.Router();
@@ -133,5 +134,17 @@ bill_router.put("/update-handover-date", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Handover date could not be updated" });
+  }
+});
+
+// add put route for make status as Completed
+bill_router.put("/make-status-completed", async (req, res) => {
+  const { billId } = req.body;
+  try {
+    const updatedBill = await updateBillStatus(billId, "Completed");
+    res.status(200).json({ bill: updatedBill });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Status could not be updated" });
   }
 });
