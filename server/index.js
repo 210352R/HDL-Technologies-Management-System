@@ -30,7 +30,7 @@ const io = new Server(server, {
   },
 });
 
-// add connection event for web sockets
+// // add connection event for web sockets
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
@@ -49,14 +49,14 @@ app.post("/user", async (req, res) => {
   const { messaage } = req.body;
   io.emit("message", messaage);
   console.log("message sent to all connected users");
-  io.on("connection", (socket) => {
-    console.log("A user connected:", socket.id);
+  // io.on("connection", (socket) => {
+  //   console.log("A user connected:", socket.id);
 
-    // Handle disconnection
-    socket.on("disconnect", () => {
-      console.log("User disconnected:", socket.id);
-    });
-  });
+  //   // Handle disconnection
+  //   socket.on("disconnect", () => {
+  //     console.log("User disconnected:", socket.id);
+  //   });
+  // });
   res.json(messaage);
 });
 

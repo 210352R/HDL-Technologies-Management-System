@@ -29,7 +29,7 @@ const HomePage = () => {
         });
         console.log("Message received from server:", data);
       },
-      []
+      [socket]
     );
 
     console.log("Notification received ------------------ ", notification);

@@ -48,7 +48,7 @@ const HomeScreen = ({ navigation }) => {
       socket.disconnect();
       console.log("Disconnected from WebSocket server");
     };
-  }, []);
+  }, [socket]);
 
   // Sample data for the chart
   const chartData = {
