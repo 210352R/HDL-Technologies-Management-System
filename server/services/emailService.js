@@ -8,9 +8,19 @@ const { GMAIL_USER, GMAIL_PASS } = process.env;
 
 // Function to send emails to the user
 
-export const sendEmailsToUser = (teacher) => {
-  //   const { userEmail } = req.body;
-  const { first_name, last_name } = teacher;
+export const sendEmailNotification = (bill) => {
+  const {
+    first_name,
+    bill_id,
+    laptop_id,
+    laptop_model,
+    announce_date,
+    handover_date,
+    issue_description,
+    price,
+    qr_code,
+    email,
+  } = bill;
 
   let config = {
     service: "gmail",
@@ -38,16 +48,47 @@ export const sendEmailsToUser = (teacher) => {
       table: {
         data: [
           {
-            "Bill ID": bill_id, // Add your bill ID variable here
-            "Laptop ID": laptop_id, // Add your laptop ID variable here
-            "Laptop Model": laptop_model, // Add your laptop model variable here
-            "Announce Date": announce_date, // Add the announce date variable here
-            "Handover Date": handover_date, // Add the handover date variable here
-            Issue: issue_description, // Add the issue description variable here
-            Price: price + " LKR", // Add the price variable here
+            item: "Bill ID",
+            description: bill_id, // Add your bill ID variable here
+          },
+          {
+            item: "Laptop ID",
+            description: laptop_id, // Add your laptop ID variable here
+          },
+          {
+            item: "Laptop Model",
+            description: laptop_model, // Add your laptop model variable here
+          },
+          {
+            item: "Announce Date",
+            description: announce_date, // Add the announce date variable here
+          },
+          {
+            item: "Handover Date",
+            description: handover_date, // Add the handover date variable here
+          },
+          {
+            item: "Issue",
+            description: issue_description, // Add the issue description variable here
+          },
+          {
+            item: "Price",
+            description: price + " LKR", // Add the price variable here
           },
         ],
+        columns: {
+          // Configure the table to display in two columns (key-value)
+          customWidth: {
+            item: "20%",
+            description: "80%",
+          },
+          customAlignment: {
+            item: "left",
+            description: "right",
+          },
+        },
       },
+
       // Adding a QR code as an image in the email
       outro: `
         <p>Please find below the QR code to track the status of your repair:</p>
@@ -57,7 +98,7 @@ export const sendEmailsToUser = (teacher) => {
         instructions:
           "You can view the details or track your repair by clicking the button below:",
         button: {
-          color: "#22BC66", // Optional button color
+          color: "#123D83FF", // Optional button color
           text: "View Repair Details",
           link: "http://yourapp.com/repair-details/" + bill_id, // Link to view the repair details page
         },
@@ -72,9 +113,9 @@ export const sendEmailsToUser = (teacher) => {
 
   let message = {
     from: "bwanuththara@gmail.com",
-    to: "eshanmaduranga0329@gmail.com",
+    to: email,
     subject: "Place Order",
-    html: mail,
+    html: emailBody,
   };
 
   transporter

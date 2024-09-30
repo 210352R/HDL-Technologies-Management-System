@@ -16,7 +16,6 @@ import http from "http";
 
 //for cron jobs
 import cron from "node-cron";
-import { sendEmailsToUser } from "./services/emailService.js";
 
 // create express app ---
 const app = express();
@@ -76,11 +75,6 @@ cron.schedule("4 19 * * *", () => {
   console.log("message sent to all connected users");
   // Your task logic here
 });
-const teacher = {
-  first_name: "John",
-  last_name: "Doe",
-};
-sendEmailsToUser(teacher);
 
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---
