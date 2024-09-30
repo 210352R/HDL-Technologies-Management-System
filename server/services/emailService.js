@@ -14,6 +14,7 @@ export const sendEmailNotification = (bill) => {
     bill_id,
     laptop_id,
     laptop_model,
+    laptop_brand,
     announce_date,
     handover_date,
     issue_description,
@@ -58,6 +59,10 @@ export const sendEmailNotification = (bill) => {
           {
             item: "Laptop Model",
             description: laptop_model, // Add your laptop model variable here
+          },
+          {
+            item: "Laptop Brand",
+            description: laptop_brand, // Add your laptop model variable here
           },
           {
             item: "Announce Date",

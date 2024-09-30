@@ -1,4 +1,5 @@
 import prisma from "../database/prisma.js";
+import { sendEmailNotification } from "./emailService.js";
 import { createLap, getQRCode } from "./lapService.js";
 import { createUser } from "./userService.js";
 
@@ -33,6 +34,20 @@ export const createNewBill = async (bill) => {
       images,
     },
   });
+  const email_bill = {
+    first_name: name,
+    bill_id: newBill.id,
+    laptop_id: lap.lapId,
+    laptop_model: model,
+    laptop_brand: brand,
+    announce_date: announce_date,
+    handover_date: handover_date,
+    issue_description: issue,
+    price: amount,
+    qr_code: lap.qrcode,
+    email: "eshanmaduranga0329@gmail.com",
+  };
+  sendEmailNotification(email_bill);
   return { bill: newBill, qr_code: lap.qrcode };
 };
 
