@@ -132,3 +132,71 @@ export const sendEmailNotification = (bill) => {
 
   // res.status(201).json("getBill Successfully...!");
 };
+
+// Overdue bill email
+export const sendOverdueEmailNotification = (overdueBills, mail) => {
+  let config = {
+    service: "gmail",
+    auth: {
+      user: GMAIL_USER,
+      pass: GMAIL_PASS,
+    },
+  };
+
+  let transporter = nodemailer.createTransport(config);
+
+  // Generate HTML content for all overdue bills
+  const tableRows = overdueBills
+    .map(
+      (bill) => `
+    <tr>
+      <td>${bill.bill_id}</td>
+      <td>${bill.first_name} </td>
+      <td>${bill.laptop_model} (${bill.laptop_brand})</td>
+      <td>${bill.announce_date.toLocaleDateString()}</td>
+      <td>${bill.handover_date.toLocaleDateString()}</td>
+      
+      <td>${bill.issue}</td>
+    </tr>
+  `
+    )
+    .join("");
+
+  let emailBody = `
+    <h1>Overdue Repairs Notification</h1>
+    <p>We are notifying you that the following repair services are overdue:</p>
+    <table border="1" cellpadding="5" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Laptop</th>
+          <th>Announce Date</th>
+          <th>Handover Date</th>
+          <th>Price</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tableRows}
+      </tbody>
+    </table>
+    <p>You can view more details about your repair <a href="http://yourapp.com/repair-overdue">here</a>.</p>
+    <p>Thank you for choosing Tech Repair Center.</p>
+  `;
+
+  let message = {
+    from: "bwanuththara@gmail.com",
+    to: mail, // Replace this with your user's email address
+    subject: "Overdue Repairs Notification",
+    html: emailBody,
+  };
+
+  // Send the email
+  transporter
+    .sendMail(message)
+    .then(() => {
+      console.log("Email sent successfully with overdue bills!");
+    })
+    .catch((error) => {
+      console.error("Error sending email:", error);
+    });
+};
