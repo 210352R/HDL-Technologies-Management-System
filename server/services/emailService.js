@@ -150,12 +150,13 @@ export const sendOverdueEmailNotification = (overdueBills, mail) => {
     .map(
       (bill) => `
     <tr>
-      <td>${bill.bill_id}</td>
-      <td>${bill.first_name} </td>
-      <td>${bill.laptop_model} (${bill.laptop_brand})</td>
-      <td>${bill.announce_date.toLocaleDateString()}</td>
-      <td>${bill.handover_date.toLocaleDateString()}</td>
-      
+      <td>${bill.id}</td>
+      <td>${bill.userId} </td>
+      <td>${bill.lapId}</td>
+      <td>${bill.lap.lap_model} (${bill.lap.lap_brand})</td>
+      <td>${bill.announce_date?.toLocaleDateString()}</td>
+      <td>${bill.handover_date?.toLocaleDateString()}</td>
+      <td>${bill.status}</td>
       <td>${bill.issue}</td>
     </tr>
   `
@@ -163,16 +164,18 @@ export const sendOverdueEmailNotification = (overdueBills, mail) => {
     .join("");
 
   let emailBody = `
-    <h1>Overdue Repairs Notification</h1>
+    <h1>Overdue Repairs Notification - HDL Computer Solutions</h1>
     <p>We are notifying you that the following repair services are overdue:</p>
     <table border="1" cellpadding="5" cellspacing="0">
       <thead>
         <tr>
+          <th>Bill</th>
+          <th>user</th>
           <th>Laptop</th>
           <th>Announce Date</th>
           <th>Handover Date</th>
-          <th>Price</th>
           <th>Status</th>
+          <th>Issue</th>
         </tr>
       </thead>
       <tbody>

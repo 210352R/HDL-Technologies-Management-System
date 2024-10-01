@@ -16,9 +16,15 @@ import http from "http";
 
 //for cron jobs
 import cron from "node-cron";
-import { sendEmailNotification } from "./services/emailService.js";
+import {
+  sendEmailNotification,
+  sendOverdueEmailNotification,
+} from "./services/emailService.js";
 import { sendSms } from "./services/smsService.js";
-import { updateBillStatusToOverdue } from "./services/billService.js";
+import {
+  sendOverdueBillEmail,
+  updateBillStatusToOverdue,
+} from "./services/billService.js";
 
 // create express app ---
 const app = express();
@@ -85,6 +91,14 @@ cron.schedule("5 1 * * *", async () => {
 
 // set cron job for trigger every day 6.00 am ------------
 cron.schedule("0 6 * * *", async () => {});
+
+sendOverdueBillEmail("eshanmaduranga0329@gmail.com")
+  .then(() => {
+    console.log("Overdue bill email sent successfully");
+  })
+  .catch((error) => {
+    console.error("Error sending overdue bill email:", error);
+  });
 
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---

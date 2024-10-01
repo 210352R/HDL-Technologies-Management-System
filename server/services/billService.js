@@ -1,6 +1,9 @@
 import prisma from "../database/prisma.js";
-import { sendEmailNotification } from "./emailService.js";
-import { createLap, getQRCode } from "./lapService.js";
+import {
+  sendEmailNotification,
+  sendOverdueEmailNotification,
+} from "./emailService.js";
+import { createLap, getLapDetails, getQRCode } from "./lapService.js";
 import { createUser } from "./userService.js";
 
 // create a new bill with lap id
@@ -147,7 +150,7 @@ export const getNearestBill = async () => {
   return bill;
 };
 
-// i want to create a function that if handover_date is less than today, then update status to "Overdue" , if handover_date is not given  and announce date is given and less than today set it to "Overdue" , if there handover_date is given and announce date is given if announce date is less than today is no problem
+// create a function that if handover_date is less than today, then update status to "Overdue" , if handover_date is not given  and announce date is given and less than today set it to "Overdue" , if there handover_date is given and announce date is given if announce date is less than today is no problem
 export const updateBillStatusToOverdue = async () => {
   // get all bills
   const bills = await prisma.bill.findMany();
@@ -176,4 +179,32 @@ export const updateBillStatusToOverdue = async () => {
       });
     }
   }
+};
+
+// create function for get only overdue  bills (use prisma)
+export const getOverdueBills = async () => {
+  const bills = await prisma.bill.findMany({
+    where: {
+      status: "Delayed",
+    },
+  });
+
+  // for each bill in bills get lap id and add relevant lap details to the bills
+  for (let i = 0; i < bills.length; i++) {
+    const lap = await getLapDetails(bills[i].lapId);
+    // add new property to the bill object called lap and set it to the lap object
+    let lap_details = {
+      lap_id: lap.lapId,
+      lap_model: lap.model,
+      lap_brand: lap.brand,
+    };
+    bills[i].lap = lap_details;
+  }
+  return bills;
+};
+
+// send email to the admin overdue bills
+export const sendOverdueBillEmail = async (mail) => {
+  const overdueBills = await getOverdueBills();
+  sendOverdueEmailNotification(overdueBills, mail);
 };
