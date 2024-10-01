@@ -148,3 +148,13 @@ bill_router.put("/make-status-completed", async (req, res) => {
     res.status(400).json({ error: "Status could not be updated" });
   }
 });
+
+bill_router.get("/get-recent-bills", async (req, res) => {
+  try {
+    const recentBills = await getRecentBills();
+    res.status(200).json({ bills: recentBills });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Recent bills could not be fetched" });
+  }
+});
