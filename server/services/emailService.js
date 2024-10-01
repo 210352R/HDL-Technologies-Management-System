@@ -171,6 +171,7 @@ export const sendOverdueEmailNotification = (overdueBills, mail) => {
         <tr>
           <th>Bill</th>
           <th>user</th>
+          <th>Laptop ID</th>
           <th>Laptop</th>
           <th>Announce Date</th>
           <th>Handover Date</th>

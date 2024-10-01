@@ -90,15 +90,15 @@ cron.schedule("5 1 * * *", async () => {
 });
 
 // set cron job for trigger every day 6.00 am ------------
-cron.schedule("0 6 * * *", async () => {});
-
-sendOverdueBillEmail("eshanmaduranga0329@gmail.com")
-  .then(() => {
-    console.log("Overdue bill email sent successfully");
-  })
-  .catch((error) => {
-    console.error("Error sending overdue bill email:", error);
-  });
+cron.schedule("0 6 * * *", async () => {
+  sendOverdueBillEmail("eshanmaduranga0329@gmail.com")
+    .then(() => {
+      console.log("Overdue bill email sent successfully");
+    })
+    .catch((error) => {
+      console.error("Error sending overdue bill email:", error);
+    });
+});
 
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---
