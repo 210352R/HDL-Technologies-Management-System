@@ -14,12 +14,12 @@ const categories = [
     name: "Analytics",
     icon: "bar-chart",
     color: "#3F51B5",
-    link: "/AnalyticsScreen",
+    link: "AnalyticsScreen",
   },
-  { name: "Customers", icon: "home", color: "#FF9800", link: "/Users" },
-  { name: "Orders", icon: "file-text", color: "#E91E63", link: "/Bills" },
-  { name: "Laps", icon: "tasks", color: "#4CAF50", link: "/Laps" },
-  { name: "Sales", icon: "bell", color: "#FFEB3B", link: "/Sales" },
+  { name: "Customers", icon: "home", color: "#FF9800", link: "Users" },
+  { name: "Orders", icon: "file-text", color: "#E91E63", link: "Bills" },
+  { name: "Laps", icon: "tasks", color: "#4CAF50", link: "Laps" },
+  { name: "Sales", icon: "bell", color: "#FFEB3B", link: "Sales" },
 ];
 
 const CategoryButtons = () => {
