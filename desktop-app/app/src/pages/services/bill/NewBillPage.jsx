@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "../../../components/navbar/Navbar"; // Import the Navbar component
 import QRCodeDisplay from "../../../qr/QRCodeDisplay";
+import { storage } from "../../../firebase/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const AddBillForm = () => {
+  const [uploadurl, setUploadUrl] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -15,7 +18,7 @@ const AddBillForm = () => {
     announce_date: "",
     handover_date: "",
     status: "",
-    images: [""],
+    images: [],
   });
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
@@ -26,6 +29,21 @@ const AddBillForm = () => {
       ...prev,
       [name]: name === "amount" ? value : value, // Allowing float input for amount
     }));
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Perform file handling logic here (e.g., converting to base64, uploading to a server, etc.)
+      console.log(file);
+      const storageRef = ref(storage, `images/${file.name}`);
+      await uploadBytes(storageRef, file);
+      console.log("File uploaded successfully");
+      const url = await getDownloadURL(storageRef);
+      setUploadUrl(url);
+      formData.images.push(url);
+      console.log(formData.images);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -281,16 +299,15 @@ const AddBillForm = () => {
                   className="block text-sm font-medium text-gray-400 mb-2"
                   htmlFor="images"
                 >
-                  Image (Optional)
+                  Upload Image (Optional)
                 </label>
                 <input
-                  type="text"
+                  type="file"
                   id="images"
                   name="images"
-                  value={formData.images}
-                  onChange={handleChange}
-                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
-                  placeholder="URL or base64 image string"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="file-input file-input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
                 />
               </div>
             </div>
