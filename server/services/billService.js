@@ -146,3 +146,34 @@ export const getNearestBill = async () => {
   });
   return bill;
 };
+
+// i want to create a function that if handover_date is less than today, then update status to "Overdue" , if handover_date is not given  and announce date is given and less than today set it to "Overdue" , if there handover_date is given and announce date is given if announce date is less than today is no problem
+export const updateBillStatusToOverdue = async () => {
+  // get all bills
+  const bills = await prisma.bill.findMany();
+  // loop through all bills
+  for (let i = 0; i < bills.length; i++) {
+    // check if handover_date is less than today
+    if (bills[i].handover_date < new Date()) {
+      // update status to "Overdue"
+      await prisma.bill.update({
+        where: {
+          id: bills[i].id,
+        },
+        data: {
+          status: "Delayed",
+        },
+      });
+    } else if (!bills[i].handover_date && bills[i].announce_date < new Date()) {
+      // update status to "Overdue"
+      await prisma.bill.update({
+        where: {
+          id: bills[i].id,
+        },
+        data: {
+          status: "Delayed",
+        },
+      });
+    }
+  }
+};

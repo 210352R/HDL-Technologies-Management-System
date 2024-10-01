@@ -18,6 +18,7 @@ import http from "http";
 import cron from "node-cron";
 import { sendEmailNotification } from "./services/emailService.js";
 import { sendSms } from "./services/smsService.js";
+import { updateBillStatusToOverdue } from "./services/billService.js";
 
 // create express app ---
 const app = express();
@@ -69,14 +70,21 @@ app.use("/lap", lap_router);
 
 // set cron job for trigger every day ------------
 
-cron.schedule("4 19 * * *", () => {
-  console.log(
-    "Running a task every day at 9:15 AM *************************************************** "
-  );
+cron.schedule("5 1 * * *", async () => {
+  console.log("Running Overdue updation Task ------------------------------- ");
+  updateBillStatusToOverdue()
+    .then(() => {
+      console.log("Bill status updated to overdue successfully");
+    })
+    .catch((error) => {
+      console.error("Error updating bill status to overdue:", error);
+    });
 
-  console.log("message sent to all connected users");
   // Your task logic here
 });
+
+// set cron job for trigger every day 6.00 am ------------
+cron.schedule("0 6 * * *", async () => {});
 
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---

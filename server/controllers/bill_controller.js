@@ -4,6 +4,7 @@ import {
   createBillForExistingLap,
   createNewBill,
   getAllBills,
+  getNearestBill,
   updateBillAnnounceDate,
   updateBillHandoverDate,
   updateBillStatus,
@@ -151,7 +152,7 @@ bill_router.put("/make-status-completed", async (req, res) => {
 
 bill_router.get("/get-recent-bills", async (req, res) => {
   try {
-    const recentBills = await getRecentBills();
+    const recentBills = await getNearestBill();
     res.status(200).json({ bills: recentBills });
   } catch (error) {
     console.log(error);
