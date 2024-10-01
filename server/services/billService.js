@@ -131,3 +131,18 @@ export const updateBillStatus = async (billId, status) => {
   });
   return updatedBill;
 };
+
+// get bill details that have most nearest announced date or handover date to today
+export const getNearestBill = async () => {
+  const bill = await prisma.bill.findMany({
+    orderBy: [
+      {
+        announce_date: "asc",
+      },
+      {
+        handover_date: "asc",
+      },
+    ],
+  });
+  return bill;
+};

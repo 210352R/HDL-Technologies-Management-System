@@ -93,12 +93,6 @@ export const sendEmailNotification = (bill) => {
           },
         },
       },
-
-      // Adding a QR code as an image in the email
-      outro: `
-        <p>Please find below the QR code to track the status of your repair:</p>
-        <img src="http://yourapp.com/qr-code/${qr_code}" alt="QR Code" style="width: 150px; height: 150px;"/>
-      `,
       action: {
         instructions:
           "You can view the details or track your repair by clicking the button below:",
@@ -108,8 +102,11 @@ export const sendEmailNotification = (bill) => {
           link: "http://yourapp.com/repair-details/" + bill_id, // Link to view the repair details page
         },
       },
-      outro:
-        "Thank you for choosing Tech Repair Center. We look forward to serving you!",
+      // Adding a QR code as an image in the email
+      outro: `
+        <p>Please find below the QR code to track the status of your repair:</p>
+        <img src= ${qr_code} alt="QR Code" style="width: 150px; height: 150px;"/>
+      `,
     },
   };
 
