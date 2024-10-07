@@ -28,7 +28,7 @@ jobs:
       - name: Create .env File
         run: |
           touch .env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
           echo "GMAIL_USER=${{ secrets.GMAIL_USER }}" >> .env
           echo "GMAIL_PASS=${{ secrets.GMAIL_PASS }}" >> .env
           echo "TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}" >> .env
@@ -39,7 +39,6 @@ jobs:
       - name: Log Current Directory Before Restarting
         run: pwd # Log before restarting to verify the directory
 
-
-      # - name: Restart API
-      #   run: pm2 restart api
-      #   working-directory: ./server # Uncomment this if you need to restart using pm2
+      - name: Restart API
+        run: pm2 restart api
+        working-directory: ./server
