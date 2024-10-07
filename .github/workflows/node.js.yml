@@ -22,11 +22,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: |
-          cd ./server
+          cd /server
           npm install
 
       - run: |
-          cd ./server
+          cd /server
           touch .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
           echo "GMAIL_USER=${{ secrets.GMAIL_USER }}" >> .env
