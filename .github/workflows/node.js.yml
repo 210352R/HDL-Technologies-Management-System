@@ -20,8 +20,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
+      - name: Check current directory
+        run: pwd # This will log the current working directory
+
       - run: npm install
-        working-directory: ./server # Set the working directory to the 'server' folder
+        working-directory: ./server # Ensure npm install runs in the 'server' folder
+
+      - name: Log current directory after npm install
+        run: pwd # Log again to verify the directory after the install
 
       - run: |
           touch .env
@@ -31,7 +37,11 @@ jobs:
           echo "TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}" >> .env
           echo "TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}" >> .env
           echo "TWILIO_PHONE_NUMBER=${{ secrets.TWILIO_PHONE_NUMBER }}" >> .env
-        working-directory: ./server # Set working directory to 'server' for the .env file
+        working-directory: ./server # Ensure .env file is created in the 'server' folder
+
+      - name: Check current directory before restarting
+        run: pwd # Log before restarting to verify the directory
+
 
       # - run: pm2 restart api
       #   working-directory: ./server # Uncomment this if you need to restart using pm2
