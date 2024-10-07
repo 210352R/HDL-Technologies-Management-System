@@ -3,6 +3,7 @@ import { createLap } from "../services/lapService.js";
 import {
   createBillForExistingLap,
   createNewBill,
+  getAllBillDetailsWithLaps,
   getAllBills,
   getNearestBill,
   updateBillAnnounceDate,
@@ -15,7 +16,7 @@ export const bill_router = express.Router();
 //create get method for get all bills
 bill_router.get("/get-all-bills", async (req, res) => {
   try {
-    const bills = await getAllBills();
+    const bills = await getAllBillDetailsWithLaps();
     res.status(200).json({ bills: bills });
   } catch (error) {
     console.log(error);

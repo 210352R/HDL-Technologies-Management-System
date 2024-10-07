@@ -208,3 +208,21 @@ export const sendOverdueBillEmail = async (mail) => {
   const overdueBills = await getOverdueBills();
   sendOverdueEmailNotification(overdueBills, mail);
 };
+
+// Get All bill details with lap details  corresponding to it
+export const getAllBillDetailsWithLaps = async () => {
+  const bills = await prisma.bill.findMany({});
+
+  // for each bill in bills get lap id and add relevant lap details to the bills
+  for (let i = 0; i < bills.length; i++) {
+    const lap = await getLapDetails(bills[i].lapId);
+    // add new property to the bill object called lap and set it to the lap object
+    let lap_details = {
+      lap_id: lap.lapId,
+      lap_model: lap.model,
+      lap_brand: lap.brand,
+    };
+    bills[i].lap = lap_details;
+  }
+  return bills;
+};
