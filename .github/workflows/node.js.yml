@@ -22,7 +22,7 @@ jobs:
           cache: "npm"
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
         working-directory: server # Ensure npm install runs in the 'server' folder
 
       - name: Create .env File
