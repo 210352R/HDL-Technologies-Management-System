@@ -39,5 +39,8 @@ model Lap {
   lapId     String @unique
   brand     String
   model     String
+  ram       String?  
+  ssd       String?  
+  vga       String?  
   qrcode    String
 }
