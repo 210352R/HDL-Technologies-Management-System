@@ -7,16 +7,16 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
-  Image,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
-import QRCode from "react-native-qrcode-svg"; // For QR code generation
-// import RNFS from "react-native-fs"; // For saving the QR code image
-
+import QRCode from "react-native-qrcode-svg";
 import { url } from "../../url";
 import QRCodeDisplayScreen from "../qr_code/QRCodeDisplayScreen";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AddNewBill = () => {
   const [formData, setFormData] = useState({
@@ -27,15 +27,19 @@ const AddNewBill = () => {
     model: "",
     issue: "",
     amount: "",
-    announce_date: "",
-    handover_date: "",
+    announce_date: null,
+    handover_date: null,
     status: "",
     images: [""],
   });
 
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
-  const qrCodeRef = useRef(null); // To reference the QR code component
+  const qrCodeRef = useRef(null);
+
+  // Date Picker visibility states
+  const [showAnnounceDatePicker, setShowAnnounceDatePicker] = useState(false);
+  const [showHandoverDatePicker, setShowHandoverDatePicker] = useState(false);
 
   const handleChange = (name, value) => {
     setFormData((prev) => ({
@@ -44,19 +48,18 @@ const AddNewBill = () => {
     }));
   };
 
+  //form submition function
   const handleSubmit = async () => {
     const formDataWithISODate = {
       ...formData,
       announce_date: formData.announce_date
-        ? new Date(formData.announce_date).toISOString()
+        ? formData.announce_date.toISOString()
         : null,
       handover_date: formData.handover_date
-        ? new Date(formData.handover_date).toISOString()
+        ? formData.handover_date.toISOString()
         : null,
       amount: parseFloat(formData.amount),
     };
-
-    console.log("Form Data", formData);
 
     try {
       const response = await axios.post(
@@ -84,46 +87,37 @@ const AddNewBill = () => {
     }
   };
 
-  // const downloadQRCode = () => {
-  //   if (qrCodeRef.current) {
-  //     qrCodeRef.current.toDataURL((data) => {
-  //       // Create a path where the file will be saved
-  //       const path = `${RNFS.DocumentDirectoryPath}/qr_code.png`;
-
-  //       // Write the QR code to the file system
-  //       RNFS.writeFile(path, data, "base64")
-  //         .then(() => {
-  //           Alert.alert("Success", "QR Code saved to gallery!");
-  //           console.log(`QR Code saved to: ${path}`);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error saving QR Code:", error);
-  //           Alert.alert("Error", "Failed to save QR Code.");
-  //         });
-  //     });
-  //   }
-  // };
+  const onDateChange = (event, selectedDate, fieldName) => {
+    const currentDate = selectedDate || formData[fieldName];
+    if (fieldName === "announce_date") {
+      setShowAnnounceDatePicker(Platform.OS === "ios");
+    } else if (fieldName === "handover_date") {
+      setShowHandoverDatePicker(Platform.OS === "ios");
+    }
+    setFormData((prev) => ({
+      ...prev,
+      [fieldName]: currentDate,
+    }));
+  };
 
   const downloadQRCode = () => {
     console.log("Download QR Code");
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {!isSetQr ? (
           <View style={styles.formContainer}>
             {/* Form fields */}
             <TextInput
               placeholder="Customer Name"
-              placeholderTextColor="white"
               style={styles.input}
               value={formData.name}
               onChangeText={(value) => handleChange("name", value)}
             />
             <TextInput
               placeholder="Phone"
-              placeholderTextColor="white"
               style={styles.input}
               value={formData.phone}
               onChangeText={(value) => handleChange("phone", value)}
@@ -131,28 +125,24 @@ const AddNewBill = () => {
             />
             <TextInput
               placeholder="Address"
-              placeholderTextColor="white"
               style={styles.input}
               value={formData.address}
               onChangeText={(value) => handleChange("address", value)}
             />
             <TextInput
               placeholder="Laptop Brand"
-              placeholderTextColor="white"
               style={styles.input}
               value={formData.brand}
               onChangeText={(value) => handleChange("brand", value)}
             />
             <TextInput
               placeholder="Laptop Model"
-              placeholderTextColor="white"
               style={styles.input}
               value={formData.model}
               onChangeText={(value) => handleChange("model", value)}
             />
             <TextInput
               placeholder="Issue Description"
-              placeholderTextColor="white"
               style={styles.input}
               value={formData.issue}
               onChangeText={(value) => handleChange("issue", value)}
@@ -160,26 +150,53 @@ const AddNewBill = () => {
             />
             <TextInput
               placeholder="Repair Price"
-              placeholderTextColor="white"
               style={styles.input}
               value={formData.amount}
               onChangeText={(value) => handleChange("amount", value)}
               keyboardType="numeric"
             />
-            <TextInput
-              placeholder="Announce Date"
-              placeholderTextColor="white"
-              style={styles.input}
-              value={formData.announce_date}
-              onChangeText={(value) => handleChange("announce_date", value)}
-            />
-            <TextInput
-              placeholder="Handover Date"
-              placeholderTextColor="white"
-              style={styles.input}
-              value={formData.handover_date}
-              onChangeText={(value) => handleChange("handover_date", value)}
-            />
+            <View style={styles.datePickerContainer}>
+              <TouchableOpacity onPress={() => setShowAnnounceDatePicker(true)}>
+                <Text style={styles.dateText}>
+                  {formData.announce_date
+                    ? "Announce Date :"
+                    : "Select Announce Date"}
+                </Text>
+              </TouchableOpacity>
+              {showAnnounceDatePicker && (
+                <DateTimePicker
+                  value={formData.announce_date || new Date()}
+                  mode="date"
+                  display="default"
+                  styles={styles.datePickerStyle}
+                  onChange={(event, selectedDate) =>
+                    onDateChange(event, selectedDate, "announce_date")
+                  }
+                />
+              )}
+            </View>
+
+            <View style={styles.datePickerContainer}>
+              <TouchableOpacity onPress={() => setShowHandoverDatePicker(true)}>
+                <Text style={styles.dateText}>
+                  {formData.handover_date
+                    ? "Handover Date :"
+                    : "Select Handover Date"}
+                </Text>
+              </TouchableOpacity>
+              {showHandoverDatePicker && (
+                <DateTimePicker
+                  value={formData.handover_date || new Date()}
+                  mode="date"
+                  display="default"
+                  styles={styles.datePickerStyle}
+                  onChange={(event, selectedDate) =>
+                    onDateChange(event, selectedDate, "handover_date")
+                  }
+                />
+              )}
+            </View>
+
             <Picker
               selectedValue={formData.status}
               style={styles.input}
@@ -191,9 +208,9 @@ const AddNewBill = () => {
               <Picker.Item label="In Progress" value="In Progress" />
               <Picker.Item label="Completed" value="Completed" />
             </Picker>
+
             <TextInput
               placeholder="Image URL or Base64 String (Optional)"
-              placeholderTextColor="white"
               style={styles.input}
               value={formData.images}
               onChangeText={(value) => handleChange("images", value)}
@@ -212,54 +229,69 @@ const AddNewBill = () => {
           </View>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  dateText: {
+    color: "#333",
+
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    fontSize: 16,
+  },
+  datePickerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    height: 60,
+  },
+  datePickerStyle: {
+    width: 400,
+    backgroundColor: "#AAA",
+    marginTop: 20,
+    marginBottom: 20,
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#CCC",
+  },
+
   container: {
     flex: 1,
-    backgroundColor: "#EAE9E9FF",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#F5F5F5",
   },
   scrollContainer: {
-    padding: 16,
+    paddingHorizontal: 15,
   },
   formContainer: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFF",
     padding: 20,
-    borderRadius: 8,
+    borderRadius: 10,
     elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    marginBottom: 20,
   },
   input: {
-    backgroundColor: "#333",
-    color: "#fff",
-    marginBottom: 12,
-    borderRadius: 4,
-    padding: 10,
-  },
-  qrContainer: {
-    alignItems: "center",
-    marginTop: 20,
-  },
-  qrText: {
-    color: "#000",
-    marginBottom: 10,
-  },
-  downloadButton: {
-    backgroundColor: "#333",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-  },
-  downloadButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 15,
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#CCC",
   },
   centeredView: {
-    justifyContent: "center", // Centers vertically
-    alignItems: "center", // Centers horizontally
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
   },
 });
 
