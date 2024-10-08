@@ -40,6 +40,7 @@ bill_router.post("/add-lap", async (req, res) => {
 // create post method for add bill for new laptop
 bill_router.post("/add-new-bill", async (req, res) => {
   const {
+    billId,
     name,
     phone,
     address,
@@ -50,10 +51,14 @@ bill_router.post("/add-new-bill", async (req, res) => {
     announce_date,
     handover_date,
     status,
+    ram,
+    hard,
+    ssd,
     images,
   } = req.body;
   try {
     const bill = {
+      billId,
       name,
       phone,
       address,
@@ -64,6 +69,9 @@ bill_router.post("/add-new-bill", async (req, res) => {
       announce_date,
       handover_date,
       status,
+      ram,
+      hard,
+      ssd,
       images,
     };
     const newBill = await createNewBill(bill);

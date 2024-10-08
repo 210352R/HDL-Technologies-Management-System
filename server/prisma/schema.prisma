@@ -42,6 +42,6 @@ model Lap {
   model     String
   ram       String?  
   ssd       String?  
-  vga       String?  
+  hard      String?  
   qrcode    String
 }

@@ -9,6 +9,7 @@ import { createUser } from "./userService.js";
 // create a new bill with lap id
 export const createNewBill = async (bill) => {
   const {
+    billId,
     name,
     phone,
     address,
@@ -19,13 +20,17 @@ export const createNewBill = async (bill) => {
     announce_date,
     handover_date,
     status,
+    ram,
+    hard,
+    ssd,
     images,
   } = bill;
   const userId = await createUser({ name, phone, address });
-  const lap = await createLap({ brand, model });
+  const lap = await createLap({ brand, model, ram, hard, ssd });
   const date = new Date().toISOString(); // current date
   const newBill = await prisma.bill.create({
     data: {
+      billId,
       lapId: lap.lapId,
       userId,
       issue,
@@ -39,7 +44,7 @@ export const createNewBill = async (bill) => {
   });
   const email_bill = {
     first_name: name,
-    bill_id: newBill.id,
+    bill_id: newBill.billId,
     laptop_id: lap.lapId,
     laptop_model: model,
     laptop_brand: brand,
