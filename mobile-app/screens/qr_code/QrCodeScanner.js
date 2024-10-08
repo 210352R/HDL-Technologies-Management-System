@@ -5,7 +5,7 @@ import { AntDesign } from "react-native-vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function BarcodeScanner() {
+export default function BarcodeScanner({setLapID}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 

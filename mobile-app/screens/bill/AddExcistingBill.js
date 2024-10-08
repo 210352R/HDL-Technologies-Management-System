@@ -144,9 +144,6 @@ const AddExtBillForm = () => {
             <Text style={styles.submitButtonText}>Submit</Text>
           </TouchableOpacity>
           <BarcodeScanner setLapID = {setLapID}/>
-
-         
-
         </View>
        
 
@@ -315,6 +312,29 @@ const AddExtBillForm = () => {
 
 // Styles
 const styles = StyleSheet.create({
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: "10%", // Adjusted height for buttons
+    width: "90%",
+    borderRadius: 10,
+    margin: 10,
+    backgroundColor: "#5e48a6",
+    paddingHorizontal: 40,
+  },
+  barcodeContainer: {
+    flex: 1, // This makes sure the barcode container takes up the available space
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  barcodeScanner: {
+    flex: 1, // Ensures the scanner takes up the available space inside the container
+    width: "100%", // Scanner will fill the container horizontally
+  },
   safeArea: {
     flex: 1,
     backgroundColor: "#F4F4F9",
