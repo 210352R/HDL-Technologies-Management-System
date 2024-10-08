@@ -105,7 +105,7 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View>
-          <CategoryButtons />
+          <CategoryButtons navigation={navigation} />
         </View>
         {/* Line Chart */}
         <Text style={styles.chartTitle}>Overview</Text>

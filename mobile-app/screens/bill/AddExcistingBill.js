@@ -8,7 +8,6 @@ import {
   Alert,
   StyleSheet,
   Platform,
-  Button,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
@@ -16,10 +15,12 @@ import axios from "axios";
 import { url } from "../../url";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import QRCodeDisplayScreen from "../qr_code/QRCodeDisplayScreen";
+import { SafeAreaView } from "react-native-safe-area-context";
+import BarcodeScanner from "../qr_code/QrCodeScanner";
 
 // AddExtBillForm Component
-const AddExtBillForm = ({ route }) => {
-  const { lapId } = route.params; // lapId passed as a param from navigation
+const AddExtBillForm = () => {
+  const [lapID, setLapID] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -39,11 +40,11 @@ const AddExtBillForm = ({ route }) => {
   const [showHandoverDatePicker, setShowHandoverDatePicker] = useState(false);
   const [showAnnounceDatePicker, setShowAnnounceDatePicker] = useState(false);
 
-  // Fetch lap details on component mount using lapId
+  // Fetch laptop details based on lapID
   useEffect(() => {
-    const fetchLapDetails = async (lapid) => {
+    const fetchLapDetails = async () => {
       try {
-        const response = await axios.get(`${url}/lap/get-lap/${lapid}`);
+        const response = await axios.get(`${url}/lap/get-lap/${lapID}`);
         const { brand, model, lapId } = response.data.lap;
         setFormData((prev) => ({
           ...prev,
@@ -57,8 +58,10 @@ const AddExtBillForm = ({ route }) => {
       }
     };
 
-    fetchLapDetails(lapId);
-  }, [lapId]);
+    if (lapID) {
+      fetchLapDetails();
+    }
+  }, [lapID]);
 
   const handleChange = (name, value) => {
     setFormData((prev) => ({
@@ -100,19 +103,20 @@ const AddExtBillForm = ({ route }) => {
       Alert.alert("Error", "Error submitting bill! Please try again.");
     }
   };
+
   const onChangeHandoverDate = (event, selectedDate) => {
     setShowHandoverDatePicker(false);
     if (selectedDate) {
-      const currentDate = selectedDate.toISOString().split("T")[0]; // Format the date
-      handleChange("handover_date", currentDate);
+      const formattedDate = selectedDate.toISOString().split("T")[0];
+      handleChange("handover_date", formattedDate);
     }
   };
 
   const onChangeAnnounceDate = (event, selectedDate) => {
     setShowAnnounceDatePicker(false);
     if (selectedDate) {
-      const currentDate = selectedDate.toISOString().split("T")[0]; // Format the date
-      handleChange("announce_date", currentDate);
+      const formattedDate = selectedDate.toISOString().split("T")[0];
+      handleChange("announce_date", formattedDate);
     }
   };
 
@@ -120,248 +124,278 @@ const AddExtBillForm = ({ route }) => {
     console.log("Downloading QR Code");
   };
 
-  if (isSetQr) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.centeredView}>
-          <QRCodeDisplayScreen
-            qrCode={qrCode}
-            customerName={formData.name}
-            laptopModel={formData.model}
-            laptopBrand={formData.brand}
-            onDownload={downloadQRCode}
-          />
-        </View>
-      </View>
-    );
-  }
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Add New Bill</Text>
-      {/* Name */}
-      <TextInput
-        style={styles.input}
-        placeholder="Customer Name"
-        placeholderTextColor="#888"
-        value={formData.name}
-        onChangeText={(value) => handleChange("name", value)}
-      />
-
-      {/* Phone */}
-      <TextInput
-        style={styles.input}
-        placeholder="Phone"
-        placeholderTextColor="#888"
-        keyboardType="phone-pad"
-        value={formData.phone}
-        onChangeText={(value) => handleChange("phone", value)}
-      />
-
-      {/* Address */}
-      <TextInput
-        style={styles.input}
-        placeholder="Address"
-        placeholderTextColor="#888"
-        value={formData.address}
-        onChangeText={(value) => handleChange("address", value)}
-      />
-
-      {/* Laptop Brand (Read-Only) */}
-      <TextInput
-        style={styles.inputReadOnly}
-        placeholder="Laptop Brand"
-        placeholderTextColor="#888"
-        value={formData.brand}
-        editable={false}
-      />
-
-      {/* Laptop Model (Read-Only) */}
-      <TextInput
-        style={styles.inputReadOnly}
-        placeholder="Laptop Model"
-        placeholderTextColor="#888"
-        value={formData.model}
-        editable={false}
-      />
-
-      {/* Laptop ID (Read-Only) */}
-      <TextInput
-        style={styles.inputReadOnly}
-        placeholder="Laptop ID"
-        placeholderTextColor="#888"
-        value={formData.lapId}
-        editable={false}
-      />
-
-      {/* Issue Description */}
-      <TextInput
-        style={[styles.input, styles.textArea]}
-        placeholder="Issue Description"
-        placeholderTextColor="#888"
-        multiline={true}
-        numberOfLines={4}
-        value={formData.issue}
-        onChangeText={(value) => handleChange("issue", value)}
-      />
-
-      {/* Repair Price */}
-      <TextInput
-        style={styles.input}
-        placeholder="Repair Price"
-        placeholderTextColor="#888"
-        keyboardType="numeric"
-        value={formData.amount}
-        onChangeText={(value) => handleChange("amount", value)}
-      />
-      <View>
-        {/* Handover Date */}
-        <TouchableOpacity
-          onPress={() => setShowHandoverDatePicker(true)}
-          style={styles.dateInput}
-        >
-          <Text style={styles.dateText}>
-            {formData.handover_date || "Select Handover Date"}
-          </Text>
-        </TouchableOpacity>
-
-        {/* Announce Date */}
-        <TouchableOpacity
-          onPress={() => setShowAnnounceDatePicker(true)}
-          style={styles.dateInput}
-        >
-          <Text style={styles.dateText}>
-            {formData.announce_date || "Select Announce Date"}
-          </Text>
-        </TouchableOpacity>
-
-        {/* DateTimePicker for Handover Date */}
-        {showHandoverDatePicker && (
-          <DateTimePicker
-            value={new Date()}
-            mode="date"
-            display={Platform.OS === "ios" ? "spinner" : "default"}
-            onChange={onChangeHandoverDate}
+    <SafeAreaView style={styles.safeArea}>
+      {!lapID ? (
+        <View style={styles.container}>
+          <Text style={styles.title}>Enter Laptop ID</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Laptop ID"
+            placeholderTextColor="#888"
+            keyboardType="numeric"
+            value={lapID}
+            onChangeText={(value) => setLapID(value)}
           />
-        )}
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={() => setLapID(lapID)}
+          >
+            <Text style={styles.submitButtonText}>Submit</Text>
+          </TouchableOpacity>
+          <BarcodeScanner setLapID = {setLapID}/>
 
-        {/* DateTimePicker for Announce Date */}
-        {showAnnounceDatePicker && (
-          <DateTimePicker
-            value={new Date()}
-            mode="date"
-            display={Platform.OS === "ios" ? "spinner" : "default"}
-            onChange={onChangeAnnounceDate}
+         
+
+        </View>
+       
+
+      ) : (
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.title}>Add New Bill</Text>
+
+          {/* Name */}
+          <TextInput
+            style={styles.input}
+            placeholder="Customer Name"
+            placeholderTextColor="#888"
+            value={formData.name}
+            onChangeText={(value) => handleChange("name", value)}
           />
-        )}
-      </View>
-      <Picker
-        selectedValue={formData.status}
-        style={styles.input}
-        onValueChange={(itemValue) => handleChange("status", itemValue)}
-      >
-        <Picker.Item label="Select Status" value="" />
-        <Picker.Item label="Pending" value="Pending" />
-        <Picker.Item label="Announced" value="Announced" />
-        <Picker.Item label="In Progress" value="In Progress" />
-        <Picker.Item label="Completed" value="Completed" />
-      </Picker>
-      <TextInput
-        placeholder="Image URL or Base64 String (Optional)"
-        placeholderTextColor="white"
-        style={styles.input}
-        value={formData.images}
-        onChangeText={(value) => handleChange("images", value)}
-      />
 
-      {/* Submit Button */}
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-        <Text style={styles.submitButtonText}>Submit Bill</Text>
-      </TouchableOpacity>
-    </ScrollView>
+          {/* Phone */}
+          <TextInput
+            style={styles.input}
+            placeholder="Phone"
+            placeholderTextColor="#888"
+            keyboardType="phone-pad"
+            value={formData.phone}
+            onChangeText={(value) => handleChange("phone", value)}
+          />
+
+          {/* Address */}
+          <TextInput
+            style={styles.input}
+            placeholder="Address"
+            placeholderTextColor="#888"
+            value={formData.address}
+            onChangeText={(value) => handleChange("address", value)}
+          />
+
+          {/* Laptop Brand */}
+          <TextInput
+            style={styles.inputReadOnly}
+            placeholder="Laptop Brand"
+            placeholderTextColor="#888"
+            value={formData.brand}
+            editable={false}
+          />
+
+          {/* Laptop Model */}
+          <TextInput
+            style={styles.inputReadOnly}
+            placeholder="Laptop Model"
+            placeholderTextColor="#888"
+            value={formData.model}
+            editable={false}
+          />
+
+          {/* Laptop ID */}
+          <TextInput
+            style={styles.inputReadOnly}
+            placeholder="Laptop ID"
+            placeholderTextColor="#888"
+            value={formData.lapId}
+            editable={false}
+          />
+
+          {/* Issue */}
+          <TextInput
+            style={[styles.input, styles.textArea]}
+            placeholder="Issue Description"
+            placeholderTextColor="#888"
+            multiline={true}
+            numberOfLines={4}
+            value={formData.issue}
+            onChangeText={(value) => handleChange("issue", value)}
+          />
+
+          {/* Repair Price */}
+          <TextInput
+            style={styles.input}
+            placeholder="Repair Price"
+            placeholderTextColor="#888"
+            keyboardType="numeric"
+            value={formData.amount}
+            onChangeText={(value) => handleChange("amount", value)}
+          />
+
+          {/* Handover Date */}
+          <TouchableOpacity
+            onPress={() => setShowHandoverDatePicker(true)}
+            style={styles.dateInput}
+          >
+            <Text style={styles.dateText}>
+              {formData.handover_date || "Select Handover Date"}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Announce Date */}
+          <TouchableOpacity
+            onPress={() => setShowAnnounceDatePicker(true)}
+            style={styles.dateInput}
+          >
+            <Text style={styles.dateText}>
+              {formData.announce_date || "Select Announce Date"}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Date Pickers */}
+          {showHandoverDatePicker && (
+            <DateTimePicker
+              value={new Date()}
+              mode="date"
+              display={Platform.OS === "ios" ? "spinner" : "default"}
+              onChange={onChangeHandoverDate}
+            />
+          )}
+          {showAnnounceDatePicker && (
+            <DateTimePicker
+              value={new Date()}
+              mode="date"
+              display={Platform.OS === "ios" ? "spinner" : "default"}
+              onChange={onChangeAnnounceDate}
+            />
+          )}
+
+          {/* Status */}
+          <Picker
+            selectedValue={formData.status}
+            style={styles.input}
+            onValueChange={(value) => handleChange("status", value)}
+          >
+            <Picker.Item label="Select Status" value="" />
+            <Picker.Item label="Pending" value="Pending" />
+            <Picker.Item label="Announced" value="Announced" />
+            <Picker.Item label="In Progress" value="In Progress" />
+            <Picker.Item label="Completed" value="Completed" />
+          </Picker>
+
+          {/* Image */}
+          <TextInput
+            placeholder="Image URL or Base64 String (Optional)"
+            placeholderTextColor="#888"
+            style={styles.input}
+            value={formData.images}
+            onChangeText={(value) => handleChange("images", value)}
+          />
+
+          {/* Submit Button */}
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.submitButtonText}>Submit Bill</Text>
+          </TouchableOpacity>
+
+          {/* QR Code */}
+          {isSetQr && (
+            <View style={styles.qrContainer}>
+              <QRCodeDisplayScreen qrCode={qrCode} />
+              <TouchableOpacity
+                style={styles.downloadButton}
+                onPress={downloadQRCode}
+              >
+                <Text style={styles.downloadButtonText}>Download QR Code</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </ScrollView>
+      )}
+    </SafeAreaView>
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#F4F4F9",
+  },
   container: {
     flexGrow: 1,
+    padding: 20,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
-    backgroundColor: "#F5F5F5", // Light background for the container
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "#000", // Black title text
+    color: "#333",
     marginBottom: 20,
-    textAlign: "center",
   },
   input: {
-    backgroundColor: "#E0E0E0", // Light gray input background
-    color: "#000", // Black input text
-    padding: 12,
-    borderRadius: 8,
-    borderColor: "#000", // Black border
+    width: "100%",
+    backgroundColor: "#FFF",
+    borderColor: "#DDD",
     borderWidth: 1,
-    marginBottom: 10,
+    borderRadius: 5,
+    padding: 12,
+    marginBottom: 12,
+    fontSize: 16,
+    color: "#333",
   },
   inputReadOnly: {
-    backgroundColor: "#D0D0D0", // Slightly darker gray for read-only fields
-    color: "#000", // Black text for read-only fields
-    padding: 12,
-    borderRadius: 8,
-    borderColor: "#000", // Black border
+    width: "100%",
+    backgroundColor: "#EFEFEF",
+    borderColor: "#DDD",
     borderWidth: 1,
-    marginBottom: 10,
+    borderRadius: 5,
+    padding: 12,
+    marginBottom: 12,
+    fontSize: 16,
+    color: "#666",
   },
   textArea: {
-    height: 100,
-    backgroundColor: "#E0E0E0", // Same as input background
+    height: 80,
+    textAlignVertical: "top",
+  },
+  dateInput: {
+    width: "100%",
+    padding: 12,
+    backgroundColor: "#FFF",
+    borderColor: "#DDD",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 12,
+  },
+  dateText: {
+    fontSize: 16,
+    color: "#333",
   },
   submitButton: {
-    backgroundColor: "#1E3A8A", // Dark Blue button
+    width: "100%",
     padding: 15,
-    borderRadius: 8,
+    backgroundColor: "#00A9F4",
+    borderRadius: 5,
     alignItems: "center",
     marginTop: 20,
   },
   submitButtonText: {
-    color: "#FFF", // White text on the button
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
+    color: "#FFF",
   },
-  qrCodeContainer: {
-    flex: 1,
-    justifyContent: "center",
+  qrContainer: {
+    marginTop: 20,
     alignItems: "center",
-    padding: 20,
-    backgroundColor: "#F5F5F5", // Light background
   },
-  qrCodeTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "#000", // Black title text
-    marginBottom: 20,
-  },
-  qrCodeText: {
-    color: "#000", // Black text below the QR code
+  downloadButton: {
+    padding: 10,
+    backgroundColor: "#00A9F4",
+    borderRadius: 5,
     marginTop: 10,
   },
-  dateInput: {
-    backgroundColor: "#E0E0E0",
-    padding: 12,
-    borderRadius: 8,
-    borderColor: "#000",
-    borderWidth: 1,
-    marginBottom: 10,
-  },
-  dateText: {
-    color: "#000",
-  },
-  centeredView: {
-    justifyContent: "center", // Centers vertically
-    alignItems: "center", // Centers horizontally
+  downloadButtonText: {
+    fontSize: 16,
+    color: "#FFF",
   },
 });
 
