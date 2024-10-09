@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const categories = [
   { name: "Bills", icon: "file-text", color: "#E91E63" },
-  { name: "Customers", icon: "home", color: "#FF9800" },
+  { name: "Update Bill", icon: "tasks", color: "#4CAF50" },
   { name: "Orders", icon: "file-text", color: "#E91E63" },
   { name: "Tasks", icon: "tasks", color: "#4CAF50" },
   { name: "Sales", icon: "bell", color: "#FFEB3B" },
