@@ -226,6 +226,9 @@ export const getAllBillDetailsWithLaps = async () => {
       lap_id: lap.lapId,
       lap_model: lap.model,
       lap_brand: lap.brand,
+      lap_ram: lap.ram,
+      lap_hard: lap.hard,
+      lap_ssd: lap.ssd,
     };
     bills[i].lap = lap_details;
   }
