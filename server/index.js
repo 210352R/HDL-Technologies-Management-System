@@ -25,7 +25,8 @@ import {
   sendOverdueBillEmail,
   updateBillStatusToOverdue,
 } from "./services/billService.js";
-import { backupDatabase } from "./services/memoryDumpService.js";
+
+import { db_router } from "./controllers/db_controller.js";
 
 // create express app ---
 const app = express();
@@ -55,6 +56,10 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.get("/", (req, res) => {
+  res.send("Hello HDL ---  World!");
+});
+
 app.post("/user", async (req, res) => {
   const { messaage } = req.body;
   io.emit("message", messaage);
@@ -74,6 +79,7 @@ app.post("/user", async (req, res) => {
 app.use("/bill", bill_router);
 app.use("/qr", qr_router);
 app.use("/lap", lap_router);
+app.use("/db", db_router);
 
 // set cron job for trigger every day ------------
 
