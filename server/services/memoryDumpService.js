@@ -31,7 +31,7 @@ const uploadToS3 = async (filePath, fileName) => {
 };
 
 // Function to back up the MongoDB database
-const backupDatabase = async () => {
+export const backupDatabase = async () => {
   try {
     const backupDir = path.join(__dirname, "backups");
     const timestamp = new Date().toISOString().split("T")[0];
