@@ -74,6 +74,21 @@ const uploadToS3 = async (filePath, fileName) => {
     console.error(`Upload failed: ${err.message}`);
   }
 };
+// Function to download a dump file from S3
+const downloadFromS3 = async (fileName, downloadPath) => {
+  try {
+    const params = {
+      Bucket: "hdl-mongo-backup", // Replace with your actual bucket name
+      Key: fileName,
+    };
+
+    const data = await s3.getObject(params).promise();
+    fs.writeFileSync(downloadPath, data.Body);
+    console.log(`Downloaded file from S3: ${downloadPath}`);
+  } catch (err) {
+    console.error(`Download failed: ${err.message}`);
+  }
+};
 
 // Function to back up the MongoDB database
 export const backupDatabase = async () => {
@@ -110,5 +125,41 @@ export const backupDatabase = async () => {
     await uploadToS3(backupFilePath, `backup-${timestamp}.gz`);
   } catch (error) {
     console.error(`Backup failed: ${error.message}`);
+  }
+};
+
+// Function to restore the MongoDB database
+const restoreDatabase = async (dumpFilePath) => {
+  try {
+    // MongoDB URI (use environment variables for security)
+    const mongoUri = process.env.DATABASE_URL;
+
+    // Command to restore the database
+    const mongorestoreCmd = `mongorestore --uri="${mongoUri}" --archive="${dumpFilePath}" --gzip`;
+
+    // Execute the restore command
+    const { stdout, stderr } = await execAsync(mongorestoreCmd);
+    if (stderr) {
+      console.error(`Restore error: ${stderr}`);
+    }
+    console.log(`Restore successful: ${stdout}`);
+  } catch (error) {
+    console.error(`Restore failed: ${error.message}`);
+  }
+};
+
+// Function to trigger a restore from S3
+export const restoreFromS3 = async (fileName) => {
+  try {
+    const backupDir = path.join(__dirname, "backups");
+    const dumpFilePath = path.join(backupDir, fileName); // Path to save the downloaded file
+
+    // Step 1: Download the dump file from S3
+    await downloadFromS3(fileName, dumpFilePath);
+
+    // Step 2: Restore the database from the downloaded file
+    await restoreDatabase(dumpFilePath);
+  } catch (error) {
+    console.error(`Restore process failed: ${error.message}`);
   }
 };
