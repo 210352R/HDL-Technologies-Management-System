@@ -97,6 +97,8 @@ const UpdateBillForm = ({ route, navigation }) => {
     );
 }
 
+export default UpdateBillForm;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

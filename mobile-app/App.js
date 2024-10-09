@@ -18,6 +18,7 @@ import ProfileScreen from "./screens/profile/ProfileScreen";
 import AddExtBillForm from "./screens/bill/AddExcistingBill";
 import Bills from "./screens/bills/bills";
 import UpdateBill from "./screens/update_bill/UpdateBill";
+import UpdateBillForm from "./screens/update_bill/UpdateBillFromScreen";
 
 const Stack = createNativeStackNavigator();
 // Create the navigators
@@ -148,7 +149,14 @@ export default function App() {
           component  = {UpdateBill}
           options = {{headerShown: true}}
         />
+
+        <Stack.Screen
+        name = "UpdateBillForm"
+        component={UpdateBillForm}
+        options={{headerShown: true}}
+        />
         </Stack.Navigator>
+
        
       </NavigationContainer>
     </AuthProvider>

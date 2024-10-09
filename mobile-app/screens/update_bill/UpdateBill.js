@@ -31,7 +31,7 @@ const UpdateBill = () => {
     // Function to simulate update bill action
     const handledUpdateBill = () => {
         if(billID) {
-            nav.navigate('UpdateBill', { billID });
+            nav.navigate('UpdateBillForm', { billID });
         }
         
     }
