@@ -18,6 +18,46 @@ const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
 
+// Function to delete all files in the local backups folder
+const clearLocalBackups = (backupDir) => {
+  try {
+    if (fs.existsSync(backupDir)) {
+      fs.readdirSync(backupDir).forEach((file) => {
+        const filePath = path.join(backupDir, file);
+        fs.unlinkSync(filePath); // Delete the file
+        console.log(`Deleted local backup file: ${filePath}`);
+      });
+    }
+  } catch (err) {
+    console.error(`Failed to clear local backups: ${err.message}`);
+  }
+};
+
+// Function to clear all backup files in the S3 bucket
+const clearS3Backups = async (bucketName) => {
+  try {
+    const listedObjects = await s3
+      .listObjectsV2({ Bucket: bucketName })
+      .promise();
+
+    if (listedObjects.Contents.length === 0) return;
+
+    const deleteParams = {
+      Bucket: bucketName,
+      Delete: { Objects: [] },
+    };
+
+    listedObjects.Contents.forEach(({ Key }) => {
+      deleteParams.Delete.Objects.push({ Key });
+    });
+
+    const deleteResult = await s3.deleteObjects(deleteParams).promise();
+    console.log(`Deleted ${deleteResult.Deleted.length} files from S3.`);
+  } catch (err) {
+    console.error(`Failed to clear S3 backups: ${err.message}`);
+  }
+};
+
 // Function to upload the backup file to S3
 const uploadToS3 = async (filePath, fileName) => {
   try {
@@ -47,10 +87,16 @@ export const backupDatabase = async () => {
       fs.mkdirSync(backupDir, { recursive: true });
     }
 
-    // MongoDB URI (use environment variables for security)
+    // Step 1: Clear local backup folder
+    clearLocalBackups(backupDir);
+
+    // Step 2: Clear existing backups in the S3 bucket
+    await clearS3Backups("hdl-mongo-backup");
+
+    // Step 3: MongoDB URI (use environment variables for security)
     const mongoUri = process.env.DATABASE_URL;
 
-    // Command to back up the database
+    // Step 4: Command to back up the database
     const mongodumpCmd = `mongodump --uri="${mongoUri}" --archive="${backupFilePath}" --gzip`;
 
     // Execute the backup command
@@ -60,12 +106,9 @@ export const backupDatabase = async () => {
     }
     console.log(`Backup successful: ${stdout}`);
 
-    // Upload the backup file to S3
+    // Step 5: Upload the new backup file to S3
     await uploadToS3(backupFilePath, `backup-${timestamp}.gz`);
   } catch (error) {
     console.error(`Backup failed: ${error.message}`);
   }
 };
-
-// Trigger the backup process
-// backupDatabase();
