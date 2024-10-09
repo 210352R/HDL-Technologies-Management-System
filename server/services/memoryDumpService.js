@@ -3,8 +3,13 @@ import fs from "fs";
 import path from "path";
 import { exec } from "child_process";
 import { promisify } from "util";
+import { fileURLToPath } from "url"; // Add this
 
 const execAsync = promisify(exec);
+
+// Define __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url); // Add this
+const __dirname = path.dirname(__filename); // Add this
 
 // Initialize S3
 const s3 = new AWS.S3({
@@ -18,13 +23,13 @@ const uploadToS3 = async (filePath, fileName) => {
   try {
     const fileStream = fs.createReadStream(filePath);
     const uploadParams = {
-      Bucket: "hdl-bucket-user ", // Replace with your actual bucket name
+      Bucket: "hdl-mongo-backup", // Replace with your actual bucket name
       Key: fileName,
       Body: fileStream,
     };
 
     const data = await s3.upload(uploadParams).promise();
-    console.log(`File uploaded to aws s3 successfully: ${data.Location}`);
+    console.log(`File uploaded to AWS S3 successfully: ${data.Location}`);
   } catch (err) {
     console.error(`Upload failed: ${err.message}`);
   }
@@ -62,5 +67,5 @@ export const backupDatabase = async () => {
   }
 };
 
-// // Trigger the backup process
+// Trigger the backup process
 // backupDatabase();

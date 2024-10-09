@@ -25,6 +25,7 @@ import {
   sendOverdueBillEmail,
   updateBillStatusToOverdue,
 } from "./services/billService.js";
+import { backupDatabase } from "./services/memoryDumpService.js";
 
 // create express app ---
 const app = express();
@@ -73,6 +74,17 @@ app.post("/user", async (req, res) => {
 app.use("/bill", bill_router);
 app.use("/qr", qr_router);
 app.use("/lap", lap_router);
+
+console.log("Call method backup database ------------------------------- ");
+
+// call async backup method
+backupDatabase()
+  .then(() => {
+    console.log("Backup successful");
+  })
+  .catch((error) => {
+    console.error("Backup failed:", error);
+  });
 
 // set cron job for trigger every day ------------
 
