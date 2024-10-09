@@ -3,19 +3,16 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  FlatList,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from "react-native";
 
 import { useAuth } from "../../context/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCameraPermissions } from "expo-camera";
 import { LineChart } from "react-native-chart-kit";
 import CategoryButtons from "./CategoryButtons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-// Adjust the path based on your project structure
 
 const HomeScreen = ({ navigation }) => {
   const { userLoggedIn } = useAuth();
@@ -23,13 +20,6 @@ const HomeScreen = ({ navigation }) => {
   const isPermissionGranted = Boolean(permission?.granted); // Check if permission is granted
 
   const [dropdownVisible, setDropdownVisible] = useState(false); // State for dropdown visibility
-
-  // const logOutHandler = async () => {
-  //   await doSignOut();
-  //   await removeData("email");
-  //   console.log("User signed out ------------------ ");
-  //   navigation.replace("Login"); // Redirect to login page
-  // };
 
   // Sample data for the chart
   const chartData = {
@@ -42,52 +32,57 @@ const HomeScreen = ({ navigation }) => {
     ],
   };
 
-  const orders = [
+  const overDueBills = [
     {
-      id: "1",
-      title: "Daniel Wellington Classic",
-      amount: "$149.21",
-      date: "Aug 11",
+      billID : "1",
+      laptopBrand : "Apple",
+      laptopModel : "MacBook Pro 2021",
+      announceDate : "2021-08-05",
+      handoverDate : "2021-08-10",
+
     },
     {
-      id: "2",
-      title: "Skater Dress",
-      amount: "$149.21",
-      date: "Aug 11",
+      billID : "2",
+      laptopBrand : "Apple",
+      laptopModel : "iPad Pro 2021",
+      announceDate : "2021-08-05",
+      handoverDate : "2021-08-10",
     },
     {
-      id: "3",
-      title: "Daniel Wellington Classic",
-      amount: "$149.21",
-      date: "Aug 11",
+      billID : "3",
+      laptopBrand : "Apple",
+      laptopModel : "MacBook Air 2021",
+      announceDate : "2021-08-05",
+      handoverDate : "2021-08-10",
     },
-    {
-      id: "4",
-      title: "Apple AirPods Pro",
-      amount: "$249.99",
-      date: "Aug 12",
-    },
-    {
-      id: "5",
-      title: "Sony WH-1000XM4",
-      amount: "$348.00",
-      date: "Aug 13",
-    },
-    {
-      id: "6",
-      title: "Samsung Galaxy S21",
-      amount: "$799.99",
-      date: "Aug 14",
-    },
+   
   ];
 
-  const removeData = async (key) => {
-    try {
-      await AsyncStorage.removeItem(key);
-    } catch (error) {
-      console.log("Error removing data:", error);
+  const recentBills = [
+    {
+      billID : "4",
+      laptopBrand : "Apple",
+      laptopModel : "MacBook Pro 2021",
+      announceDate : "2021-08-05",
+      handoverDate : "2021-08-10",
+
+    },
+    {
+      billID : "5",
+      laptopBrand : "Apple",
+      laptopModel : "iPad Pro 2021",
+      announceDate : "2021-08-05",
+      handoverDate : "2021-08-10",
+    },
+    {
+      billID : "6",
+      laptopBrand : "Apple",
+      laptopModel : "MacBook Air 2021",
+      announceDate : "2021-08-05",
+      handoverDate : "202",
     }
-  };
+    
+  ];
 
   const handleQrScan = async () => {
     if (isPermissionGranted) {
@@ -101,28 +96,86 @@ const HomeScreen = ({ navigation }) => {
     setDropdownVisible((prev) => !prev);
   };
 
+
+  //render recent bill item
+  const renderRecentBillItem = ({ item }) => (
+    <View style={styles.recentBillItem}>
+      <View style = {styles.leftDiv}>
+      <Text style={styles.recentBillTitle}>{item.billID}</Text>
+      <Text style={styles.recentBillContent}>{item.laptopBrand}</Text>
+      <Text style={styles.recentBillContent}>{item.laptopModel}</Text>
+      </View>
+
+      <View style = {styles.rightDiv}>
+      <Text style={styles.recentBillContent}>Announce Date</Text>
+      <Text style={styles.recentBillContent}>{item.announceDate}</Text>
+      <Text style={styles.recentBillContent}>Handover Date</Text>
+      <Text style={styles.recentBillContent}>{item.handoverDate}</Text>
+      </View>
+      <View>
+      <TouchableOpacity>
+        {/*right arrow*/}
+        <MaterialIcons
+          name="keyboard-arrow-right"
+          size={28}
+          
+          style={styles.qrIcon}
+        />
+      </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+
+  //render bill item
+  const renderBillItem = ({ item }) => (
+    <View style={styles.billItem}>
+      <View style = {styles.leftDiv}>
+      <Text style={styles.billTitle}>{item.billID}</Text>
+      <Text style={styles.billContent}>{item.laptopBrand}</Text>
+      <Text style={styles.billContent}>{item.laptopModel}</Text>
+      </View>
+      <View style = {styles.rightDiv}>
+      <Text style={styles.billContent}>Announce Date</Text>
+      <Text style={styles.billContent}>{item.announceDate}</Text>
+      <Text style={styles.billContent}>Handover Date</Text>
+      <Text style={styles.billContent}>{item.handoverDate}</Text>
+      </View>
+      <View>
+      <TouchableOpacity>
+        {/*right arrow*/}
+        <MaterialIcons
+          name="keyboard-arrow-right"
+          size={28}
+          color="#fff"
+          style={styles.qrIcon}
+        />
+      </TouchableOpacity>
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View>
-          <CategoryButtons />
+          <CategoryButtons  />
         </View>
+
         {/* Line Chart */}
         <Text style={styles.chartTitle}>Overview</Text>
         <LineChart
           data={chartData}
-          width={350} // from react-native
+          width={350}
           height={220}
           chartConfig={{
             backgroundColor: "#fff",
             backgroundGradientFrom: "#fff",
             backgroundGradientTo: "#fff",
-            decimalPlaces: 0, // optional, defaults to 2dp
+            decimalPlaces: 0,
             color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
+            style: { borderRadius: 16 },
             propsForDots: {
               r: "3",
               strokeWidth: "2",
@@ -148,20 +201,24 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Recent Orders Section */}
-        <Text style={styles.recentOrdersTitle}>Recent Orders</Text>
+        {/* Overdue Bills */}
+        { overDueBills  ? <Text style={styles.sectionTitle}>Overdue Bills</Text> : <Text style={styles.sectionTitle}>No Overdue Bills</Text>}
+        {overDueBills &&
         <FlatList
-          style={styles.recentOrdersList}
-          data={orders}
+          data={overDueBills}
+          renderItem={renderBillItem} 
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.orderItem}>
-              <Text>{item.title}</Text>
-              <Text>{item.amount}</Text>
-              <Text>{item.date}</Text>
-            </View>
-          )}
-          nestedScrollEnabled={true} // Enables nested scrolling
+          style={styles.billList}
+        />
+    }
+
+        {/* Recent Bills */}
+        <Text style={styles.sectionTitle}>Recent Bills</Text>
+        <FlatList
+          data={recentBills}
+          renderItem={renderRecentBillItem}
+          keyExtractor={(item) => item.id}
+          style={styles.billList}
         />
       </ScrollView>
 
@@ -182,6 +239,24 @@ const HomeScreen = ({ navigation }) => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  recentBillItem: {
+    padding: 10,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+    marginVertical: 5,
+    elevation: 4,
+
+    display: "flex",
+    flexDirection: "row",
+    borderRadius: 10,
+    borderColor : "#921A40",
+    borderWidth : 2,
+  },
+  billContent   : {
+    color : "#fff",
+    fontSize : 12,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -190,6 +265,13 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
   },
+  leftDiv: {
+    flex: 1,
+  },
+  rightDiv: {
+    flex: 1,
+  },
+
   chartTitle: {
     fontSize: 20,
     marginVertical: 10,
@@ -212,18 +294,44 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  recentOrdersList: {
-    marginBottom: 80,
-  },
-  recentOrdersTitle: {
+  sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginVertical: 10,
   },
-  orderItem: {
+  billList: {
+    marginBottom: 20,
+  },
+  billItem: {
     padding: 10,
+    backgroundColor: "#C75B7A",
     borderBottomWidth: 1,
     borderColor: "#ddd",
+    marginVertical: 5,
+    display: "flex",
+    flexDirection: "row",
+    borderRadius: 10,
+    borderColor : "#921A40",
+    borderWidth : 2,
+    
+    
+  },
+
+  recentBillTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+
+  },
+  recentBillContent: {
+
+    fontSize : 12,
+  },
+
+
+  billTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
   },
   qrButton: {
     flexDirection: "row",
@@ -231,19 +339,19 @@ const styles = StyleSheet.create({
     bottom: 20,
     width: "90%",
     justifyContent: "center",
-    backgroundColor: "#4C56AFFF", // Button background color
-    paddingVertical: 10, // Vertical padding
-    paddingHorizontal: 20, // Horizontal padding
-    borderRadius: 5, // Rounded corners
-    alignItems: "center", // Center the text
-    marginHorizontal: 20, // Space around the button
+    backgroundColor: "#4C56AFFF",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: "center",
+    marginHorizontal: 20,
   },
   qrButtonText: {
-    color: "#fff", // White text color
-    fontSize: 18, // Font size
-    fontWeight: "bold", // Bold text
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
   qrIcon: {
-    marginRight: 20, // Optional: Adjust if necessary
+    marginRight: 10,
   },
 });

@@ -7,9 +7,10 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Change to any icon set you prefer
+import { useNavigation } from "@react-navigation/native";
 
 const categories = [
-  { name: "Analytics", icon: "bar-chart", color: "#3F51B5" },
+  { name: "Bills", icon: "file-text", color: "#E91E63" },
   { name: "Customers", icon: "home", color: "#FF9800" },
   { name: "Orders", icon: "file-text", color: "#E91E63" },
   { name: "Tasks", icon: "tasks", color: "#4CAF50" },
@@ -17,6 +18,11 @@ const categories = [
 ];
 
 const CategoryButtons = () => {
+  const navigation = useNavigation(); // Use the useNavigation hook to get the navigation object
+  const handleNavigation = (category) => {
+    navigation.navigate(category.name);
+  };
+
   return (
     <ScrollView
       horizontal
@@ -27,6 +33,7 @@ const CategoryButtons = () => {
         <TouchableOpacity
           key={index}
           style={[styles.button, { borderColor: category.color }]}
+          onPress={() => handleNavigation(category)}  // Updated this line
         >
           <Icon name={category.icon} size={30} color={category.color} />
           <Text style={styles.buttonText}>{category.name}</Text>

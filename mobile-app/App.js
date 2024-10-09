@@ -16,6 +16,7 @@ import SettingScreen from "./screens/settings/SettingScreen";
 import AddNewBill from "./screens/bill/AddNewBill";
 import ProfileScreen from "./screens/profile/ProfileScreen";
 import AddExtBillForm from "./screens/bill/AddExcistingBill";
+import Bills from "./screens/bills/bills";
 
 const Stack = createNativeStackNavigator();
 // Create the navigators
@@ -136,7 +137,13 @@ export default function App() {
             component={AddExtBillForm}
             options={{ headerShown: false }}
           />
+           <Stack.Screen
+         name = "Bills"
+         component  = {Bills}
+          options = {{headerShown: true}}
+        />
         </Stack.Navigator>
+       
       </NavigationContainer>
     </AuthProvider>
   );
