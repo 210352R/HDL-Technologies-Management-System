@@ -92,40 +92,34 @@ const downloadFromS3 = async (fileName, downloadPath) => {
 
 // Function to back up the MongoDB database
 export const backupDatabase = async () => {
-  try {
-    const backupDir = path.join(__dirname, "backups");
-    const timestamp = new Date().toISOString().split("T")[0];
-    const backupFilePath = path.join(backupDir, `backup-${timestamp}.gz`);
+  const backupDir = path.join(__dirname, "backups");
+  const timestamp = new Date().toISOString().split("T")[0];
+  const backupFilePath = path.join(backupDir, `backup-${timestamp}.gz`);
 
-    // Ensure backup directory exists
-    if (!fs.existsSync(backupDir)) {
-      fs.mkdirSync(backupDir, { recursive: true });
-    }
-
-    // Step 1: Clear local backup folder
-    clearLocalBackups(backupDir);
-
-    // Step 2: Clear existing backups in the S3 bucket
-    await clearS3Backups("hdl-mongo-backup");
-
-    // Step 3: MongoDB URI (use environment variables for security)
-    const mongoUri = process.env.DATABASE_URL;
-
-    // Step 4: Command to back up the database
-    const mongodumpCmd = `mongodump --uri="${mongoUri}" --archive="${backupFilePath}" --gzip`;
-
-    // Execute the backup command
-    const { stdout, stderr } = await execAsync(mongodumpCmd);
-    if (stderr) {
-      console.error(`Backup error: ${stderr}`);
-    }
-    console.log(`Backup successful: ${stdout}`);
-
-    // Step 5: Upload the new backup file to S3
-    await uploadToS3(backupFilePath, `backup-${timestamp}.gz`);
-  } catch (error) {
-    console.error(`Backup failed: ${error.message}`);
+  // Ensure backup directory exists
+  if (!fs.existsSync(backupDir)) {
+    fs.mkdirSync(backupDir, { recursive: true });
   }
+
+  // Step 1: Clear local backup folder
+  clearLocalBackups(backupDir);
+
+  // Step 2: Clear existing backups in the S3 bucket
+  await clearS3Backups("hdl-mongo-backup");
+
+  // Step 3: MongoDB URI (use environment variables for security)
+  const mongoUri = process.env.DATABASE_URL;
+
+  // Step 4: Command to back up the database
+  const mongodumpCmd = `mongodump --uri="${mongoUri}" --archive="${backupFilePath}" --gzip`;
+
+  // Execute the backup command
+  const { stdout, stderr } = await execAsync(mongodumpCmd);
+  if (stderr) {
+    console.error(`Backup error: ${stderr}`);
+  }
+  // Step 5: Upload the new backup file to S3
+  await uploadToS3(backupFilePath, `backup-${timestamp}.gz`);
 };
 
 // Function to restore the MongoDB database
