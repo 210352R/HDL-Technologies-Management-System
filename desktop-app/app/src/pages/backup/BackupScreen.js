@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FiDownload, FiFileText } from "react-icons/fi"; // Importing icons
 
 const BackupScreen = () => {
   const [files, setFiles] = useState([]);
@@ -8,9 +9,9 @@ const BackupScreen = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/files")
+      .get("http://localhost:8000/db/getDetails")
       .then((response) => {
-        setFiles(response.data);
+        setFiles(response.data.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -18,6 +19,7 @@ const BackupScreen = () => {
         setLoading(false);
       });
   }, []);
+  console.log("files : ", files);
 
   if (loading) {
     return (
@@ -37,7 +39,9 @@ const BackupScreen = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-semibold text-center mb-6">S3 File List</h2>
+      <h2 className="text-2xl font-semibold text-center mb-6">
+        - Memory Backup -
+      </h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
           <thead className="bg-gray-50 border-b">
@@ -59,7 +63,9 @@ const BackupScreen = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {files.map((file) => (
               <tr key={file.key}>
-                <td className="py-2 px-4 text-sm text-gray-700">{file.key}</td>
+                <td className="py-2 px-4 text-sm text-gray-700 flex items-center">
+                  <FiFileText className="mr-2 text-gray-500" /> {file.key}
+                </td>
                 <td className="py-2 px-4 text-sm text-gray-700">{file.size}</td>
                 <td className="py-2 px-4 text-sm text-gray-700">
                   {new Date(file.lastModified).toLocaleString()}
@@ -69,9 +75,9 @@ const BackupScreen = () => {
                     href={file.downloadUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="flex items-center text-indigo-600 hover:text-indigo-900"
                   >
-                    Download
+                    <FiDownload className="mr-2" /> Download
                   </a>
                 </td>
               </tr>
