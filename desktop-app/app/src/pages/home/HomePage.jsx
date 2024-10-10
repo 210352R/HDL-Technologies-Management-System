@@ -80,7 +80,7 @@ const HomePage = () => {
                 Bills
               </Link>
               <Link
-                to="/admin/users"
+                to="/users"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
                 <FaUsers className="mr-2" /> {/* Icon for Users */}

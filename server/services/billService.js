@@ -177,7 +177,7 @@ export const updateBillStatusToOverdue = async () => {
           id: bill.id,
         },
         data: {
-          status: "Delayed",
+          status: "Overdue",
         },
       });
     } else if (!bill.handover_date && bill.announce_date < new Date()) {
@@ -187,7 +187,7 @@ export const updateBillStatusToOverdue = async () => {
           id: bill.id,
         },
         data: {
-          status: "Delayed",
+          status: "Overdue",
         },
       });
     }
@@ -198,7 +198,7 @@ export const updateBillStatusToOverdue = async () => {
 export const getOverdueBills = async () => {
   const bills = await prisma.bill.findMany({
     where: {
-      status: "Delayed",
+      status: "Overdue",
     },
   });
 
@@ -219,7 +219,10 @@ export const getOverdueBills = async () => {
 // send email to the admin overdue bills
 export const sendOverdueBillEmail = async (mail) => {
   const overdueBills = await getOverdueBills();
-  sendOverdueEmailNotification(overdueBills, mail);
+
+  if (overdueBills && overdueBills.length > 0) {
+    sendOverdueEmailNotification(overdueBills, mail);
+  }
 };
 
 // Get All bill details with lap details  corresponding to it

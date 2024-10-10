@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaUser } from "react-icons/fa"; // Import user icon from react-icons
+import { FaUser, FaSearch } from "react-icons/fa"; // Import user and search icons from react-icons
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch users using Axios
   useEffect(() => {
@@ -20,41 +21,67 @@ const UserList = () => {
     fetchUsers();
   }, []);
 
+  // Filter users based on search term
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
       <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">
         User Management
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {users.length === 0 ? (
+      {/* Search Box */}
+      <div className="mb-6 flex items-center">
+        <FaSearch className="text-gray-500 dark:text-gray-300 mr-2" />
+        <input
+          type="text"
+          placeholder="Search users by name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white flex-grow"
+        />
+      </div>
+
+      {/* Table for User List */}
+      <div className="max-w-3xl mx-auto overflow-x-auto">
+        {filteredUsers.length === 0 ? (
           <p className="text-center text-gray-700 dark:text-gray-300">
             No users found.
           </p>
         ) : (
-          users.map((user) => (
-            <div
-              key={user.id}
-              className="bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-6 flex items-start space-x-4"
-            >
-              {/* Person Icon */}
-              <div className="bg-blue-500 rounded-full p-3">
-                <FaUser className="text-white text-xl" />
-              </div>
-
-              {/* User Details */}
-              <div>
-                <h2 className="text-xl font-semibold mb-2">{user.name}</h2>
-                <p className="text-gray-700 dark:text-gray-300">
-                  <strong>Phone:</strong> {user.phone}
-                </p>
-                <p className="text-gray-700 dark:text-gray-300">
-                  <strong>Address:</strong>{" "}
-                  {user.address || "No address provided"}
-                </p>
-              </div>
-            </div>
-          ))
+          <table className="min-w-full bg-white dark:bg-gray-800 shadow-md rounded-lg">
+            <thead>
+              <tr className="bg-gray-200 dark:bg-gray-700">
+                <th className="py-2 px-4 text-left text-gray-700 dark:text-gray-300">
+                  User
+                </th>
+                <th className="py-2 px-4 text-left text-gray-700 dark:text-gray-300">
+                  Phone
+                </th>
+                <th className="py-2 px-4 text-left text-gray-700 dark:text-gray-300">
+                  Address
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr key={user.id} className="border-b dark:border-gray-600">
+                  <td className="py-4 px-4 flex items-center space-x-2">
+                    <div className="bg-blue-500 rounded-full p-2">
+                      <FaUser className="text-white text-lg" />
+                    </div>
+                    <span className="dark:text-white">{user.name}</span>
+                  </td>
+                  <td className="py-4 px-4 dark:text-white">{user.phone}</td>
+                  <td className="py-4 px-4 dark:text-white">
+                    {user.address || "No address provided"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
     </div>
