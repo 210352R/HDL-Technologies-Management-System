@@ -145,7 +145,7 @@ const restoreDatabase = async (dumpFilePath) => {
 // Function to trigger a restore from S3
 export const restoreFromS3 = async (fileName) => {
   try {
-    const backupDir = path.join(__dirname, "backups");
+    const backupDir = path.join(__dirname, "downloads");
     const dumpFilePath = path.join(backupDir, fileName); // Path to save the downloaded file
 
     // Step 1: Download the dump file from S3
@@ -156,4 +156,27 @@ export const restoreFromS3 = async (fileName) => {
   } catch (error) {
     console.error(`Restore process failed: ${error.message}`);
   }
+};
+
+// Function to generate a pre-signed URL for downloading the file
+const getPresignedUrl = (bucketName, key) => {
+  const params = {
+    Bucket: bucketName,
+    Key: key,
+    Expires: 60 * 60, // URL valid for 1 hour
+  };
+  return s3.getSignedUrl("getObject", params); // Generate pre-signed URL
+};
+
+const getFileDetails = async () => {
+  const bucketName = "hdl-mongo-backup";
+  const data = await s3.listObjectsV2({ Bucket: bucketName }).promise();
+
+  // Extract relevant file details and generate pre-signed URLs
+  const fileDetails = data.Contents.map((file) => ({
+    key: file.Key,
+    size: file.Size,
+    lastModified: file.LastModified,
+    downloadUrl: getPresignedUrl(bucketName, file.Key), // Generate the pre-signed URL
+  }));
 };
