@@ -17,6 +17,7 @@ import {
 import AddBillForm from "./pages/services/bill/NewBillPage";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import BackupScreen from "./pages/backup/BackupScreen";
+import BillList from "./pages/bills/DispalyAllBills";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/admin/newbill" element={<AddBillForm />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/memory-backup" element={<BackupScreen />} />
+            <Route path="/all-bills" element={<BillList />} />
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </Router>

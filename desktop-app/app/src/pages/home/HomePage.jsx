@@ -68,6 +68,12 @@ const HomePage = () => {
                 New Bill
               </Link>
               <Link
+                to="/all-bills"
+                className="block hover:bg-gray-700 px-4 py-2 rounded"
+              >
+                Bills
+              </Link>
+              <Link
                 to="/admin/users"
                 className="block hover:bg-gray-700 px-4 py-2 rounded"
               >
