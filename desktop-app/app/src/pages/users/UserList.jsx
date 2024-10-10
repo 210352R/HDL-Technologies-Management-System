@@ -10,7 +10,7 @@ const UserList = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/users/all-users"
+          "http://localhost:8000/users/get-all-users"
         ); // Replace with your API endpoint
         setUsers(response.data.users);
       } catch (error) {

@@ -27,6 +27,8 @@ import {
 } from "./services/billService.js";
 
 import { db_router } from "./controllers/db_controller.js";
+import { userInfo } from "os";
+import { user_router } from "./controllers/user_controller.js";
 
 // create express app ---
 const app = express();
@@ -79,6 +81,7 @@ app.post("/user", async (req, res) => {
 app.use("/bill", bill_router);
 app.use("/qr", qr_router);
 app.use("/lap", lap_router);
+app.use("/users", user_router);
 app.use("/db", db_router);
 
 // set cron job for trigger every day ------------

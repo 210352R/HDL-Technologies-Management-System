@@ -13,3 +13,9 @@ export const createUser = async (user) => {
 
   return newUser.id;
 };
+
+// create methos for get all users
+export const getAllUsers = async () => {
+  const users = await prisma.user.findMany();
+  return users;
+};
