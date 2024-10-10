@@ -130,7 +130,7 @@ const BillList = () => {
 
         {/* Popup for bill details */}
         {isPopupOpen && selectedBill && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80">
             <div className="bg-white dark:bg-gray-800 dark:text-white rounded-lg p-6 w-11/12 md:w-1/2 lg:w-1/3">
               <h2 className="text-xl font-semibold mb-4">
                 Bill Details for ID: {selectedBill.billId}
