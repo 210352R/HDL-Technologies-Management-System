@@ -159,24 +159,32 @@ export const getNearestBill = async () => {
 export const updateBillStatusToOverdue = async () => {
   // get all bills
   const bills = await prisma.bill.findMany();
-  // loop through all bills
-  for (let i = 0; i < bills.length; i++) {
+
+  // filter out bills where status is either 'Completed' or 'Cancelled'
+  const filteredBills = bills.filter(
+    (bill) => bill.status !== "Completed" && bill.status !== "Cancelled"
+  );
+
+  // loop through filtered bills
+  for (let i = 0; i < filteredBills.length; i++) {
+    const bill = filteredBills[i];
+
     // check if handover_date is less than today
-    if (bills[i].handover_date < new Date()) {
+    if (bill.handover_date < new Date()) {
       // update status to "Overdue"
       await prisma.bill.update({
         where: {
-          id: bills[i].id,
+          id: bill.id,
         },
         data: {
           status: "Delayed",
         },
       });
-    } else if (!bills[i].handover_date && bills[i].announce_date < new Date()) {
+    } else if (!bill.handover_date && bill.announce_date < new Date()) {
       // update status to "Overdue"
       await prisma.bill.update({
         where: {
-          id: bills[i].id,
+          id: bill.id,
         },
         data: {
           status: "Delayed",
