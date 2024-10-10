@@ -5,6 +5,8 @@ import Navbar from "../../components/navbar/Navbar";
 const BillList = () => {
   const [bills, setBills] = useState([]);
   const [filter, setFilter] = useState("All"); // State to manage the current filter
+  const [selectedBill, setSelectedBill] = useState(null); // State to manage selected bill
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // State to manage popup visibility
 
   // Fetch bills using Axios
   useEffect(() => {
@@ -22,12 +24,31 @@ const BillList = () => {
     fetchBills();
   }, []);
 
+  // Fetch bill details using Axios
+  const fetchBillDetails = async (billId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/bill/get-bill-details/${billId}` // Replace with your API endpoint
+      );
+      console.log("Fetched bill details:", response.data.bill); // Debugging log
+      setSelectedBill(response.data.bill); // Set the selected bill's details
+      setIsPopupOpen(true); // Open the popup
+    } catch (error) {
+      console.error("Error fetching bill details:", error);
+    }
+  };
+
   // Filter bills based on selected status
   const filteredBills = bills.filter((bill) => {
     if (filter === "All") return true;
-    // Normalize status comparison to be case-insensitive
     return bill.status.toLowerCase() === filter.toLowerCase();
   });
+
+  // Close the popup
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedBill(null);
+  };
 
   return (
     <>
@@ -45,7 +66,7 @@ const BillList = () => {
             "Cancelled",
             "Pending",
             "In Progress",
-            "Overdue", // Added Overdue button
+            "Overdue",
           ].map((status) => (
             <button
               key={status}
@@ -70,8 +91,9 @@ const BillList = () => {
           ) : (
             filteredBills.map((bill) => (
               <div
-                key={bill.billId} // Use camelCase for key prop
-                className="bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-6"
+                key={bill.billId}
+                className="bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-6 cursor-pointer" // Add cursor pointer
+                onClick={() => fetchBillDetails(bill.billId)} // Fetch details on click
               >
                 <h2 className="text-xl font-semibold mb-2">
                   Bill ID: {bill.billId}
@@ -105,6 +127,42 @@ const BillList = () => {
             ))
           )}
         </div>
+
+        {/* Popup for bill details */}
+        {isPopupOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white dark:bg-gray-800 dark:text-white rounded-lg p-6 w-11/12 md:w-1/2 lg:w-1/3">
+              <h2 className="text-xl font-semibold mb-4">
+                Bill Details for ID: {selectedBill?.billId}
+              </h2>
+              <p>
+                <strong>Lap Brand:</strong> {selectedBill?.lap.lap_brand}
+              </p>
+              <p>
+                <strong>Lap Model:</strong> {selectedBill?.lap.lap_model}
+              </p>
+              <p>
+                <strong>Issue:</strong> {selectedBill?.issue}
+              </p>
+              <p>
+                <strong>Status:</strong> {selectedBill?.status}
+              </p>
+              <p>
+                <strong>Announce Date:</strong> {selectedBill?.announce_date}
+              </p>
+              <p>
+                <strong>Handover Date:</strong>{" "}
+                {selectedBill?.handover_date || "Pending"}
+              </p>
+              <button
+                onClick={closePopup}
+                className="mt-4 bg-blue-500 text-white rounded px-4 py-2"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
