@@ -168,3 +168,15 @@ bill_router.get("/get-recent-bills", async (req, res) => {
     res.status(400).json({ error: "Recent bills could not be fetched" });
   }
 });
+
+// add put route for make status as Completed
+bill_router.put("/make-status-cancalled", async (req, res) => {
+  const { billId } = req.body;
+  try {
+    const updatedBill = await updateBillStatus(billId, "Cancalled");
+    res.status(200).json({ bill: updatedBill });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Status could not be updated" });
+  }
+});
