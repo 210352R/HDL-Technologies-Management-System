@@ -16,6 +16,7 @@ import {
 } from "@firebase/auth";
 import AddBillForm from "./pages/services/bill/NewBillPage";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import BackupScreen from "./pages/backup/BackupScreen";
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
             <Route path="/home" element={<HomePage />} />
             <Route path="/admin/newbill" element={<AddBillForm />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/memory-backup" element={<BackupScreen />} />
+            <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </Router>
       </AuthProvider>
