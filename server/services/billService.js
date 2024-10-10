@@ -245,3 +245,30 @@ export const getAllBillDetailsWithLaps = async () => {
   }
   return bills;
 };
+
+// Get all details of a bill by bill ID and map user details
+export const getBillDetails = async (billId) => {
+  const bill = await prisma.bill.findUnique({
+    where: {
+      billId: billId,
+    },
+  });
+
+  if (!bill) {
+    throw new Error("Bill not found");
+  }
+
+  const lap = await getLapDetails(bill.lapId);
+  const user = await prisma.user.findUnique({
+    where: {
+      id: bill.userId,
+    },
+  });
+
+  // Add lap and user details to the bill object
+  return {
+    ...bill,
+    lap,
+    user,
+  };
+};
