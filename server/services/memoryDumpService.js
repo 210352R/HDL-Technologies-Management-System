@@ -168,7 +168,7 @@ const getPresignedUrl = (bucketName, key) => {
   return s3.getSignedUrl("getObject", params); // Generate pre-signed URL
 };
 
-const getFileDetails = async () => {
+export const getFileDetails = async () => {
   const bucketName = "hdl-mongo-backup";
   const data = await s3.listObjectsV2({ Bucket: bucketName }).promise();
 
@@ -179,4 +179,5 @@ const getFileDetails = async () => {
     lastModified: file.LastModified,
     downloadUrl: getPresignedUrl(bucketName, file.Key), // Generate the pre-signed URL
   }));
+  return fileDetails;
 };
