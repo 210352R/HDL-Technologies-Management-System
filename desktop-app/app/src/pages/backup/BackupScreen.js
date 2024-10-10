@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FiDownload, FiFileText } from "react-icons/fi"; // Importing icons
+import Navbar from "../../components/navbar/Navbar";
+import { ClipLoader } from "react-spinners";
 
 const BackupScreen = () => {
   const [files, setFiles] = useState([]);
@@ -23,22 +25,30 @@ const BackupScreen = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <span className="text-gray-700 text-lg">Loading...</span>
-      </div>
+      <>
+        <Navbar />
+        <div className="flex justify-center items-center h-screen">
+          <ClipLoader color="#4A90E2" loading={loading} size={50} />
+          <span className="ml-4 text-gray-700 text-lg">Loading...</span>
+        </div>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <span className="text-red-500 text-lg">{error}</span>
-      </div>
+      <>
+        <Navbar />
+        <div className="flex justify-center items-center h-screen">
+          <span className="text-red-500 text-lg">{error}</span>
+        </div>
+      </>
     );
   }
 
   return (
     <div className="container mx-auto p-6">
+      <Navbar />
       <h2 className="text-2xl font-semibold text-center mb-6">
         - Memory Backup -
       </h2>

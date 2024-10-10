@@ -81,7 +81,7 @@ const AddBillForm = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Navbar /> {/* Include Navbar here */}
+      <Navbar />
       {!isSetQr ? (
         <div className="flex justify-center items-center mt-5">
           <form
