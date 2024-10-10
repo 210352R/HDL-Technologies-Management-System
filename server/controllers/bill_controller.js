@@ -5,6 +5,7 @@ import {
   createNewBill,
   getAllBillDetailsWithLaps,
   getAllBills,
+  getBillDetailsById,
   getNearestBill,
   updateBillAnnounceDate,
   updateBillHandoverDate,
@@ -178,5 +179,17 @@ bill_router.put("/make-status-cancalled", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Status could not be updated" });
+  }
+});
+
+// add get rout for get all bills by billId
+bill_router.get("/get-bill-by-id/:billId", async (req, res) => {
+  const { billId } = req.params;
+  try {
+    const bill = await getBillDetailsById(billId);
+    res.status(200).json({ bill: bill });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bill could not be fetched" });
   }
 });

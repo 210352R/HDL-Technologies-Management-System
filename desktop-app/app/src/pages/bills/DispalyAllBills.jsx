@@ -28,7 +28,7 @@ const BillList = () => {
   const fetchBillDetails = async (billId) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/bill/get-bill-details/${billId}` // Replace with your API endpoint
+        `http://localhost:8000/bill/get-bill-by-id/${billId}` // Replace with your API endpoint
       );
       console.log("Fetched bill details:", response.data.bill); // Debugging log
       setSelectedBill(response.data.bill); // Set the selected bill's details
@@ -93,7 +93,7 @@ const BillList = () => {
               <div
                 key={bill.billId}
                 className="bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-6 cursor-pointer" // Add cursor pointer
-                onClick={() => fetchBillDetails(bill.billId)} // Fetch details on click
+                onClick={() => fetchBillDetails(bill.id)} // Fetch details on click
               >
                 <h2 className="text-xl font-semibold mb-2">
                   Bill ID: {bill.billId}
