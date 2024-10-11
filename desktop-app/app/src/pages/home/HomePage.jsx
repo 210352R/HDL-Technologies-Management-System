@@ -130,7 +130,7 @@ const HomePage = () => {
                 to="/memory-backup"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaCloudUploadAlt className="mr-2 font-xl" /> Backup
+                <FaCloudUploadAlt className="mr-2" /> Backup
               </Link>
               <button
                 onClick={logOutHandler}
