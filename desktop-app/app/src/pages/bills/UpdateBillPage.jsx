@@ -24,7 +24,7 @@ const SubmitBillPage = () => {
     try {
       // Call the API to get bill details
       const response = await axios.get(
-        `localhost:8000/bill/get-bill-by-bill-id/${billId}`
+        `http://localhost:8000/bill/get-bill-by-bill-id/${billId}`
       );
       setBillDetails(response.data.bill);
       setMessage(`Bill ID ${billId} submitted successfully!`);
