@@ -1,58 +1,96 @@
-// src/pages/Dashboard.js
-
 import React, { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { doSignOut } from "../../firebase/auth";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"; // Import both arrow icons
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
   FaChartBar,
   FaFileInvoice,
   FaUsers,
   FaCog,
   FaCloudUploadAlt,
-} from "react-icons/fa"; // Import suitable icons from react-icons
+} from "react-icons/fa";
 import { io } from "socket.io-client";
+import { Line, Bar } from "react-chartjs-2";
+import Chart from "chart.js/auto"; // Required for react-chartjs-2 to work
 
 const HomePage = () => {
-  const navigate = useNavigate(); // useNavigate hook for navigation
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to toggle sidebar
-  const [isDarkMode, setIsDarkMode] = useState(true); // State to toggle dark mode
-  const [notification, setNotification] = useState(""); // State for notifications
+  const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [notification, setNotification] = useState("");
+  const [bills, setBills] = useState([]); // State for bills list
+  const [metrics, setMetrics] = useState({
+    totalRevenue: 0,
+    totalBills: 0,
+    pendingBills: 0,
+  }); // Dummy state for cards data
 
   const socket = io("http://localhost:8000");
 
   useEffect(() => {
-    console.log("useEffect work ****** connected ------------------ ");
+    // Example to simulate metrics from API call
+    setMetrics({
+      totalRevenue: 50000,
+      totalBills: 100,
+      pendingBills: 5,
+    });
+
+    // Simulate bills data from API call
+    setBills([
+      { id: 1, customer: "John Doe", amount: 1500, status: "Paid" },
+      { id: 2, customer: "Jane Smith", amount: 2000, status: "Pending" },
+      { id: 3, customer: "Michael Lee", amount: 1800, status: "Paid" },
+    ]);
+
     socket.on("message", (data) => {
-      console.log("Notify user ------------ ");
       setNotification(data);
       Notification.requestPermission().then((result) => {
         if (result === "granted") {
-          new Notification("Notification", { body: notification });
+          new Notification("Notification", { body: data });
         }
       });
-      console.log("Message received from server:", data);
     });
 
-    // Cleanup socket connection on component unmount
     return () => {
       socket.disconnect();
     };
-  }, [socket]); // Ensure useEffect runs on socket change
+  }, []);
 
   const logOutHandler = async () => {
     await doSignOut();
-    console.log("User signed out ------------------ ");
-    navigate("/"); // Redirect to login page
+    navigate("/");
   };
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Toggle Sidebar
-  const toggleDarkMode = () => setIsDarkMode(!isDarkMode); // Toggle Dark Mode
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
+
+  // Chart data
+  const salesData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Monthly Sales",
+        data: [1200, 1900, 3000, 5000, 2000, 3000],
+        borderColor: "rgb(75, 192, 192)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+      },
+    ],
+  };
+
+  const billsData = {
+    labels: ["Paid", "Pending", "Overdue"],
+    datasets: [
+      {
+        label: "Bills Status",
+        data: [60, 30, 10],
+        backgroundColor: ["#4caf50", "#ff9800", "#f44336"],
+      },
+    ],
+  };
 
   return (
     <div className={`${isDarkMode ? "dark" : ""} flex min-h-screen`}>
-      {/* Sidebar */}
       {isSidebarOpen && (
         <aside className="w-64 bg-gray-800 text-white min-h-screen transition-all duration-300">
           <div className="p-6">
@@ -62,43 +100,37 @@ const HomePage = () => {
                 to=""
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaChartBar className="mr-2" /> {/* Icon for Dashboard */}
-                Dashboard
+                <FaChartBar className="mr-2" /> Dashboard
               </Link>
               <Link
                 to="/admin/newbill"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaFileInvoice className="mr-2" /> {/* Icon for New Bill */}
-                New Bill
+                <FaFileInvoice className="mr-2" /> New Bill
               </Link>
               <Link
                 to="/all-bills"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaFileInvoice className="mr-2" /> {/* Icon for Bills */}
-                Bills
+                <FaFileInvoice className="mr-2" /> Bills
               </Link>
               <Link
                 to="/users"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaUsers className="mr-2" /> {/* Icon for Users */}
-                Users
+                <FaUsers className="mr-2" /> Users
               </Link>
               <Link
                 to="/admin/settings"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaCog className="mr-2" /> {/* Icon for Settings */}
-                Settings
+                <FaCog className="mr-2" /> Settings
               </Link>
               <Link
                 to="/memory-backup"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaCloudUploadAlt className="mr-2" /> {/* Icon for Backup */}
-                Backup
+                <FaCloudUploadAlt className="mr-2 font-xl" /> Backup
               </Link>
               <button
                 onClick={logOutHandler}
@@ -113,9 +145,7 @@ const HomePage = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-gray-900 dark:bg-gray-900">
-        {/* Header */}
         <header className="bg-gray-800 dark:bg-gray-800 text-white shadow p-4 flex justify-between items-center">
-          {/* Toggle Sidebar Button */}
           {isSidebarOpen ? (
             <IoIosArrowBack
               onClick={toggleSidebar}
@@ -131,10 +161,61 @@ const HomePage = () => {
           <div className="flex items-center space-x-4"></div>
         </header>
 
-        {/* Main Content */}
         <main className="p-6 text-white">
-          <Outlet /> {/* Placeholder for nested routes */}
-          <h2>{notification}</h2>
+          {/* Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="bg-gray-800 p-4 rounded shadow">
+              <h3 className="text-lg">Total Revenue</h3>
+              <p className="text-2xl font-bold">${metrics.totalRevenue}</p>
+            </div>
+            <div className="bg-gray-800 p-4 rounded shadow">
+              <h3 className="text-lg">Total Bills</h3>
+              <p className="text-2xl font-bold">{metrics.totalBills}</p>
+            </div>
+            <div className="bg-gray-800 p-4 rounded shadow">
+              <h3 className="text-lg">Pending Bills</h3>
+              <p className="text-2xl font-bold">{metrics.pendingBills}</p>
+            </div>
+          </div>
+
+          {/* Charts */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="bg-gray-800 p-4 rounded shadow">
+              <h3 className="text-lg mb-2">Sales Overview</h3>
+              <Line data={salesData} />
+            </div>
+            <div className="bg-gray-800 p-4 rounded shadow">
+              <h3 className="text-lg mb-2">Bills Status</h3>
+              <Bar data={billsData} />
+            </div>
+          </div>
+
+          {/* Bill List */}
+          <div className="bg-gray-800 p-4 rounded shadow">
+            <h3 className="text-lg mb-4">Recent Bills</h3>
+            <table className="w-full text-left">
+              <thead>
+                <tr>
+                  <th className="p-2">Bill ID</th>
+                  <th className="p-2">Customer</th>
+                  <th className="p-2">Amount</th>
+                  <th className="p-2">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bills.map((bill) => (
+                  <tr key={bill.id} className="border-t border-gray-700">
+                    <td className="p-2">{bill.id}</td>
+                    <td className="p-2">{bill.customer}</td>
+                    <td className="p-2">${bill.amount}</td>
+                    <td className="p-2">{bill.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <Outlet />
         </main>
       </div>
     </div>
