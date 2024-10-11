@@ -21,6 +21,7 @@ import BillList from "./pages/bills/DispalyAllBills";
 import UserList from "./pages/users/UserList";
 import SettingPage from "./pages/settings/SettingPage";
 import SubmitBillPage from "./pages/bills/UpdateBillPage";
+import UpdateOptionsPage from "./pages/bills/ChooseUpdatePage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="/users" element={<UserList />} />
             <Route path="/settings" element={<SettingPage />} />
             <Route path="/update-bills" element={<SubmitBillPage />} />
+            <Route path="/choose-option" element={<UpdateOptionsPage />} />
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </Router>
