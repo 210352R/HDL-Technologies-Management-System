@@ -110,7 +110,7 @@ const HomePage = () => {
                 <FaFileInvoice size={24} className="mr-2" /> New Bill
               </Link>
               <Link
-                to="/updatebills"
+                to="/update-bills"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
                 <FaEdit size={24} className="mr-2" /> Update Bill
