@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaUser } from "react-icons/fa"; // Import user icon from react-icons
+import Navbar from "../../components/navbar/Navbar";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -28,6 +29,7 @@ const UserList = () => {
 
   return (
     <>
+      <Navbar />
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
         <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">
           User Management

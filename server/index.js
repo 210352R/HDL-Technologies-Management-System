@@ -29,6 +29,7 @@ import {
 import { db_router } from "./controllers/db_controller.js";
 import { userInfo } from "os";
 import { user_router } from "./controllers/user_controller.js";
+import { backupDatabase } from "./services/memoryDumpService.js";
 
 // create express app ---
 const app = express();
@@ -108,6 +109,16 @@ cron.schedule("0 6 * * *", async () => {
     .catch((error) => {
       console.error("Error sending overdue bill email:", error);
     });
+});
+
+// set cronjob that trigeer monthly
+cron.schedule("0 0 1 * *", async () => {
+  try {
+    await backupDatabase();
+    console.log("Database backup completed successfully");
+  } catch (error) {
+    console.error("Backup failed:", error);
+  }
 });
 
 const port = process.env.PORT || 8000;
