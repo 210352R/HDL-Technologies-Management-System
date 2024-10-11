@@ -37,6 +37,7 @@ function App() {
             <Route path="/all-bills" element={<BillList />} />
             <Route path="/users" element={<UserList />} />
             <Route path="/settings" element={<SettingPage />} />
+            <Route path="/updatebills" element={<SettingPage />} />
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </Router>
