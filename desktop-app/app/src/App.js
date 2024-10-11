@@ -19,6 +19,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import BackupScreen from "./pages/backup/BackupScreen";
 import BillList from "./pages/bills/DispalyAllBills";
 import UserList from "./pages/users/UserList";
+import SettingPage from "./pages/settings/SettingPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/memory-backup" element={<BackupScreen />} />
             <Route path="/all-bills" element={<BillList />} />
             <Route path="/users" element={<UserList />} />
+            <Route path="/settings" element={<SettingPage />} />
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </Router>

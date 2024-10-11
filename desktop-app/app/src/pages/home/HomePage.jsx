@@ -9,6 +9,7 @@ import {
   FaUsers,
   FaCog,
   FaCloudUploadAlt,
+  FaEdit,
 } from "react-icons/fa";
 import { io } from "socket.io-client";
 import { Line, Bar } from "react-chartjs-2";
@@ -100,37 +101,43 @@ const HomePage = () => {
                 to=""
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaChartBar className="mr-2" /> Dashboard
+                <FaChartBar size={24} className="mr-2" /> Dashboard
               </Link>
               <Link
                 to="/admin/newbill"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaFileInvoice className="mr-2" /> New Bill
+                <FaFileInvoice size={24} className="mr-2" /> New Bill
+              </Link>
+              <Link
+                to="/admin/newbill"
+                className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
+              >
+                <FaEdit size={24} className="mr-2" /> Update Bill
               </Link>
               <Link
                 to="/all-bills"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaFileInvoice className="mr-2" /> Bills
+                <FaFileInvoice size={24} className="mr-2" /> Bills
               </Link>
               <Link
                 to="/users"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaUsers className="mr-2" /> Users
+                <FaUsers size={24} className="mr-2" /> Users
               </Link>
               <Link
                 to="/admin/settings"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaCog className="mr-2" /> Settings
+                <FaCog size={24} className="mr-2" /> Settings
               </Link>
               <Link
                 to="/memory-backup"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
-                <FaCloudUploadAlt className="mr-2" /> Backup
+                <FaCloudUploadAlt size={24} className="mr-2" /> Backup
               </Link>
               <button
                 onClick={logOutHandler}
