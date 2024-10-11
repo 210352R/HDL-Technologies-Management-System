@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios"; // Import Axios
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/navbar/Navbar";
 
@@ -9,6 +10,8 @@ const BillList = () => {
   const [searchTerm, setSearchTerm] = useState(""); // State for search input
   const [selectedBill, setSelectedBill] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   // Fetch bills using Axios
   useEffect(() => {
@@ -54,6 +57,11 @@ const BillList = () => {
   const closePopup = () => {
     setIsPopupOpen(false);
     setSelectedBill(null);
+  };
+
+  // Handle edit button click and navigate to the edit page
+  const handleEditBill = (billId) => {
+    navigate(`/admin/edit-bill/${billId}`); // Route to the edit page with billId
   };
 
   return (
@@ -223,12 +231,21 @@ const BillList = () => {
                 </div>
               </div>
 
-              <button
-                onClick={closePopup}
-                className="mt-4 bg-blue-500 text-white rounded px-4 py-2"
-              >
-                Close
-              </button>
+              <div className="mt-4 flex justify-between">
+                <button
+                  onClick={() => handleEditBill(selectedBill.billId)}
+                  className="bg-green-500 text-white rounded px-4 py-2"
+                >
+                  Edit Bill Details
+                </button>
+
+                <button
+                  onClick={closePopup}
+                  className="bg-blue-500 text-white rounded px-4 py-2"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         )}
