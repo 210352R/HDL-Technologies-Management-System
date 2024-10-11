@@ -272,3 +272,37 @@ export const getBillDetailsById = async (billId) => {
     user,
   };
 };
+
+// Get all details of a bill by bill ID and map user details
+export const getBillDetailsByBillId = async (billId) => {
+  // Fetch the bill using find (assuming billId is part of the primary key)
+  const bills = await prisma.bill.findMany({
+    where: {
+      billId: billId, // Adjust based on your schema
+    },
+  });
+
+  // Check if any bill exists
+  if (bills.length === 0) {
+    throw new Error("Bill not found");
+  }
+
+  const bill = bills[0]; // Get the first bill (if expecting a single result)
+
+  // Fetch the lap details based on the lapId from the bill
+  const lap = await getLapDetails(bill.lapId);
+
+  // Fetch the user details based on the userId from the bill
+  const user = await prisma.user.findFirst({
+    where: {
+      id: bill.userId, // Assuming userId is the unique identifier
+    },
+  });
+
+  // Add lap and user details to the bill object
+  return {
+    ...bill,
+    lap,
+    user,
+  };
+};

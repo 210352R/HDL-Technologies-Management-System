@@ -5,6 +5,7 @@ import {
   createNewBill,
   getAllBillDetailsWithLaps,
   getAllBills,
+  getBillDetailsByBillId,
   getBillDetailsById,
   getNearestBill,
   updateBillAnnounceDate,
@@ -187,6 +188,17 @@ bill_router.get("/get-bill-by-id/:billId", async (req, res) => {
   const { billId } = req.params;
   try {
     const bill = await getBillDetailsById(billId);
+    res.status(200).json({ bill: bill });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bill could not be fetched" });
+  }
+});
+
+bill_router.get("/get-bill-by-bill-id/:billId", async (req, res) => {
+  const { billId } = req.params;
+  try {
+    const bill = await getBillDetailsByBillId(billId);
     res.status(200).json({ bill: bill });
   } catch (error) {
     console.log(error);

@@ -1,18 +1,37 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const SubmitBillPage = () => {
   const [billId, setBillId] = useState("");
   const [message, setMessage] = useState("");
+  const [billDetails, setBillDetails] = useState(null);
+  const [error, setError] = useState("");
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setBillDetails(null); // Reset bill details on new submission
+    setError(""); // Reset error message
+
     if (billId.trim() === "") {
       setMessage("Bill ID cannot be empty.");
-    } else {
-      // Submit the bill ID (you can replace this with your actual submit logic)
+      return;
+    }
+
+    console.log("Bill ID:", billId);
+
+    try {
+      // Call the API to get bill details
+      const response = await axios.get(
+        `localhost:8000/bill/get-bill-by-bill-id/${billId}`
+      );
+      setBillDetails(response.data.bill);
       setMessage(`Bill ID ${billId} submitted successfully!`);
-      setBillId("");
+      setBillId(""); // Reset input field
+    } catch (error) {
+      console.log(error);
+      setError("Bill could not be fetched. Please check the Bill ID.");
     }
   };
 
@@ -47,6 +66,23 @@ const SubmitBillPage = () => {
         {message && (
           <div className="mt-4 text-center text-green-400 font-semibold">
             {message}
+          </div>
+        )}
+
+        {/* Error Message Display */}
+        {error && (
+          <div className="mt-4 text-center text-red-400 font-semibold">
+            {error}
+          </div>
+        )}
+
+        {/* Bill Details Display */}
+        {billDetails && (
+          <div className="mt-6 p-4 bg-gray-700 rounded-md">
+            <h2 className="text-xl font-bold mb-2">Bill Details:</h2>
+            <pre className="text-gray-300">
+              {JSON.stringify(billDetails, null, 2)}
+            </pre>
           </div>
         )}
       </div>
