@@ -33,7 +33,7 @@ const UpdateHandOverDatePage = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8000/bill/update-announce-date",
+        "http://localhost:8000/bill/update-handover-date",
         {
           billId,
           announce_date: announceDate,
