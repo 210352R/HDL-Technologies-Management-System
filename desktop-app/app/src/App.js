@@ -24,6 +24,7 @@ import SubmitBillPage from "./pages/bills/UpdateBillPage";
 import UpdateOptionsPage from "./pages/bills/ChooseUpdatePage";
 import ProfileScreen from "./pages/settings/ProfileScreen";
 import UpdateAnnounceDatePage from "./pages/bill_updates/UpdateAnnounceDatePage";
+import UpdateHandOverDatePage from "./pages/bill_updates/UpdateHandoverDate";
 
 function App() {
   return (
@@ -49,6 +50,10 @@ function App() {
             <Route
               path="/update-announce-date/:billId"
               element={<UpdateAnnounceDatePage />}
+            />
+            <Route
+              path="/update-handover-date/:billId"
+              element={<UpdateHandOverDatePage />}
             />
 
             <Route path="*" element={<h1>Not Found</h1>} />
