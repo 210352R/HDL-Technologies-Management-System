@@ -39,7 +39,7 @@ const UpdateOptionsPage = () => {
         navigate(`/mark-bill-completed/${billId}`);
         break;
       case "Cancel Bill":
-        navigate("/cancel-bill");
+        navigate(`/mark-bill-cancalled/${billId}`);
         break;
       case "Change Lap Details":
         navigate("/change-lap-details");

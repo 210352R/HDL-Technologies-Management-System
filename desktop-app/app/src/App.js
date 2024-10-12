@@ -26,6 +26,7 @@ import ProfileScreen from "./pages/settings/ProfileScreen";
 import UpdateAnnounceDatePage from "./pages/bill_updates/UpdateAnnounceDatePage";
 import UpdateHandOverDatePage from "./pages/bill_updates/UpdateHandoverDate";
 import MarkBillCompletedPage from "./pages/bill_updates/MarkBillCompletedPage";
+import MarkBillCanceledPage from "./pages/bill_updates/MarkBillCancelledPage";
 
 function App() {
   return (
@@ -59,6 +60,11 @@ function App() {
             <Route
               path="/mark-bill-completed/:billId"
               element={<MarkBillCompletedPage />}
+            />
+
+            <Route
+              path="/mark-bill-cancalled/:billId"
+              element={<MarkBillCanceledPage />}
             />
 
             <Route path="*" element={<h1>Not Found</h1>} />
