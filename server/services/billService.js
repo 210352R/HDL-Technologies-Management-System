@@ -379,3 +379,43 @@ export const getAllBillsCount = async () => {
   const totalBillsCount = await prisma.bill.count();
   return totalBillsCount;
 };
+
+// create method for get Pending bills count
+export const getPendingBillsCount = async () => {
+  const pendingBillsCount = await prisma.bill.count({
+    where: {
+      status: "Pending",
+    },
+  });
+  return pendingBillsCount;
+};
+
+// create method for get Overdue bills count
+export const getOverdueBillsCount = async () => {
+  const overdueBillsCount = await prisma.bill.count({
+    where: {
+      status: "Overdue",
+    },
+  });
+  return overdueBillsCount;
+};
+
+//create method for get Completed bills count
+export const getCompletedBillsCount = async () => {
+  const completedBillsCount = await prisma.bill.count({
+    where: {
+      status: "Completed",
+    },
+  });
+  return completedBillsCount;
+};
+
+// create method for get In Progress bills count
+export const getInProgressBillsCount = async () => {
+  const inProgressBillsCount = await prisma.bill.count({
+    where: {
+      status: "In Progress",
+    },
+  });
+  return inProgressBillsCount;
+};

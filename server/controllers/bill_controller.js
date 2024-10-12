@@ -9,6 +9,7 @@ import {
   getBillDetailsByBillId,
   getBillDetailsById,
   getNearestBill,
+  getPendingBillsCount,
   updateBillAmount,
   updateBillAnnounceDate,
   updateBillHandoverDate,
@@ -258,6 +259,17 @@ bill_router.get("/get-all-bills-count", async (req, res) => {
   try {
     const billCount = await getAllBillsCount();
     res.status(200).json({ count: billCount });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bills could not be fetched" });
+  }
+});
+
+// create method for get pending bills count
+bill_router.get("/get-pending-bills-count", async (req, res) => {
+  try {
+    const pendingBills = await getPendingBillsCount();
+    res.status(200).json({ count: pendingBills });
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Bills could not be fetched" });

@@ -45,11 +45,43 @@ const HomePage = () => {
 
     fetchRecentBills();
 
+    // get total bills from API
+    const fetchTotalBills = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/bill/get-all-bills-count"
+        );
+        setMetrics((prevMetrics) => ({
+          ...prevMetrics,
+          totalBills: response.data.count,
+        }));
+      } catch (error) {
+        console.error("Error fetching total bills:", error);
+      }
+    };
+
+    fetchTotalBills();
+
+    // get pending bills from API
+    const fetchPendingBills = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/bill/get-pending-bills-count"
+        );
+        setMetrics((prevMetrics) => ({
+          ...prevMetrics,
+          pendingBills: response.data.count,
+        }));
+      } catch (error) {
+        console.error("Error fetching pending bills:", error);
+      }
+    };
+
+    fetchPendingBills();
+
     // Example to simulate metrics from API call
     setMetrics({
       totalRevenue: 50000,
-      totalBills: 100,
-      pendingBills: 5,
     });
 
     socket.on("message", (data) => {
