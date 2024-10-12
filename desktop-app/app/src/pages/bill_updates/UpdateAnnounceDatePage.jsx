@@ -6,6 +6,7 @@ import { FaArrowLeft } from "react-icons/fa"; // Import an icon from react-icons
 
 const UpdateAnnounceDatePage = () => {
   const [announceDate, setAnnounceDate] = useState("");
+  const [issue, setIssue] = useState(""); // State for the issue field
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -25,8 +26,8 @@ const UpdateAnnounceDatePage = () => {
     setMessage("");
     setError("");
 
-    if (!billId.trim() || !announceDate.trim()) {
-      setError("Both Bill ID and Announce Date are required.");
+    if (!billId.trim() || !announceDate.trim() || !issue.trim()) {
+      setError("Bill ID, Announce Date, and Issue are required.");
       return;
     }
 
@@ -36,10 +37,12 @@ const UpdateAnnounceDatePage = () => {
         {
           billId,
           announce_date: announceDate,
+          issue, // Include the issue in the request body
         }
       );
       setMessage("Announce date updated successfully!");
       setAnnounceDate("");
+      setIssue(""); // Reset issue state after successful submission
     } catch (error) {
       console.log(error);
       setError("Failed to update announce date. Please try again.");
@@ -104,6 +107,20 @@ const UpdateAnnounceDatePage = () => {
                 Default date is today's date. You can pick another date if
                 needed.
               </small>
+            </div>
+
+            <div>
+              <label htmlFor="issue" className="block text-lg font-medium mb-2">
+                Issue:
+              </label>
+              <input
+                type="text"
+                id="issue"
+                value={issue}
+                onChange={(e) => setIssue(e.target.value)}
+                className="w-full px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                placeholder="Describe the issue"
+              />
             </div>
 
             <button
