@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BiArrowBack } from "react-icons/bi"; // Importing the back arrow icon
 
 import Navbar from "../../components/navbar/Navbar";
 
@@ -34,7 +35,7 @@ const UpdateBillIssuePage = () => {
   const handleUpdateIssue = async () => {
     try {
       const response = await axios.put(
-        "http://localhost:8000/update-bill-issue",
+        "http://localhost:8000/bill/update-bill-issue",
         {
           billId,
           issue,
@@ -52,6 +53,11 @@ const UpdateBillIssuePage = () => {
     }
   };
 
+  // Back button handler
+  const handleBack = () => {
+    navigate(`/choose-option/${billId}`);
+  };
+
   if (error) {
     return <div className="text-red-500 text-center mt-4">{error}</div>;
   }
@@ -61,6 +67,13 @@ const UpdateBillIssuePage = () => {
       <Navbar />
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="bg-gray-800 text-white shadow-xl rounded-lg p-8 w-full max-w-lg transition-transform transform hover:scale-105">
+          <button
+            onClick={handleBack}
+            className="flex items-center text-gray-400 hover:text-white mb-4"
+          >
+            <BiArrowBack className="mr-2" size={20} />
+            Back
+          </button>
           <h1 className="text-3xl font-bold text-center mb-6">
             Update Bill Issue
           </h1>
@@ -90,7 +103,7 @@ const UpdateBillIssuePage = () => {
                 value={issue}
                 onChange={(e) => setIssue(e.target.value)}
                 placeholder="Enter the updated issue..."
-                className="w-full p-2 rounded-md text-gray-800"
+                className="w-full p-2 rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                 rows="4"
               ></textarea>
 

@@ -30,7 +30,7 @@ const UpdateOptionsPage = () => {
         navigate(`/update-handover-date/${billId}`);
         break;
       case "Add / Update Issue":
-        navigate("/add-update-issue");
+        navigate(`/update-bill-issue/${billId}`);
         break;
       case "Change Amount":
         navigate("/change-amount");

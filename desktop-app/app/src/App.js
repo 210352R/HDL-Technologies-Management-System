@@ -27,6 +27,7 @@ import UpdateAnnounceDatePage from "./pages/bill_updates/UpdateAnnounceDatePage"
 import UpdateHandOverDatePage from "./pages/bill_updates/UpdateHandoverDate";
 import MarkBillCompletedPage from "./pages/bill_updates/MarkBillCompletedPage";
 import MarkBillCanceledPage from "./pages/bill_updates/MarkBillCancelledPage";
+import UpdateBillIssuePage from "./pages/bill_updates/UpdateBillIsuePage";
 
 function App() {
   return (
@@ -65,6 +66,10 @@ function App() {
             <Route
               path="/mark-bill-cancalled/:billId"
               element={<MarkBillCanceledPage />}
+            />
+            <Route
+              path="/update-bill-issue/:billId"
+              element={<UpdateBillIssuePage />}
             />
 
             <Route path="*" element={<h1>Not Found</h1>} />
