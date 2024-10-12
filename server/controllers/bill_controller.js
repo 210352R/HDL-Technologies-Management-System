@@ -225,3 +225,15 @@ bill_router.put("/update-bill-issue", async (req, res) => {
     res.status(400).json({ error: "Issue could not be updated" });
   }
 });
+
+// create get method for update amount by billId
+bill_router.put("/update-amount", async (req, res) => {
+  const { billId, amount } = req.body;
+  try {
+    const updatedBill = await updateBillAmount(billId, amount);
+    res.status(200).json({ bill: updatedBill });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Amount could not be updated" });
+  }
+});
