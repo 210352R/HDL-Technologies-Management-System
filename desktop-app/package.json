@@ -13,7 +13,7 @@
     "build": "npm run react-build && electron-builder"
   },
   "keywords": [],
-  "author": "",
+  "author": "Eshan Maduranga",
   "license": "ISC",
   "dependencies": {
     "electron": "^32.1.0"

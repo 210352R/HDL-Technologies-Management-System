@@ -31,12 +31,10 @@ const HomePage = () => {
     inProgressBills: 0,
   });
 
-  const socket = io(`${url}`);
-
   useEffect(() => {
     const fetchRecentBills = async () => {
       try {
-        const response = await axios.get(`${url}/get-recent-bills`);
+        const response = await axios.get(`${url}/bill/get-recent-bills`);
         setBills(response.data.bills);
       } catch (error) {
         console.error("Error fetching recent bills:", error);
@@ -126,19 +124,6 @@ const HomePage = () => {
     setMetrics((prevMetrics) => ({
       ...prevMetrics,
     }));
-
-    socket.on("message", (data) => {
-      setNotification(data);
-      Notification.requestPermission().then((result) => {
-        if (result === "granted") {
-          new Notification("Notification", { body: data });
-        }
-      });
-    });
-
-    return () => {
-      socket.disconnect();
-    };
   }, []);
 
   const logOutHandler = async () => {
