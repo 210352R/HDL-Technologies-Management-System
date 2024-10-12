@@ -4,6 +4,7 @@ import Navbar from "../../../components/navbar/Navbar"; // Import the Navbar com
 import QRCodeDisplay from "../../../qr/QRCodeDisplay";
 import { storage } from "../../../firebase/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { url } from "../../../url";
 
 const AddBillForm = () => {
   const [uploadurl, setUploadUrl] = useState("");
