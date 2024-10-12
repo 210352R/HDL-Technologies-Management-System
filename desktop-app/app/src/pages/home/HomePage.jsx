@@ -169,12 +169,17 @@ const HomePage = () => {
   };
 
   const billsData = {
-    labels: ["Paid", "Pending", "Overdue"],
+    labels: ["Completed", "Pending", "In Progress", "Overdue"],
     datasets: [
       {
         label: "Bills Status",
-        data: [60, 30, 10],
-        backgroundColor: ["#4caf50", "#ff9800", "#f44336"],
+        data: [
+          metrics.completedBills,
+          metrics.pendingBills,
+          metrics.inProgressBills,
+          metrics.overdueBills,
+        ],
+        backgroundColor: ["#4caf50", "#294190FF", "#ff9800", "#f44336"],
       },
     ],
   };
