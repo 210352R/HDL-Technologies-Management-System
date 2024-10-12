@@ -87,7 +87,7 @@ const BillList = () => {
           {[
             "All",
             "Completed",
-            "Cancelled",
+            "Cancalled",
             "Pending",
             "In Progress",
             "Overdue",
