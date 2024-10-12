@@ -117,7 +117,7 @@ export const updateBillAnnounceDate = async (billId, announce_date) => {
 export const updateBillHandoverDate = async (billId, handover_date, issue) => {
   const updatedBill = await prisma.bill.update({
     where: {
-      id: billId,
+      billId: billId,
     },
     data: {
       handover_date,
