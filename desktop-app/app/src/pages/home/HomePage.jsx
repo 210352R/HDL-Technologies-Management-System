@@ -128,7 +128,7 @@ const HomePage = () => {
                 <FaUsers size={24} className="mr-2" /> Users
               </Link>
               <Link
-                to="/admin/settings"
+                to="/settings"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
                 <FaCog size={24} className="mr-2" /> Settings

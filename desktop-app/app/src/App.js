@@ -19,9 +19,10 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import BackupScreen from "./pages/backup/BackupScreen";
 import BillList from "./pages/bills/DispalyAllBills";
 import UserList from "./pages/users/UserList";
-import SettingPage from "./pages/settings/SettingPage";
+
 import SubmitBillPage from "./pages/bills/UpdateBillPage";
 import UpdateOptionsPage from "./pages/bills/ChooseUpdatePage";
+import ProfileScreen from "./pages/settings/ProfileScreen";
 
 function App() {
   return (
@@ -38,9 +39,10 @@ function App() {
             <Route path="/memory-backup" element={<BackupScreen />} />
             <Route path="/all-bills" element={<BillList />} />
             <Route path="/users" element={<UserList />} />
-            <Route path="/settings" element={<SettingPage />} />
+            <Route path="/settings" element={<ProfileScreen />} />
             <Route path="/update-bills" element={<SubmitBillPage />} />
             <Route path="/choose-option" element={<UpdateOptionsPage />} />
+
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </Router>
