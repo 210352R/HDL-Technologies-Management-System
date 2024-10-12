@@ -85,10 +85,13 @@ const UpdateBillIssuePage = () => {
                   <strong>Lap ID:</strong> {bill.lapId}
                 </p>
                 <p>
-                  <strong>Brand:</strong> {bill.brand}
+                  <strong>Status:</strong> {bill.status}
                 </p>
                 <p>
-                  <strong>Model:</strong> {bill.model}
+                  <strong>Brand:</strong> {bill.lap.brand}
+                </p>
+                <p>
+                  <strong>Model:</strong> {bill.lap.model}
                 </p>
                 <p>
                   <strong>Current Issue:</strong> {bill.issue}

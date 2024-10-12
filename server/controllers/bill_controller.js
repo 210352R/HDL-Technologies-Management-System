@@ -10,6 +10,7 @@ import {
   getNearestBill,
   updateBillAnnounceDate,
   updateBillHandoverDate,
+  updateBillIssue,
   updateBillStatus,
 } from "../services/billService.js";
 

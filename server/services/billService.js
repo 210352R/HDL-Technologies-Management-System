@@ -350,3 +350,16 @@ export const updateBillIssue = async (billId, issue) => {
   });
   return updatedBill;
 };
+
+// create method for update bill amount by biiId
+export const updateBillAmount = async (billId, amount) => {
+  const updatedBill = await prisma.bill.update({
+    where: {
+      billId: billId,
+    },
+    data: {
+      amount,
+    },
+  });
+  return updatedBill;
+};
