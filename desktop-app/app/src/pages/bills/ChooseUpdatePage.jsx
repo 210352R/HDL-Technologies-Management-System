@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 
 // Importing icons from react-icons
@@ -14,13 +15,16 @@ import {
 } from "react-icons/fa";
 
 const UpdateOptionsPage = () => {
-  const navigate = useNavigate(); // Use useNavigate instead of useHistory
+  const navigate = useNavigate();
+
+  // Get billId from URL parameters
+  const { billId } = useParams();
 
   // Function to handle option click
   const handleOptionClick = (option) => {
     switch (option) {
       case "Announce Bill":
-        navigate("/announce-bill");
+        navigate(`/update-announce-date/${billId}`);
         break;
       case "Add Handover Date":
         navigate("/add-handover-date");
@@ -58,7 +62,13 @@ const UpdateOptionsPage = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
+      <div className="relative min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
+        {/* Display Bill ID in the top-left corner */}
+        <div className="absolute top-4 left-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg">
+          <span className="text-sm font-semibold">Bill ID:</span>{" "}
+          <span className="text-lg font-bold">{billId}</span>
+        </div>
+
         <h1 className="text-3xl font-bold text-white mb-8">Update Options</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {options.map(({ name, icon: Icon }) => (

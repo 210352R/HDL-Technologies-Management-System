@@ -23,8 +23,6 @@ const SubmitBillPage = () => {
       return;
     }
 
-    console.log("Bill ID:", billId);
-
     try {
       // Call the API to get bill details
       const response = await axios.get(
@@ -41,7 +39,7 @@ const SubmitBillPage = () => {
 
   // Handle updating the bill and navigating to the choose-option page
   const handleUpdateBill = () => {
-    navigate("/choose-option"); // Navigate to the /choose-option page
+    navigate(`/choose-option/${billDetails.billId}`); // Navigate to the /choose-option page
   };
 
   return (

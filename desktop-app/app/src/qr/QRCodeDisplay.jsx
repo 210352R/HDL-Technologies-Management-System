@@ -1,7 +1,7 @@
 import React from "react";
 
 const QRCodeDisplay = ({ qrCodeUrl, brand = "", model = "" }) => {
-  console.log(qrCodeUrl); // Log the QR code URL to the console
+  console.log("Qr Display ------------------ ", qrCodeUrl); // Log the QR code URL to the console
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-5">

@@ -127,8 +127,9 @@ bill_router.post("/add-existing-bill", async (req, res) => {
 
 // add put route for update announce date
 bill_router.put("/update-announce-date", async (req, res) => {
-  const { billId, announce_date } = req.body;
+  let { billId, announce_date } = req.body;
   try {
+    announce_date = new Date(announce_date).toISOString(); // Convert to ISO string
     const updatedBill = await updateBillAnnounceDate(billId, announce_date);
     res.status(200).json({ bill: updatedBill });
   } catch (error) {

@@ -23,7 +23,7 @@ model User {
 
 model Bill{
   id        String @id @default(auto()) @map("_id") @db.ObjectId
-  billId    String
+  billId    String @unique
   lapId     String
   userId    String
   issue     String

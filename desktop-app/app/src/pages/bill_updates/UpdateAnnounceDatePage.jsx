@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
+import { useParams } from "react-router-dom";
 
 const UpdateAnnounceDatePage = () => {
-  const [billId, setBillId] = useState("");
   const [announceDate, setAnnounceDate] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  // Get billId from URL parameters
+  const { billId } = useParams();
 
   // Set default date to today's date
   useEffect(() => {
@@ -34,7 +37,7 @@ const UpdateAnnounceDatePage = () => {
         }
       );
       setMessage("Announce date updated successfully!");
-      setBillId("");
+
       setAnnounceDate("");
     } catch (error) {
       console.log(error);
@@ -62,7 +65,7 @@ const UpdateAnnounceDatePage = () => {
                 type="text"
                 id="billId"
                 value={billId}
-                onChange={(e) => setBillId(e.target.value)}
+                readOnly={true}
                 className="w-full px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 placeholder="Enter Bill ID"
               />

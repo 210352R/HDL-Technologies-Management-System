@@ -23,6 +23,7 @@ import UserList from "./pages/users/UserList";
 import SubmitBillPage from "./pages/bills/UpdateBillPage";
 import UpdateOptionsPage from "./pages/bills/ChooseUpdatePage";
 import ProfileScreen from "./pages/settings/ProfileScreen";
+import UpdateAnnounceDatePage from "./pages/bill_updates/UpdateAnnounceDatePage";
 
 function App() {
   return (
@@ -41,7 +42,14 @@ function App() {
             <Route path="/users" element={<UserList />} />
             <Route path="/settings" element={<ProfileScreen />} />
             <Route path="/update-bills" element={<SubmitBillPage />} />
-            <Route path="/choose-option" element={<UpdateOptionsPage />} />
+            <Route
+              path="/choose-option/:billId"
+              element={<UpdateOptionsPage />}
+            />
+            <Route
+              path="/update-announce-date/:billId"
+              element={<UpdateAnnounceDatePage />}
+            />
 
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
