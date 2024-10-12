@@ -5,7 +5,7 @@ import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import { FaArrowLeft } from "react-icons/fa"; // Import an icon from react-icons
 
 const UpdateHandOverDatePage = () => {
-  const [announceDate, setAnnounceDate] = useState("");
+  const [handover_date, setHandoverDate] = useState("");
   const [issue, setIssue] = useState(""); // State for the issue field
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -17,7 +17,7 @@ const UpdateHandOverDatePage = () => {
   // Set default date to today's date
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
-    setAnnounceDate(today);
+    setHandoverDate(today);
   }, []);
 
   // Handle form submission
@@ -26,7 +26,7 @@ const UpdateHandOverDatePage = () => {
     setMessage("");
     setError("");
 
-    if (!billId.trim() || !announceDate.trim() || !issue.trim()) {
+    if (!billId.trim() || !handover_date.trim() || !issue.trim()) {
       setError("Bill ID, Announce Date, and Issue are required.");
       return;
     }
@@ -36,12 +36,12 @@ const UpdateHandOverDatePage = () => {
         "http://localhost:8000/bill/update-handover-date",
         {
           billId,
-          announce_date: announceDate,
+          handover_date,
           issue, // Include the issue in the request body
         }
       );
       setMessage("Announce date updated successfully!");
-      setAnnounceDate("");
+      setHandoverDate("");
       setIssue(""); // Reset issue state after successful submission
     } catch (error) {
       console.log(error);
@@ -94,13 +94,13 @@ const UpdateHandOverDatePage = () => {
                 htmlFor="announceDate"
                 className="block text-lg font-medium mb-2"
               >
-                Announce Date:
+                Hand Over Date:
               </label>
               <input
                 type="date"
                 id="announceDate"
-                value={announceDate}
-                onChange={(e) => setAnnounceDate(e.target.value)}
+                value={handover_date}
+                onChange={(e) => setHandoverDate(e.target.value)}
                 className="w-full px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
               <small className="text-gray-400 block mt-2">
