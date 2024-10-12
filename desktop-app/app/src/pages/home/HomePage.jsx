@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { doSignOut } from "../../firebase/auth";
@@ -25,24 +26,31 @@ const HomePage = () => {
     totalRevenue: 0,
     totalBills: 0,
     pendingBills: 0,
-  }); // Dummy state for cards data
+  });
 
   const socket = io("http://localhost:8000");
 
   useEffect(() => {
+    // Fetch recent bills from the API
+    const fetchRecentBills = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/bill/get-recent-bills"
+        );
+        setBills(response.data.bills); // Set the bills data from the response
+      } catch (error) {
+        console.error("Error fetching recent bills:", error);
+      }
+    };
+
+    fetchRecentBills();
+
     // Example to simulate metrics from API call
     setMetrics({
       totalRevenue: 50000,
       totalBills: 100,
       pendingBills: 5,
     });
-
-    // Simulate bills data from API call
-    setBills([
-      { id: 1, customer: "John Doe", amount: 1500, status: "Paid" },
-      { id: 2, customer: "Jane Smith", amount: 2000, status: "Pending" },
-      { id: 3, customer: "Michael Lee", amount: 1800, status: "Paid" },
-    ]);
 
     socket.on("message", (data) => {
       setNotification(data);
@@ -88,6 +96,21 @@ const HomePage = () => {
         backgroundColor: ["#4caf50", "#ff9800", "#f44336"],
       },
     ],
+  };
+
+  // Date formatting function
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-CA"); // Format as YYYY/MM/DD
+  };
+
+  // Function to return the appropriate CSS class based on bill status
+  const getStatusBorderClass = (status) => {
+    if (status === "Overdue") return "border-red-500";
+    if (status === "Pending") return "border-green-500";
+    if (status === "In Progress") return "border-yellow-500";
+    return "border-gray-700";
   };
 
   return (
@@ -204,27 +227,31 @@ const HomePage = () => {
               <thead>
                 <tr>
                   <th className="p-2">Bill ID</th>
-                  <th className="p-2">Customer</th>
+                  <th className="p-2">Annonce Date</th>
+                  <th className="p-2">Handover Date</th>
                   <th className="p-2">Amount</th>
                   <th className="p-2">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {bills.map((bill) => (
-                  <tr key={bill.id} className="border-t border-gray-700">
-                    <td className="p-2">{bill.id}</td>
-                    <td className="p-2">{bill.customer}</td>
-                    <td className="p-2">${bill.amount}</td>
+                  <tr
+                    key={bill.billId}
+                    className={`border-t ${getStatusBorderClass(bill.status)}`}
+                  >
+                    <td className="p-2">{bill.billId}</td>
+                    <td className="p-2">{formatDate(bill?.announce_date)}</td>
+                    <td className="p-2">{formatDate(bill?.handover_date)}</td>
+                    <td className="p-2">{bill.amount}</td>
                     <td className="p-2">{bill.status}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-
-          <Outlet />
         </main>
       </div>
+      <Outlet />
     </div>
   );
 };

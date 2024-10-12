@@ -12,6 +12,9 @@ const UpdateLapDetailsPage = () => {
   const [ram, setRam] = useState("");
   const [ssd, setSsd] = useState("");
   const [hard, setHard] = useState("");
+  const [customRam, setCustomRam] = useState(false);
+  const [customSsd, setCustomSsd] = useState(false);
+  const [customHard, setCustomHard] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
@@ -41,7 +44,7 @@ const UpdateLapDetailsPage = () => {
   const handleUpdateLapDetails = async () => {
     try {
       const response = await axios.put(
-        "http://localhost:8000/update-lap-details",
+        "http://localhost:8000/bill/update-lap-details",
         {
           billId,
           lap: {
@@ -67,6 +70,10 @@ const UpdateLapDetailsPage = () => {
   const handleBack = () => {
     navigate(`/choose-option/${billId}`);
   };
+
+  const ramOptions = ["4GB", "8GB", "16GB", "Custom"];
+  const ssdOptions = ["256GB", "512GB", "1TB", "Custom"];
+  const hardOptions = ["500GB", "1TB", "2TB", "Custom"];
 
   if (error) {
     return <div className="text-red-500 text-center mt-4">{error}</div>;
@@ -101,43 +108,110 @@ const UpdateLapDetailsPage = () => {
                   <strong>Model:</strong> {lap.model}
                 </p>
                 <p>
-                  <strong>QR Code:</strong> {lap.qrcode}
+                  <strong>QR Code:</strong>
                 </p>
+                <img src={lap.qrcode} alt="Lap" className="w-32 h-32" />
               </div>
 
               {/* Editable Fields */}
               <div className="space-y-2">
+                {/* RAM Dropdown */}
                 <div>
                   <label className="block mb-1">RAM:</label>
-                  <input
-                    type="text"
-                    value={ram}
-                    onChange={(e) => setRam(e.target.value)}
-                    placeholder="Enter RAM details..."
+                  <select
+                    value={customRam ? "Custom" : ram}
+                    onChange={(e) => {
+                      if (e.target.value === "Custom") {
+                        setCustomRam(true);
+                        setRam("");
+                      } else {
+                        setCustomRam(false);
+                        setRam(e.target.value);
+                      }
+                    }}
                     className="w-full p-2 rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
+                  >
+                    {ramOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {customRam && (
+                    <input
+                      type="text"
+                      value={ram}
+                      onChange={(e) => setRam(e.target.value)}
+                      placeholder="Enter custom RAM details..."
+                      className="w-full p-2 mt-2 rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                  )}
                 </div>
 
+                {/* SSD Dropdown */}
                 <div>
                   <label className="block mb-1">SSD:</label>
-                  <input
-                    type="text"
-                    value={ssd}
-                    onChange={(e) => setSsd(e.target.value)}
-                    placeholder="Enter SSD details..."
+                  <select
+                    value={customSsd ? "Custom" : ssd}
+                    onChange={(e) => {
+                      if (e.target.value === "Custom") {
+                        setCustomSsd(true);
+                        setSsd("");
+                      } else {
+                        setCustomSsd(false);
+                        setSsd(e.target.value);
+                      }
+                    }}
                     className="w-full p-2 rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
+                  >
+                    {ssdOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {customSsd && (
+                    <input
+                      type="text"
+                      value={ssd}
+                      onChange={(e) => setSsd(e.target.value)}
+                      placeholder="Enter custom SSD details..."
+                      className="w-full p-2 mt-2 rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                  )}
                 </div>
 
+                {/* Hard Disk Dropdown */}
                 <div>
                   <label className="block mb-1">Hard Disk:</label>
-                  <input
-                    type="text"
-                    value={hard}
-                    onChange={(e) => setHard(e.target.value)}
-                    placeholder="Enter Hard Disk details..."
+                  <select
+                    value={customHard ? "Custom" : hard}
+                    onChange={(e) => {
+                      if (e.target.value === "Custom") {
+                        setCustomHard(true);
+                        setHard("");
+                      } else {
+                        setCustomHard(false);
+                        setHard(e.target.value);
+                      }
+                    }}
                     className="w-full p-2 rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
+                  >
+                    {hardOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {customHard && (
+                    <input
+                      type="text"
+                      value={hard}
+                      onChange={(e) => setHard(e.target.value)}
+                      placeholder="Enter custom Hard Disk details..."
+                      className="w-full p-2 mt-2 rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                  )}
                 </div>
               </div>
 

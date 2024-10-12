@@ -42,7 +42,7 @@ const UpdateOptionsPage = () => {
         navigate(`/mark-bill-cancalled/${billId}`);
         break;
       case "Change Lap Details":
-        navigate("/change-lap-details");
+        navigate(`/update-lap-details/${billId}`);
         break;
       default:
         break;

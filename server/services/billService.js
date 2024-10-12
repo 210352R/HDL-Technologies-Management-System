@@ -141,49 +141,37 @@ export const updateBillStatus = async (billId, status) => {
   return updatedBill;
 };
 
-// get bill details that have most nearest announced date or handover date to today
 export const getNearestBill = async () => {
   const today = new Date(); // Get the current date
 
+  // Step 1: Fetch bills from the database without complex orderBy logic
   const bills = await prisma.bill.findMany({
     where: {
       // Filter out completed and cancelled bills
-      NOT: [{ status: "Completed" }, { status: "Cancelled" }],
+      NOT: [{ status: "Completed" }, { status: "Cancalled" }],
     },
-    orderBy: [
-      {
-        // If status is "In Progress" or "Overdue", consider handover_date
-        // If status is "Pending", consider announce_date
-        // Use a custom sorting logic by checking the status
-        handover_date: {
-          sort: {
-            field: "handover_date",
-            order: "asc",
-          },
-          if: {
-            status: {
-              in: ["In Progress", "Overdue"],
-            },
-          },
-        },
-      },
-      {
-        announce_date: {
-          sort: {
-            field: "announce_date",
-            order: "asc",
-          },
-          if: {
-            status: {
-              equals: "Pending",
-            },
-          },
-        },
-      },
-    ],
   });
 
-  return bills;
+  // Step 2: Sort the bills based on custom logic
+  const sortedBills = bills.sort((a, b) => {
+    // If the status is "In Progress" or "Overdue", sort by handover_date
+    if (
+      (a.status === "In Progress" || a.status === "Overdue") &&
+      a.handover_date &&
+      b.handover_date
+    ) {
+      return new Date(a.handover_date) - new Date(b.handover_date);
+    }
+    // If the status is "Pending", sort by announce_date
+    if (a.status === "Pending" && a.announce_date && b.announce_date) {
+      return new Date(a.announce_date) - new Date(b.announce_date);
+    }
+
+    // If none of the conditions match, return 0 (do not change the order)
+    return 0;
+  });
+
+  return sortedBills;
 };
 
 // create a function that if handover_date is less than today, then update status to "Overdue" , if handover_date is not given  and announce date is given and less than today set it to "Overdue" , if there handover_date is given and announce date is given if announce date is less than today is no problem
@@ -384,4 +372,10 @@ export const updateLapDetailsByBillId = async (billId, lap) => {
   });
 
   return updatedLap;
+};
+
+// create method for get all bills count
+export const getAllBillsCount = async () => {
+  const totalBillsCount = await prisma.bill.count();
+  return totalBillsCount;
 };

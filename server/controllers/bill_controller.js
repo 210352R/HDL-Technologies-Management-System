@@ -5,6 +5,7 @@ import {
   createNewBill,
   getAllBillDetailsWithLaps,
   getAllBills,
+  getAllBillsCount,
   getBillDetailsByBillId,
   getBillDetailsById,
   getNearestBill,
@@ -13,6 +14,7 @@ import {
   updateBillHandoverDate,
   updateBillIssue,
   updateBillStatus,
+  updateLapDetailsByBillId,
 } from "../services/billService.js";
 
 export const bill_router = express.Router();
@@ -248,5 +250,16 @@ bill_router.put("/update-lap-details", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Lap details could not be updated" });
+  }
+});
+
+//create endpoint for get total bill coiunt
+bill_router.get("/get-all-bills-count", async (req, res) => {
+  try {
+    const billCount = await getAllBillsCount();
+    res.status(200).json({ count: billCount });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bills could not be fetched" });
   }
 });
