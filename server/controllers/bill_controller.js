@@ -140,8 +140,10 @@ bill_router.put("/update-announce-date", async (req, res) => {
 
 // add put route for update handover date
 bill_router.put("/update-handover-date", async (req, res) => {
-  const { billId, handover_date, issue } = req.body;
+  let { billId, handover_date, issue } = req.body;
+
   try {
+    handover_date = new Date(handover_date).toISOString();
     const updatedBill = await updateBillHandoverDate(
       billId,
       handover_date,

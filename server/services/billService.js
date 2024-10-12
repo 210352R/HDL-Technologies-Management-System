@@ -143,17 +143,47 @@ export const updateBillStatus = async (billId, status) => {
 
 // get bill details that have most nearest announced date or handover date to today
 export const getNearestBill = async () => {
-  const bill = await prisma.bill.findMany({
+  const today = new Date(); // Get the current date
+
+  const bills = await prisma.bill.findMany({
+    where: {
+      // Filter out completed and cancelled bills
+      NOT: [{ status: "Completed" }, { status: "Cancelled" }],
+    },
     orderBy: [
       {
-        announce_date: "asc",
+        // If status is "In Progress" or "Overdue", consider handover_date
+        // If status is "Pending", consider announce_date
+        // Use a custom sorting logic by checking the status
+        handover_date: {
+          sort: {
+            field: "handover_date",
+            order: "asc",
+          },
+          if: {
+            status: {
+              in: ["In Progress", "Overdue"],
+            },
+          },
+        },
       },
       {
-        handover_date: "asc",
+        announce_date: {
+          sort: {
+            field: "announce_date",
+            order: "asc",
+          },
+          if: {
+            status: {
+              equals: "Pending",
+            },
+          },
+        },
       },
     ],
   });
-  return bill;
+
+  return bills;
 };
 
 // create a function that if handover_date is less than today, then update status to "Overdue" , if handover_date is not given  and announce date is given and less than today set it to "Overdue" , if there handover_date is given and announce date is given if announce date is less than today is no problem
