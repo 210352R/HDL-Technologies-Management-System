@@ -54,9 +54,13 @@ const AddBillForm = () => {
     e.preventDefault();
     const formDataWithISODate = {
       ...formData,
-      announce_date: new Date(formData.announce_date).toISOString(),
-      handover_date: new Date(formData.handover_date).toISOString(),
-      amount: parseFloat(formData.amount), // Convert amount to float
+      announce_date: formData.announce_date
+        ? new Date(formData.announce_date).toISOString()
+        : null,
+      handover_date: formData.handover_date
+        ? new Date(formData.handover_date).toISOString()
+        : null,
+      amount: formData.amount ? parseFloat(formData.amount) : null, // Convert amount to float if exists, otherwise set to null
     };
     console.log(formDataWithISODate);
     try {
