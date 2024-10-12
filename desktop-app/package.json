@@ -1,15 +1,16 @@
 {
-  "name": "desktop-app",
+  "name": "hdl-desktop-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "Desktop app for HDL Solutions",
   "main": "main.js",
   "scripts": {
     "react-build": "cd app && npm run build",
     "start": "npm run react-build && electron .",
     "dev": "concurrently \"npm run react-start\" \"npm run electron-dev\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "react-start": "cd app && npm start",  
-    "electron-dev": "nodemon --watch main.js --exec electron ."
+    "react-start": "cd app && npm start",
+    "electron-dev": "nodemon --watch main.js --exec electron .",
+    "build": "npm run react-build && electron-builder"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,22 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.4",
-    "concurrently": "^7.0.0"
-
+    "concurrently": "^7.0.0",
+    "electron-builder": "^24.6.0"
+  },
+  "build": {
+    "appId": "com.hdl.desktop",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "app/**/*",      
+      "main.js",       
+      "preload.js",    
+      "package.json"   
+    ],
+    "win": {
+      "target": "nsis"  
+    }
   }
 }

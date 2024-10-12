@@ -60,7 +60,7 @@ const AddBillForm = () => {
       handover_date: formData.handover_date
         ? new Date(formData.handover_date).toISOString()
         : null,
-      amount: formData.amount ? parseFloat(formData.amount) : null, // Convert amount to float if exists, otherwise set to null
+      amount: formData.amount ? parseFloat(formData.amount) : 0.0, // Convert amount to float if exists, otherwise set to null
     };
     console.log(formDataWithISODate);
     try {
@@ -252,7 +252,6 @@ const AddBillForm = () => {
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
                   placeholder="500.00" // Updated placeholder to indicate float input
-                  required
                 />
               </div>
 
@@ -271,7 +270,6 @@ const AddBillForm = () => {
                   value={formData.announce_date}
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white"
-                  required
                 />
               </div>
 
@@ -290,7 +288,6 @@ const AddBillForm = () => {
                   value={formData.handover_date}
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white"
-                  required
                 />
               </div>
 
@@ -401,7 +398,6 @@ const AddBillForm = () => {
                   id="images"
                   onChange={handleImageUpload}
                   className="file-input file-input-bordered w-full bg-gray-700 text-white"
-                  required
                 />
               </div>
             </div>
