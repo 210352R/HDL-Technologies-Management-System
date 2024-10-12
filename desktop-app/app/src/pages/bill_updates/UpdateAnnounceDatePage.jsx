@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { FaArrowLeft } from "react-icons/fa"; // Import an icon from react-icons
 
 const UpdateAnnounceDatePage = () => {
   const [announceDate, setAnnounceDate] = useState("");
@@ -10,6 +11,7 @@ const UpdateAnnounceDatePage = () => {
 
   // Get billId from URL parameters
   const { billId } = useParams();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Set default date to today's date
   useEffect(() => {
@@ -37,7 +39,6 @@ const UpdateAnnounceDatePage = () => {
         }
       );
       setMessage("Announce date updated successfully!");
-
       setAnnounceDate("");
     } catch (error) {
       console.log(error);
@@ -45,11 +46,25 @@ const UpdateAnnounceDatePage = () => {
     }
   };
 
+  // Handle back button click
+  const handleBackClick = () => {
+    navigate(`/choose-option/${billId}`); // Navigate to the desired route
+  };
+
   return (
     <>
       <Navbar />
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8 w-full max-w-md">
+          <div className="flex items-center mb-6">
+            <button
+              onClick={handleBackClick}
+              className="flex items-center text-blue-500 hover:text-blue-400 mb-4"
+            >
+              <FaArrowLeft className="mr-2" /> {/* Icon */}
+              Back
+            </button>
+          </div>
           <h1 className="text-3xl font-bold text-center mb-6">
             Update Announce Date
           </h1>
