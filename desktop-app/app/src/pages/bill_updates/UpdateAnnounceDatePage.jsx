@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import { FaArrowLeft } from "react-icons/fa"; // Import an icon from react-icons
+import { url } from "../../url";
 
 const UpdateAnnounceDatePage = () => {
   const [announceDate, setAnnounceDate] = useState("");
@@ -31,13 +32,10 @@ const UpdateAnnounceDatePage = () => {
     }
 
     try {
-      const response = await axios.put(
-        "http://localhost:8000/bill/update-announce-date",
-        {
-          billId,
-          announce_date: announceDate,
-        }
-      );
+      const response = await axios.put(`${url}/bill/update-announce-date`, {
+        billId,
+        announce_date: announceDate,
+      });
       setMessage("Announce date updated successfully!");
       setAnnounceDate("");
     } catch (error) {

@@ -3,6 +3,7 @@ import axios from "axios";
 import { FiDownload, FiFileText } from "react-icons/fi"; // Importing icons
 import Navbar from "../../components/navbar/Navbar";
 import { ClipLoader } from "react-spinners";
+import { url } from "../../url";
 
 const BackupScreen = () => {
   const [files, setFiles] = useState([]);
@@ -11,7 +12,7 @@ const BackupScreen = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/db/getDetails")
+      .get(`${url}/db/getDetails`)
       .then((response) => {
         setFiles(response.data.data);
         setLoading(false);

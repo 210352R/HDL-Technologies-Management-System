@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import { FaArrowLeft } from "react-icons/fa"; // Import an icon from react-icons
+import { url } from "../../url";
 
 const UpdateHandOverDatePage = () => {
   const [handover_date, setHandoverDate] = useState("");
@@ -32,14 +33,11 @@ const UpdateHandOverDatePage = () => {
     }
 
     try {
-      const response = await axios.put(
-        "http://localhost:8000/bill/update-handover-date",
-        {
-          billId,
-          handover_date,
-          issue, // Include the issue in the request body
-        }
-      );
+      const response = await axios.put(`${url}/bill/update-handover-date`, {
+        billId,
+        handover_date,
+        issue, // Include the issue in the request body
+      });
       setMessage("Announce date updated successfully!");
       setHandoverDate("");
       setIssue(""); // Reset issue state after successful submission

@@ -4,6 +4,7 @@ import axios from "axios";
 import { BiArrowBack } from "react-icons/bi"; // Importing the back arrow icon
 
 import Navbar from "../../components/navbar/Navbar";
+import { url } from "../../url";
 
 const UpdateLapDetailsPage = () => {
   const { billId } = useParams();
@@ -23,7 +24,7 @@ const UpdateLapDetailsPage = () => {
     const fetchLapDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/bill/get-bill-by-bill-id/${billId}`
+          `${url}/bill/get-bill-by-bill-id/${billId}`
         );
         const lapDetails = response.data.bill.lap;
 
@@ -43,17 +44,14 @@ const UpdateLapDetailsPage = () => {
   // Handle updating the lap details
   const handleUpdateLapDetails = async () => {
     try {
-      const response = await axios.put(
-        "http://localhost:8000/bill/update-lap-details",
-        {
-          billId,
-          lap: {
-            ram,
-            ssd,
-            hard,
-          },
-        }
-      );
+      const response = await axios.put(`${url}/bill/update-lap-details`, {
+        billId,
+        lap: {
+          ram,
+          ssd,
+          hard,
+        },
+      });
       setMessage("Lap details updated successfully!");
 
       // Navigate to the new page after a short delay

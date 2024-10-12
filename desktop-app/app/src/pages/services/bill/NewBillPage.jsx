@@ -60,7 +60,7 @@ const AddBillForm = () => {
     console.log(formDataWithISODate);
     try {
       const response = await axios.post(
-        "http://localhost:8000/bill/add-new-bill",
+        `${url}/bill/add-new-bill`,
         formDataWithISODate,
         {
           headers: {

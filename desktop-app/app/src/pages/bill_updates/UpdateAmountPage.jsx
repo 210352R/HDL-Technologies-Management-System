@@ -4,6 +4,7 @@ import axios from "axios";
 import { BiArrowBack } from "react-icons/bi"; // Importing the back arrow icon
 
 import Navbar from "../../components/navbar/Navbar";
+import { url } from "../../url";
 
 const UpdateAmountPage = () => {
   const { billId } = useParams();
@@ -18,7 +19,7 @@ const UpdateAmountPage = () => {
     const fetchBillDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/bill/get-bill-by-bill-id/${billId}`
+          `${url}/bill/get-bill-by-bill-id/${billId}`
         );
         setBill(response.data.bill);
         setAmount(response.data.bill.amount || 0); // Set initial amount
@@ -34,13 +35,10 @@ const UpdateAmountPage = () => {
   // Handle updating the bill amount
   const handleUpdateAmount = async () => {
     try {
-      const response = await axios.put(
-        "http://localhost:8000/bill/update-amount",
-        {
-          billId,
-          amount,
-        }
-      );
+      const response = await axios.put(`${url}/bill/update-amount`, {
+        billId,
+        amount,
+      });
       setMessage("Bill amount updated successfully!");
 
       // Navigate to the new page after a short delay

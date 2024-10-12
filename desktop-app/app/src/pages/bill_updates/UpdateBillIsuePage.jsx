@@ -4,6 +4,7 @@ import axios from "axios";
 import { BiArrowBack } from "react-icons/bi"; // Importing the back arrow icon
 
 import Navbar from "../../components/navbar/Navbar";
+import { url } from "../../url";
 
 const UpdateBillIssuePage = () => {
   const { billId } = useParams();
@@ -18,7 +19,7 @@ const UpdateBillIssuePage = () => {
     const fetchBillDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/bill/get-bill-by-bill-id/${billId}`
+          `${url}/bill/get-bill-by-bill-id/${billId}`
         );
         setBill(response.data.bill);
         setIssue(response.data.bill.issue || ""); // Set initial issue
@@ -34,13 +35,10 @@ const UpdateBillIssuePage = () => {
   // Handle updating the bill issue
   const handleUpdateIssue = async () => {
     try {
-      const response = await axios.put(
-        "http://localhost:8000/bill/update-bill-issue",
-        {
-          billId,
-          issue,
-        }
-      );
+      const response = await axios.put(`${url}/bill/update-bill-issue`, {
+        billId,
+        issue,
+      });
       setMessage("Bill issue updated successfully!");
 
       // Navigate to the new page after a short delay

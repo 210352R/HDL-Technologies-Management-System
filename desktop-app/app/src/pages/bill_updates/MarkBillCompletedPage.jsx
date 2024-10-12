@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Navbar from "../../components/navbar/Navbar";
+import { url } from "../../url";
 
 const MarkBillCompletedPage = () => {
   const { billId } = useParams();
@@ -17,7 +18,7 @@ const MarkBillCompletedPage = () => {
     const fetchBillDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/bill/get-bill-by-bill-id/${billId}`
+          `${url}/bill/get-bill-by-bill-id/${billId}`
         );
         setBill(response.data.bill);
       } catch (err) {
@@ -34,12 +35,9 @@ const MarkBillCompletedPage = () => {
     if (!isPaid) return; // Do not proceed if the checkbox is not checked
 
     try {
-      const response = await axios.put(
-        "http://localhost:8000/bill/make-status-completed",
-        {
-          billId,
-        }
-      );
+      const response = await axios.put(`${url}/bill/make-status-completed`, {
+        billId,
+      });
       setMessage("Bill marked as completed successfully!");
 
       // Navigate to new page after showing alert

@@ -15,6 +15,7 @@ import {
 import { io } from "socket.io-client";
 import { Line, Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto"; // Required for react-chartjs-2 to work
+import { url } from "../../url";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -30,14 +31,12 @@ const HomePage = () => {
     inProgressBills: 0,
   });
 
-  const socket = io("http://localhost:8000");
+  const socket = io(`${url}`);
 
   useEffect(() => {
     const fetchRecentBills = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/bill/get-recent-bills"
-        );
+        const response = await axios.get(`${url}/get-recent-bills`);
         setBills(response.data.bills);
       } catch (error) {
         console.error("Error fetching recent bills:", error);
@@ -48,9 +47,7 @@ const HomePage = () => {
 
     const fetchTotalBills = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/bill/get-all-bills-count"
-        );
+        const response = await axios.get(`${url}/bill/get-all-bills-count`);
         setMetrics((prevMetrics) => ({
           ...prevMetrics,
           totalBills: response.data.count,
@@ -64,9 +61,7 @@ const HomePage = () => {
 
     const fetchPendingBills = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/bill/get-pending-bills-count"
-        );
+        const response = await axios.get(`${url}/bill/get-pending-bills-count`);
         setMetrics((prevMetrics) => ({
           ...prevMetrics,
           pendingBills: response.data.count,
@@ -81,9 +76,7 @@ const HomePage = () => {
     // Fetch overdue bills count
     const fetchOverdueBills = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/bill/get-overdue-bills-count"
-        );
+        const response = await axios.get(`${url}/bill/get-overdue-bills-count`);
         setMetrics((prevMetrics) => ({
           ...prevMetrics,
           overdueBills: response.data.count,
@@ -99,7 +92,7 @@ const HomePage = () => {
     const fetchInProgressBills = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/bill/get-in-progress-bills-count"
+          `${url}/bill/get-in-progress-bills-count`
         );
         setMetrics((prevMetrics) => ({
           ...prevMetrics,
@@ -116,7 +109,7 @@ const HomePage = () => {
     const fetchCompletedBills = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/bill/get-completed-bills-count"
+          `${url}/bill/get-completed-bills-count`
         );
         setMetrics((prevMetrics) => ({
           ...prevMetrics,

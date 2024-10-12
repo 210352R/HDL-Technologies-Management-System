@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate for naviga
 import axios from "axios";
 import { FaPen } from "react-icons/fa"; // Importing an icon from react-icons
 import Navbar from "../../components/navbar/Navbar";
+import { url } from "../../url";
 
 const SubmitBillPage = () => {
   const navigate = useNavigate(); // Initialize navigate
@@ -26,7 +27,7 @@ const SubmitBillPage = () => {
     try {
       // Call the API to get bill details
       const response = await axios.get(
-        `http://localhost:8000/bill/get-bill-by-bill-id/${billId}`
+        `${url}/bill/get-bill-by-bill-id/${billId}`
       );
       setBillDetails(response.data.bill);
       setMessage(`Bill ID ${billId} submitted successfully!`);

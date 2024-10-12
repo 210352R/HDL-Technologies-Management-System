@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaUser } from "react-icons/fa"; // Import user icon from react-icons
 import Navbar from "../../components/navbar/Navbar";
+import { url } from "../../url";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -11,9 +12,7 @@ const UserList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/users/get-all-users"
-        ); // Replace with your API endpoint
+        const response = await axios.get(`${url}/users/get-all-users`); // Replace with your API endpoint
         setUsers(response.data.users);
       } catch (error) {
         console.error("Error fetching users:", error);

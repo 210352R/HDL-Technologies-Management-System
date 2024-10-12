@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Navbar from "../../components/navbar/Navbar";
+import { url } from "../../url";
 
 const MarkBillCanceledPage = () => {
   const { billId } = useParams();
@@ -16,7 +17,7 @@ const MarkBillCanceledPage = () => {
     const fetchBillDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/bill/get-bill-by-bill-id/${billId}`
+          `${url}/bill/get-bill-by-bill-id/${billId}`
         );
         setBill(response.data.bill);
       } catch (err) {
@@ -31,12 +32,9 @@ const MarkBillCanceledPage = () => {
   // Handle marking bill as canceled
   const handleMarkCanceled = async () => {
     try {
-      const response = await axios.put(
-        "http://localhost:8000/bill/make-status-cancalled",
-        {
-          billId,
-        }
-      );
+      const response = await axios.put(`${url}/bill/make-status-cancalled`, {
+        billId,
+      });
       setMessage("Bill marked as canceled successfully!");
 
       // Navigate to new page after showing alert

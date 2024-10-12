@@ -3,6 +3,7 @@ import axios from "axios"; // Import Axios
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/navbar/Navbar";
+import { url } from "../../url";
 
 const BillList = () => {
   const [bills, setBills] = useState([]);
@@ -17,9 +18,7 @@ const BillList = () => {
   useEffect(() => {
     const fetchBills = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/bill/get-all-bills"
-        );
+        const response = await axios.get(`${url}/bill/get-all-bills`);
         console.log("Fetched bills:", response.data.bills);
         setBills(response.data.bills);
       } catch (error) {
@@ -32,9 +31,7 @@ const BillList = () => {
   // Fetch bill details using Axios
   const fetchBillDetails = async (billId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/bill/get-bill-by-id/${billId}`
-      );
+      const response = await axios.get(`${url}/bill/get-bill-by-id/${billId}`);
       console.log("Fetched bill details:", response.data.bill);
       setSelectedBill(response.data.bill);
       setIsPopupOpen(true);
