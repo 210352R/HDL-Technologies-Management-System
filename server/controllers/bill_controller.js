@@ -212,3 +212,15 @@ bill_router.get("/get-bill-by-bill-id/:billId", async (req, res) => {
     res.status(400).json({ error: "Bill could not be fetched" });
   }
 });
+
+// create api end point for updateBillIsuue by  billd
+bill_router.put("/update-bill-issue", async (req, res) => {
+  const { billId, issue } = req.body;
+  try {
+    const updatedBill = await updateBillIssue(billId, issue);
+    res.status(200).json({ bill: updatedBill });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Issue could not be updated" });
+  }
+});

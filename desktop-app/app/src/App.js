@@ -25,6 +25,7 @@ import UpdateOptionsPage from "./pages/bills/ChooseUpdatePage";
 import ProfileScreen from "./pages/settings/ProfileScreen";
 import UpdateAnnounceDatePage from "./pages/bill_updates/UpdateAnnounceDatePage";
 import UpdateHandOverDatePage from "./pages/bill_updates/UpdateHandoverDate";
+import MarkBillCompletedPage from "./pages/bill_updates/MarkBillCompletedPage";
 
 function App() {
   return (
@@ -54,6 +55,10 @@ function App() {
             <Route
               path="/update-handover-date/:billId"
               element={<UpdateHandOverDatePage />}
+            />
+            <Route
+              path="/mark-bill-completed/:billId"
+              element={<MarkBillCompletedPage />}
             />
 
             <Route path="*" element={<h1>Not Found</h1>} />

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+
 import Navbar from "../../components/navbar/Navbar";
 
 const MarkBillCompletedPage = () => {
   const { billId } = useParams();
+  const navigate = useNavigate(); // For navigation
   const [bill, setBill] = useState(null);
   const [isPaid, setIsPaid] = useState(false);
   const [error, setError] = useState("");
@@ -15,7 +17,7 @@ const MarkBillCompletedPage = () => {
     const fetchBillDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/get-bill-by-bill-id/${billId}`
+          `http://localhost:8000/bill/get-bill-by-bill-id/${billId}`
         );
         setBill(response.data.bill);
       } catch (err) {
@@ -33,14 +35,17 @@ const MarkBillCompletedPage = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8000/make-status-completed",
+        "http://localhost:8000/bill/make-status-completed",
         {
           billId,
         }
       );
       setMessage("Bill marked as completed successfully!");
-      setIsPaid(false); // Reset checkbox state
-      setBill(response.data.bill); // Optionally refresh bill data
+
+      // Navigate to new page after showing alert
+      setTimeout(() => {
+        navigate(`/choose-option/${billId}`);
+      }, 2000); // Redirect after 2 seconds
     } catch (err) {
       setError("Failed to mark the bill as completed.");
       console.error(err);
@@ -55,22 +60,25 @@ const MarkBillCompletedPage = () => {
     <>
       <Navbar />
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+        <div className="bg-gray-800 text-white shadow-xl rounded-lg p-8 w-full max-w-lg transition-transform transform hover:scale-105">
           <h1 className="text-3xl font-bold text-center mb-6">
             Mark Bill as Completed
           </h1>
           {bill ? (
             <div className="space-y-4">
-              <div>
+              <div className="bg-gray-700 p-4 rounded-lg shadow-md">
                 <h2 className="text-lg font-semibold">Bill ID: {billId}</h2>
                 <p>
                   <strong>Lap ID:</strong> {bill.lapId}
                 </p>
                 <p>
-                  <strong>Brand:</strong> {bill.brand}
+                  <strong>Status:</strong> {bill.status}
                 </p>
                 <p>
-                  <strong>Model:</strong> {bill.model}
+                  <strong>Brand:</strong> {bill.lap.brand}
+                </p>
+                <p>
+                  <strong>Model:</strong> {bill.lap.model}
                 </p>
                 <p>
                   <strong>Issue:</strong> {bill.issue}
@@ -90,6 +98,11 @@ const MarkBillCompletedPage = () => {
                     ? new Date(bill.handover_date).toLocaleDateString()
                     : "N/A"}
                 </p>
+              </div>
+
+              {/* QR Code Display */}
+              <div className="flex justify-center mt-4">
+                <img src={bill.lap.qrcode} alt="QR Code" />
               </div>
 
               <div className="flex items-center">
