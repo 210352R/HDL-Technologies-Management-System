@@ -8,7 +8,10 @@ import {
   getAllBillsCount,
   getBillDetailsByBillId,
   getBillDetailsById,
+  getCompletedBillsCount,
+  getInProgressBillsCount,
   getNearestBill,
+  getOverdueBillsCount,
   getPendingBillsCount,
   updateBillAmount,
   updateBillAnnounceDate,
@@ -270,6 +273,39 @@ bill_router.get("/get-pending-bills-count", async (req, res) => {
   try {
     const pendingBills = await getPendingBillsCount();
     res.status(200).json({ count: pendingBills });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bills could not be fetched" });
+  }
+});
+
+//create method for get overdue bills count
+bill_router.get("/get-overdue-bills-count", async (req, res) => {
+  try {
+    const overdueBills = await getOverdueBillsCount();
+    res.status(200).json({ count: overdueBills });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bills could not be fetched" });
+  }
+});
+
+// create get method for get Inprogress bills count
+bill_router.get("/get-in-progress-bills-count", async (req, res) => {
+  try {
+    const inprogressBills = await getInProgressBillsCount();
+    res.status(200).json({ count: inprogressBills });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bills could not be fetched" });
+  }
+});
+
+// create method for get completed bill count
+bill_router.get("/get-completed-bills-count", async (req, res) => {
+  try {
+    const completedBills = await getCompletedBillsCount();
+    res.status(200).json({ count: completedBills });
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Bills could not be fetched" });

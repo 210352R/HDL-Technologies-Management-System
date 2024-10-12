@@ -21,23 +21,24 @@ const HomePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [notification, setNotification] = useState("");
-  const [bills, setBills] = useState([]); // State for bills list
+  const [bills, setBills] = useState([]);
   const [metrics, setMetrics] = useState({
-    totalRevenue: 0,
+    completedBills: 0,
     totalBills: 0,
     pendingBills: 0,
+    overdueBills: 0,
+    inProgressBills: 0,
   });
 
   const socket = io("http://localhost:8000");
 
   useEffect(() => {
-    // Fetch recent bills from the API
     const fetchRecentBills = async () => {
       try {
         const response = await axios.get(
           "http://localhost:8000/bill/get-recent-bills"
         );
-        setBills(response.data.bills); // Set the bills data from the response
+        setBills(response.data.bills);
       } catch (error) {
         console.error("Error fetching recent bills:", error);
       }
@@ -45,7 +46,6 @@ const HomePage = () => {
 
     fetchRecentBills();
 
-    // get total bills from API
     const fetchTotalBills = async () => {
       try {
         const response = await axios.get(
@@ -62,7 +62,6 @@ const HomePage = () => {
 
     fetchTotalBills();
 
-    // get pending bills from API
     const fetchPendingBills = async () => {
       try {
         const response = await axios.get(
@@ -79,10 +78,61 @@ const HomePage = () => {
 
     fetchPendingBills();
 
+    // Fetch overdue bills count
+    const fetchOverdueBills = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/bill/get-overdue-bills-count"
+        );
+        setMetrics((prevMetrics) => ({
+          ...prevMetrics,
+          overdueBills: response.data.count,
+        }));
+      } catch (error) {
+        console.error("Error fetching overdue bills:", error);
+      }
+    };
+
+    fetchOverdueBills();
+
+    // Fetch in-progress bills count
+    const fetchInProgressBills = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/bill/get-in-progress-bills-count"
+        );
+        setMetrics((prevMetrics) => ({
+          ...prevMetrics,
+          inProgressBills: response.data.count,
+        }));
+      } catch (error) {
+        console.error("Error fetching in-progress bills:", error);
+      }
+    };
+
+    fetchInProgressBills();
+
+    // Fetch completed bills count
+    const fetchCompletedBills = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/bill/get-completed-bills-count"
+        );
+        setMetrics((prevMetrics) => ({
+          ...prevMetrics,
+          completedBills: response.data.count,
+        }));
+      } catch (error) {
+        console.error("Error fetching completed bills:", error);
+      }
+    };
+
+    fetchCompletedBills();
+
     // Example to simulate metrics from API call
-    setMetrics({
-      totalRevenue: 50000,
-    });
+    setMetrics((prevMetrics) => ({
+      ...prevMetrics,
+    }));
 
     socket.on("message", (data) => {
       setNotification(data);
@@ -106,7 +156,6 @@ const HomePage = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
-  // Chart data
   const salesData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
     datasets: [
@@ -130,14 +179,12 @@ const HomePage = () => {
     ],
   };
 
-  // Date formatting function
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-CA"); // Format as YYYY/MM/DD
+    return date.toLocaleDateString("en-CA");
   };
 
-  // Function to return the appropriate CSS class based on bill status
   const getStatusBorderClass = (status) => {
     if (status === "Overdue") return "border-red-500";
     if (status === "Pending") return "border-green-500";
@@ -225,34 +272,41 @@ const HomePage = () => {
 
         <main className="p-6 text-white">
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-gray-800 p-4 rounded shadow">
-              <h3 className="text-lg">Total Revenue</h3>
-              <p className="text-2xl font-bold">${metrics.totalRevenue}</p>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+            <div className="bg-gradient-to-r from-green-400 to-green-600 p-6 rounded-lg shadow-lg flex flex-col justify-between h-full">
+              <h3 className="text-2xl font-bold">Total Bills</h3>
+              <p className="text-4xl">{metrics.totalBills}</p>
             </div>
-            <div className="bg-gray-800 p-4 rounded shadow">
-              <h3 className="text-lg">Total Bills</h3>
-              <p className="text-2xl font-bold">{metrics.totalBills}</p>
+            <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-6 rounded-lg shadow-lg flex flex-col justify-between h-full">
+              <h3 className="text-2xl font-bold">Pending Bills</h3>
+              <p className="text-4xl">{metrics.pendingBills}</p>
             </div>
-            <div className="bg-gray-800 p-4 rounded shadow">
-              <h3 className="text-lg">Pending Bills</h3>
-              <p className="text-2xl font-bold">{metrics.pendingBills}</p>
+            <div className="bg-gradient-to-r from-red-400 to-red-600 p-6 rounded-lg shadow-lg flex flex-col justify-between h-full">
+              <h3 className="text-2xl font-bold">Overdue Bills</h3>
+              <p className="text-4xl">{metrics.overdueBills}</p>
+            </div>
+            <div className="bg-gradient-to-r from-orange-400 to-orange-600 p-6 rounded-lg shadow-lg flex flex-col justify-between h-full">
+              <h3 className="text-2xl font-bold">In Progress Bills</h3>
+              <p className="text-4xl">{metrics.inProgressBills}</p>
+            </div>
+            <div className="bg-gradient-to-r from-blue-400 to-blue-600 p-6 rounded-lg shadow-lg flex flex-col justify-between h-full">
+              <h3 className="text-2xl font-bold">Completed Bills</h3>
+              <p className="text-4xl">{metrics.completedBills}</p>
             </div>
           </div>
-
           {/* Charts */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div className="bg-gray-800 p-4 rounded shadow">
-              <h3 className="text-lg mb-2">Sales Overview</h3>
+            <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+              <h2 className="text-2xl font-bold mb-4">Monthly Sales</h2>
               <Line data={salesData} />
             </div>
-            <div className="bg-gray-800 p-4 rounded shadow">
-              <h3 className="text-lg mb-2">Bills Status</h3>
+            <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+              <h2 className="text-2xl font-bold mb-4">Bills Status</h2>
               <Bar data={billsData} />
             </div>
           </div>
 
-          {/* Bill List */}
+          {/* Recent Bills */}
           <div className="bg-gray-800 p-4 rounded shadow">
             <h3 className="text-lg mb-4">Recent Bills</h3>
             <table className="w-full text-left">
@@ -272,8 +326,8 @@ const HomePage = () => {
                     className={`border-t ${getStatusBorderClass(bill.status)}`}
                   >
                     <td className="p-2">{bill.billId}</td>
-                    <td className="p-2">{formatDate(bill?.announce_date)}</td>
-                    <td className="p-2">{formatDate(bill?.handover_date)}</td>
+                    <td className="p-2">{formatDate(bill.announce_date)}</td>
+                    <td className="p-2">{formatDate(bill.handover_date)}</td>
                     <td className="p-2">{bill.amount}</td>
                     <td className="p-2">{bill.status}</td>
                   </tr>
@@ -281,9 +335,10 @@ const HomePage = () => {
               </tbody>
             </table>
           </div>
+
+          <Outlet />
         </main>
       </div>
-      <Outlet />
     </div>
   );
 };
