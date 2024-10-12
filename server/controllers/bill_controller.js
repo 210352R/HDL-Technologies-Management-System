@@ -8,6 +8,7 @@ import {
   getBillDetailsByBillId,
   getBillDetailsById,
   getNearestBill,
+  updateBillAmount,
   updateBillAnnounceDate,
   updateBillHandoverDate,
   updateBillIssue,
@@ -235,5 +236,17 @@ bill_router.put("/update-amount", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Amount could not be updated" });
+  }
+});
+
+// create method for update lap details
+bill_router.put("/update-lap-details", async (req, res) => {
+  const { billId, lap } = req.body;
+  try {
+    const updatedLap = await updateLapDetailsByBillId(billId, lap);
+    res.status(200).json({ lap: updatedLap });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Lap details could not be updated" });
   }
 });

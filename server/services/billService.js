@@ -363,3 +363,25 @@ export const updateBillAmount = async (billId, amount) => {
   });
   return updatedBill;
 };
+
+// create method for update lap details by get lap id use billId and then using lapId update lap details
+export const updateLapDetailsByBillId = async (billId, lap) => {
+  const bill = await prisma.bill.findUnique({
+    where: {
+      billId: billId,
+    },
+  });
+
+  if (!bill) {
+    throw new Error("Bill not found");
+  }
+
+  const updatedLap = await prisma.lap.update({
+    where: {
+      lapId: bill.lapId,
+    },
+    data: lap,
+  });
+
+  return updatedLap;
+};

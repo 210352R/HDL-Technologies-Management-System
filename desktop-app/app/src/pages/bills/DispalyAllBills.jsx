@@ -61,7 +61,7 @@ const BillList = () => {
 
   // Handle edit button click and navigate to the edit page
   const handleEditBill = (billId) => {
-    navigate(`/admin/edit-bill/${billId}`); // Route to the edit page with billId
+    navigate(`/choose-option/${billId}`); // Route to the edit page with billId
   };
 
   return (
