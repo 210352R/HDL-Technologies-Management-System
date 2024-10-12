@@ -10,12 +10,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "react-start": "cd app && npm start",
     "electron-dev": "nodemon --watch main.js --exec electron .",
-    "build": "npm run react-build && electron-builder"
+    "build": "npm run react-build && electron-builder --win nsis "
   },
   "keywords": [],
   "author": "Eshan Maduranga",
   "license": "ISC",
-  "dependencies": {
+  "dependencies": {   
     "electron": "^32.1.0"
   },
   "devDependencies": {
@@ -26,11 +26,12 @@
   "build": {
     "appId": "com.hdl.desktop",
     "directories": {
-      "output": "dist"
+      "output": "dist-new2"
     },
     "files": [
+      "dist/**/*",
       "app/**/*",      
-      "main.js",       
+      "index.js",       
       "preload.js",    
       "package.json"   
     ],

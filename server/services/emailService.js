@@ -150,7 +150,7 @@ export const sendOverdueEmailNotification = (overdueBills, mail) => {
     .map(
       (bill) => `
     <tr>
-      <td>${bill.id}</td>
+      <td>${bill.billId}</td>
       <td>${bill.userId} </td>
       <td>${bill.lapId}</td>
       <td>${bill.lap.lap_model} (${bill.lap.lap_brand})</td>
