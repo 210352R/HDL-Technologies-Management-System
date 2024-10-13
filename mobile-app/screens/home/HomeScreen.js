@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,12 +14,42 @@ import { LineChart } from "react-native-chart-kit";
 import CategoryButtons from "./CategoryButtons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
+// for websocket connection
+import { io } from "socket.io-client";
+import { url } from "../../url";
+import axios from "axios";
+
+// Adjust the path based on your project structure
+
+
 const HomeScreen = ({ navigation }) => {
   const { userLoggedIn } = useAuth();
   const [permission, requestPermission] = useCameraPermissions();
   const isPermissionGranted = Boolean(permission?.granted); // Check if permission is granted
+  const [notification, setNotification] = useState(""); // State for notifications
 
   const [dropdownVisible, setDropdownVisible] = useState(false); // State for dropdown visibility
+
+
+  const socket = io(url);
+
+  useEffect(() => {
+    console.log(
+      "Socker Server try to connect ----------****-------------------- "
+    );
+
+    // Listen for messages from the server
+    socket.on("message", (message) => {
+      setNotification(message);
+    });
+
+    // Clean up the connection when component unmounts
+    return () => {
+      socket.disconnect();
+      console.log("Disconnected from WebSocket server");
+    };
+  }, [socket]);
+
 
   // Sample data for the chart
   const chartData = {

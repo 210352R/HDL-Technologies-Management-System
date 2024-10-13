@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 // create a new lap with uniq id and qr code
 export const createLap = async (laptop) => {
-  const { brand, model } = laptop;
+  const { brand, model, ram, hard, ssd } = laptop;
   const lap_id = uuidv4(); // Generate a unique ID
   const qr_code = await generateQRCode(lap_id); // Generate QR code
   const newLap = await prisma.lap.create({
@@ -13,6 +13,9 @@ export const createLap = async (laptop) => {
       lapId: lap_id,
       brand,
       model,
+      ram,
+      hard,
+      ssd,
       qrcode: qr_code,
     },
   });

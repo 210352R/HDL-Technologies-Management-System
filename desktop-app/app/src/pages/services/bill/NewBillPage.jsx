@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "../../../components/navbar/Navbar"; // Import the Navbar component
 import QRCodeDisplay from "../../../qr/QRCodeDisplay";
+import { storage } from "../../../firebase/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { url } from "../../../url";
 
 const AddBillForm = () => {
+  const [uploadurl, setUploadUrl] = useState("");
   const [formData, setFormData] = useState({
+    billId: "", // Add Bill ID field
     name: "",
     phone: "",
     address: "",
@@ -15,7 +20,10 @@ const AddBillForm = () => {
     announce_date: "",
     handover_date: "",
     status: "",
-    images: [""],
+    images: [],
+    ram: "", // New field for RAM
+    ssd: "", // New field for SSD
+    hard: "", // New field for Hard Drive
   });
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
@@ -28,18 +36,36 @@ const AddBillForm = () => {
     }));
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const storageRef = ref(storage, `images/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      setUploadUrl(url);
+      setFormData((prev) => ({
+        ...prev,
+        images: [...prev.images, url], // Update images array properly
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataWithISODate = {
       ...formData,
-      announce_date: new Date(formData.announce_date).toISOString(),
-      handover_date: new Date(formData.handover_date).toISOString(),
-      amount: parseFloat(formData.amount), // Convert amount to float
+      announce_date: formData.announce_date
+        ? new Date(formData.announce_date).toISOString()
+        : null,
+      handover_date: formData.handover_date
+        ? new Date(formData.handover_date).toISOString()
+        : null,
+      amount: formData.amount ? parseFloat(formData.amount) : 0.0, // Convert amount to float if exists, otherwise set to null
     };
-    console.log(formDataWithISODate); // Handle form submission here
+    console.log(formDataWithISODate);
     try {
       const response = await axios.post(
-        "http://localhost:8000/bill/add-new-bill",
+        `${url}/bill/add-new-bill`,
         formDataWithISODate,
         {
           headers: {
@@ -47,23 +73,19 @@ const AddBillForm = () => {
           },
         }
       );
-      console.log(response.data.qr_code);
-      if (response.data.qr_code) {
-        setIsSetQr(true);
-        setQrCode(response.data.qr_code);
-      } else {
-        alert("There was an error in generate QR Code! Please try again.");
-      }
-      // Handle success notification here
+      console.log("data --", response.data.qr_code);
+
+      setIsSetQr(true);
+      setQrCode(response.data.qr_code);
     } catch (error) {
       console.error("There was an error!", error);
-      alert("There was an error! Please try again."); // Use a better alert method if desired
+      alert("There was an error! Please try again.");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Navbar /> {/* Include Navbar here */}
+      <Navbar />
       {!isSetQr ? (
         <div className="flex justify-center items-center mt-5">
           <form
@@ -75,6 +97,26 @@ const AddBillForm = () => {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Bill ID */}
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-400 mb-2"
+                  htmlFor="billId"
+                >
+                  Bill ID
+                </label>
+                <input
+                  type="text"
+                  id="billId"
+                  name="billId"
+                  value={formData.billId}
+                  onChange={handleChange}
+                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
+                  placeholder="Enter Bill ID"
+                  required
+                />
+              </div>
+
               {/* Name */}
               <div>
                 <label
@@ -210,7 +252,6 @@ const AddBillForm = () => {
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
                   placeholder="500.00" // Updated placeholder to indicate float input
-                  required
                 />
               </div>
 
@@ -229,7 +270,6 @@ const AddBillForm = () => {
                   value={formData.announce_date}
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white"
-                  required
                 />
               </div>
 
@@ -248,7 +288,6 @@ const AddBillForm = () => {
                   value={formData.handover_date}
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white"
-                  required
                 />
               </div>
 
@@ -275,45 +314,105 @@ const AddBillForm = () => {
                 </select>
               </div>
 
-              {/* Images */}
+              {/* RAM Dropdown */}
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-400 mb-2"
+                  htmlFor="ram"
+                >
+                  RAM
+                </label>
+                <select
+                  id="ram"
+                  name="ram"
+                  value={formData.ram}
+                  onChange={handleChange}
+                  className="select select-bordered w-full bg-gray-700 text-white"
+                  required
+                >
+                  <option value="">Select RAM Size</option>
+                  <option value="4GB">4GB</option>
+                  <option value="8GB">8GB</option>
+                  <option value="16GB">16GB</option>
+                  <option value="32GB">32GB</option>
+                </select>
+              </div>
+
+              {/* SSD Dropdown */}
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-400 mb-2"
+                  htmlFor="ssd"
+                >
+                  SSD
+                </label>
+                <select
+                  id="ssd"
+                  name="ssd"
+                  value={formData.ssd}
+                  onChange={handleChange}
+                  className="select select-bordered w-full bg-gray-700 text-white"
+                  required
+                >
+                  <option value="">Select SSD Size</option>
+                  <option value="128GB">128GB</option>
+                  <option value="256GB">256GB</option>
+                  <option value="512GB">512GB</option>
+                  <option value="1TB">1TB</option>
+                </select>
+              </div>
+
+              {/* Hard Drive Dropdown */}
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-400 mb-2"
+                  htmlFor="hard"
+                >
+                  Hard Drive
+                </label>
+                <select
+                  id="hard"
+                  name="hard"
+                  value={formData.hard}
+                  onChange={handleChange}
+                  className="select select-bordered w-full bg-gray-700 text-white"
+                  required
+                >
+                  <option value="">Select Hard Drive Size</option>
+                  <option value="500GB">500GB</option>
+                  <option value="1TB">1TB</option>
+                  <option value="2TB">2TB</option>
+                </select>
+              </div>
+
+              {/* Image Upload */}
               <div className="md:col-span-2">
                 <label
                   className="block text-sm font-medium text-gray-400 mb-2"
                   htmlFor="images"
                 >
-                  Image (Optional)
+                  Upload Image
                 </label>
                 <input
-                  type="text"
+                  type="file"
                   id="images"
-                  name="images"
-                  value={formData.images}
-                  onChange={handleChange}
-                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
-                  placeholder="URL or base64 image string"
+                  onChange={handleImageUpload}
+                  className="file-input file-input-bordered w-full bg-gray-700 text-white"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end mt-6">
-              <button
-                type="submit"
-                className="btn bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
-              >
-                Submit Bill
-              </button>
-            </div>
+            <button type="submit" className="mt-6 btn btn-primary w-full">
+              Submit
+            </button>
           </form>
         </div>
       ) : (
-        <div>
-          {/* Add QR code component or logic here */}
-          <QRCodeDisplay
-            qrCodeUrl={qrCode}
-            brand={formData.brand}
-            model={formData.model}
-          />
-        </div>
+        <QRCodeDisplay
+          qrCodeUrl={qrCode}
+          brand={formData.brand}
+          model={formData.model}
+        />
       )}
     </div>
   );

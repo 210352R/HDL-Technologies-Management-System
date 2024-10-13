@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons"; // Import Material Icons
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -16,14 +16,17 @@ import SettingScreen from "./screens/settings/SettingScreen";
 import AddNewBill from "./screens/bill/AddNewBill";
 import ProfileScreen from "./screens/profile/ProfileScreen";
 import AddExtBillForm from "./screens/bill/AddExcistingBill";
+
 import Bills from "./screens/bills/bills";
 import UpdateBill from "./screens/update_bill/UpdateBill";
 import UpdateBillForm from "./screens/update_bill/UpdateBillFromScreen";
 import Customers from "./screens/Customers/customers";
 
+
 const Stack = createNativeStackNavigator();
 // Create the navigators
 const Drawer = createDrawerNavigator();
+
 function HomeDrawer() {
   return (
     <Drawer.Navigator
@@ -140,6 +143,7 @@ export default function App() {
             component={AddExtBillForm}
             options={{ headerShown: false }}
           />
+
            <Stack.Screen
          name = "Bills"
          component  = {Bills}
@@ -163,6 +167,7 @@ export default function App() {
         component={Customers}
         options={{headerShown: true}}
         />
+
         </Stack.Navigator>
 
        

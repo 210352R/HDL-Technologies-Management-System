@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../../../components/navbar/Navbar"; // Import the Navbar component
 import QRCodeDisplay from "../../../qr/QRCodeDisplay";
+import { url } from "../../../url";
 
 const AddExtBillForm = ({ lapId }) => {
   const [formData, setFormData] = useState({
@@ -25,9 +26,7 @@ const AddExtBillForm = ({ lapId }) => {
   useEffect(() => {
     const fetchLapDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/get-lap/${lapId}`
-        );
+        const response = await axios.get(`${url}/get-lap/${lapId}`);
         const { brand, model, lapId } = response.data.lap;
         setFormData((prev) => ({
           ...prev,
@@ -61,7 +60,7 @@ const AddExtBillForm = ({ lapId }) => {
     };
     try {
       const response = await axios.post(
-        "http://localhost:8000/bill/add-new-bill",
+        `${url}/bill/add-new-bill`,
         formDataWithISODate,
         {
           headers: {

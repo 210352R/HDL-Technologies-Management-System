@@ -1,4 +1,3 @@
-// basic express server in modulejs
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -10,61 +9,80 @@ import { bill_router } from "./controllers/bill_controller.js";
 import { createUser } from "./services/userService.js";
 import { lap_router } from "./controllers/lap_controller.js";
 
-// for web sockets---------------------------------------------------
-import { Server } from "socket.io";
-import http from "http";
-
 //for cron jobs
 import cron from "node-cron";
+import {
+  sendEmailNotification,
+  sendOverdueEmailNotification,
+} from "./services/emailService.js";
+import { sendSms } from "./services/smsService.js";
+import {
+  sendOverdueBillEmail,
+  updateBillStatusToOverdue,
+} from "./services/billService.js";
+
+import { db_router } from "./controllers/db_controller.js";
+import { user_router } from "./controllers/user_controller.js";
+import { backupDatabase } from "./services/memoryDumpService.js";
 
 // create express app ---
 const app = express();
 
-//create web socket server
-const server = http.createServer(app);
-
-const io = new Server(server, {
-  cors: {
-    origin: "*", // Allow CORS for all origins
-  },
-});
-
-// add connection event for web sockets
-
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
-
-  io.emit("connection", "A user connected"); // Emit a message to all connected clients
-
-  // Handle disconnection
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-  });
-});
-
-// add in-built middlewears ----
+// add in-built middleware ----
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// create simple endpoint ------
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("Hello HDL ---  World!");
+});
+
+app.post("/user", async (req, res) => {
+  const { messaage } = req.body;
+  console.log("Message received:", messaage);
+  res.json(messaage);
 });
 
 // Use the routes
 app.use("/bill", bill_router);
 app.use("/qr", qr_router);
 app.use("/lap", lap_router);
+app.use("/users", user_router);
+app.use("/db", db_router);
 
 // set cron job for trigger every day ------------
-
-cron.schedule("15 9 * * *", () => {
-  console.log(
-    "Running a task every day at 9:15 AM *************************************************** "
-  );
-  // Your task logic here
+cron.schedule("5 1 * * *", async () => {
+  console.log("Running Overdue updation Task ------------------------------- ");
+  updateBillStatusToOverdue()
+    .then(() => {
+      console.log("Bill status updated to overdue successfully");
+    })
+    .catch((error) => {
+      console.error("Error updating bill status to overdue:", error);
+    });
 });
+
+// set cron job for trigger every day 6.00 am ------------
+cron.schedule("0 6 * * *", async () => {
+  sendOverdueBillEmail("eshanmaduranga0329@gmail.com")
+    .then(() => {
+      console.log("Overdue bill email sent successfully");
+    })
+    .catch((error) => {
+      console.error("Error sending overdue bill email:", error);
+    });
+});
+
+// set cron job that triggers monthly
+cron.schedule("0 0 1 * *", async () => {
+  try {
+    await backupDatabase();
+    console.log("Database backup completed successfully");
+  } catch (error) {
+    console.error("Backup failed:", error);
+  }
+});
+
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---
 app.listen(port, () => {

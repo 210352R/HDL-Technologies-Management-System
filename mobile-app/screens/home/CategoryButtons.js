@@ -10,6 +10,7 @@ import Icon from "react-native-vector-icons/FontAwesome"; // Change to any icon 
 import { useNavigation } from "@react-navigation/native";
 
 const categories = [
+
   { name: "Bills", icon: "file-text", color: "#E91E63" },
   { name: "Update Bill", icon: "tasks", color: "#4CAF50" },
   { name: "Customers", icon:  "users", color: "#FF9800" },
@@ -21,6 +22,8 @@ const CategoryButtons = () => {
   const navigation = useNavigation(); // Use the useNavigation hook to get the navigation object
   const handleNavigation = (category) => {
     navigation.navigate(category.name);
+
+
   };
 
   return (
@@ -32,6 +35,7 @@ const CategoryButtons = () => {
       {categories.map((category, index) => (
         <TouchableOpacity
           key={index}
+          onPress={() => handlePress(category.link)}
           style={[styles.button, { borderColor: category.color }]}
           onPress={() => handleNavigation(category)}  // Updated this line
         >

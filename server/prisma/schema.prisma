@@ -23,6 +23,7 @@ model User {
 
 model Bill{
   id        String @id @default(auto()) @map("_id") @db.ObjectId
+  billId    String @unique
   lapId     String
   userId    String
   issue     String
@@ -39,5 +40,8 @@ model Lap {
   lapId     String @unique
   brand     String
   model     String
+  ram       String?  
+  ssd       String?  
+  hard      String?  
   qrcode    String
 }
