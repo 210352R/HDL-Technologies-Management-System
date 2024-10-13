@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Navbar from "../../../components/navbar/Navbar"; // Import the Navbar component
+import Navbar from "../../../components/navbar/Navbar";
 import QRCodeDisplay from "../../../qr/QRCodeDisplay";
 import { storage } from "../../../firebase/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -9,7 +9,7 @@ import { url } from "../../../url";
 const AddBillForm = () => {
   const [uploadurl, setUploadUrl] = useState("");
   const [formData, setFormData] = useState({
-    billId: "", // Add Bill ID field
+    billId: "",
     name: "",
     phone: "",
     address: "",
@@ -21,9 +21,10 @@ const AddBillForm = () => {
     handover_date: "",
     status: "",
     images: [],
-    ram: "", // New field for RAM
-    ssd: "", // New field for SSD
-    hard: "", // New field for Hard Drive
+    ram: "",
+    ssd: "",
+    hard: "",
+    customSsd: "",
   });
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
@@ -33,17 +34,31 @@ const AddBillForm = () => {
     "In Progress",
     "Completed",
   ]);
-
+  // use state for userId
+  const [userId, setUserId] = useState("");
   const [isHandoverDateDisabled, setIsHandoverDateDisabled] = useState(false);
   const [isAnnounceDateDisabled, setIsAnnounceDateDisabled] = useState(false);
 
+  const [phoneError, setPhoneError] = useState("");
+
+  const [isUserDetected, setIsUserDetected] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "phone") {
+      if (!/^\d{10}$/.test(value) && value !== "") {
+        setPhoneError("Phone number must be exactly 10 digits.");
+      } else {
+        setPhoneError("");
+      }
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "amount" ? value : value, // Allowing float input for amount
+      [name]: name === "amount" ? value : value,
     }));
-    // check if the name is announce_date and it has value then remove "In Progress", "Completed" from statusOptions
+
     if (name === "announce_date" && value) {
       setIsHandoverDateDisabled(true);
       setStatusOptions(["Pending"]);
@@ -53,7 +68,6 @@ const AddBillForm = () => {
     }
   };
 
-  // This function handles the custom SSD input change
   const handleCustomSsdChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -70,7 +84,7 @@ const AddBillForm = () => {
       setUploadUrl(url);
       setFormData((prev) => ({
         ...prev,
-        images: [...prev.images, url], // Update images array properly
+        images: [...prev.images, url],
       }));
     }
   };
@@ -85,9 +99,9 @@ const AddBillForm = () => {
       handover_date: formData.handover_date
         ? new Date(formData.handover_date).toISOString()
         : null,
-      amount: formData.amount ? parseFloat(formData.amount) : 0.0, // Convert amount to float if exists, otherwise set to null
+      amount: formData.amount ? parseFloat(formData.amount) : 0.0,
     };
-    console.log(formDataWithISODate);
+
     try {
       const response = await axios.post(
         `${url}/bill/add-new-bill`,
@@ -98,7 +112,6 @@ const AddBillForm = () => {
           },
         }
       );
-      console.log("data --", response.data.qr_code);
 
       setIsSetQr(true);
       setQrCode(response.data.qr_code);
@@ -107,6 +120,35 @@ const AddBillForm = () => {
       alert("There was an error! Please try again.");
     }
   };
+
+  const fetchUserByPhone = async (phone) => {
+    try {
+      const response = await axios.get(
+        `${url}/users/get-user-by-phone/${phone}`
+      );
+      const { user } = response.data;
+      if (user) {
+        setFormData((prev) => ({
+          ...prev,
+          name: user.name,
+          address: user.address,
+        }));
+        setIsUserDetected(true);
+        setUserId(user.id);
+      } else {
+        setIsUserDetected(false);
+      }
+    } catch (error) {
+      console.log("No user Found -------- ");
+      setIsUserDetected(false);
+    }
+  };
+
+  useEffect(() => {
+    if (formData.phone.length === 10) {
+      fetchUserByPhone(formData.phone);
+    }
+  }, [formData.phone]);
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -122,7 +164,6 @@ const AddBillForm = () => {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Bill ID */}
               <div>
                 <label
                   className="block text-sm font-medium text-gray-400 mb-2"
@@ -142,27 +183,6 @@ const AddBillForm = () => {
                 />
               </div>
 
-              {/* Name */}
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-400 mb-2"
-                  htmlFor="name"
-                >
-                  Customer Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-
-              {/* Phone */}
               <div>
                 <label
                   className="block text-sm font-medium text-gray-400 mb-2"
@@ -180,9 +200,31 @@ const AddBillForm = () => {
                   placeholder="(555) 555-5555"
                   required
                 />
+                {phoneError && (
+                  <p className="text-red-500 text-xs mt-1">{phoneError}</p>
+                )}
               </div>
 
-              {/* Address */}
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-400 mb-2"
+                  htmlFor="name"
+                >
+                  Customer Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
+                  placeholder="John Doe"
+                  required
+                  disabled={isUserDetected}
+                />
+              </div>
+
               <div className="md:col-span-2">
                 <label
                   className="block text-sm font-medium text-gray-400 mb-2"
@@ -199,9 +241,11 @@ const AddBillForm = () => {
                   className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
                   placeholder="123 Main St."
                   required
+                  disabled={isUserDetected}
                 />
               </div>
 
+              {/* Other fields like brand, model, issue, etc. */}
               {/* Brand */}
               <div>
                 <label
@@ -453,11 +497,14 @@ const AddBillForm = () => {
                   className="file-input file-input-bordered w-full bg-gray-700 text-white"
                 />
               </div>
-            </div>
 
-            <button type="submit" className="mt-6 btn btn-primary w-full">
-              Submit
-            </button>
+              <div>
+                {/* Submit button */}
+                <button type="submit" className="mt-6 btn btn-primary w-full">
+                  Submit
+                </button>
+              </div>
+            </div>
           </form>
         </div>
       ) : (
