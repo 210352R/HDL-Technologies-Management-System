@@ -331,6 +331,7 @@ const AddBillForm = () => {
                   required
                 >
                   <option value="">Select RAM Size</option>
+                  <option value="2GB">4GB</option>
                   <option value="4GB">4GB</option>
                   <option value="8GB">8GB</option>
                   <option value="16GB">16GB</option>
