@@ -35,3 +35,13 @@ export const getUserByPhone = async (phone) => {
   }
   return user[0];
 };
+
+// get all bills from user id
+export const getAllBillsByUserId = async (userId) => {
+  const bills = await prisma.bill.findMany({
+    where: {
+      userId,
+    },
+  });
+  return bills;
+};

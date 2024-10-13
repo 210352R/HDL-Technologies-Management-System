@@ -20,6 +20,7 @@ import {
   updateBillStatus,
   updateLapDetailsByBillId,
 } from "../services/billService.js";
+import { getAllBillsByUserId } from "../services/userService.js";
 
 export const bill_router = express.Router();
 
@@ -309,5 +310,18 @@ bill_router.get("/get-completed-bills-count", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Bills could not be fetched" });
+  }
+});
+
+// get all bills by user Id
+bill_router.get("/get-all-bills-by-user-id/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const bills = await getAllBillsByUserId(userId);
+    res.status(200).json({ bills: bills });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ error: error, message: "Bills could not be fetched" });
   }
 });

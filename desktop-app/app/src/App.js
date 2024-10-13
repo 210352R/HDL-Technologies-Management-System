@@ -30,6 +30,7 @@ import MarkBillCanceledPage from "./pages/bill_updates/MarkBillCancelledPage";
 import UpdateBillIssuePage from "./pages/bill_updates/UpdateBillIsuePage";
 import UpdateAmountPage from "./pages/bill_updates/UpdateAmountPage";
 import UpdateLapDetailsPage from "./pages/bill_updates/UpdateLapDetailsPage";
+import FindUserByPhone from "./pages/users/FindUserPage";
 
 function App() {
   return (
@@ -81,7 +82,7 @@ function App() {
               path="/update-lap-details/:billId"
               element={<UpdateLapDetailsPage />}
             />
-
+            <Route path="/find-user" element={<FindUserByPhone />} />
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </Router>

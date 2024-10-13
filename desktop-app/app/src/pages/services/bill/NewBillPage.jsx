@@ -357,7 +357,6 @@ const AddBillForm = () => {
                   value={formData.ram}
                   onChange={handleChange}
                   className="select select-bordered w-full bg-gray-700 text-white"
-                  required
                 >
                   <option value="">Select RAM Size</option>
                   <option value="2GB">2GB</option>

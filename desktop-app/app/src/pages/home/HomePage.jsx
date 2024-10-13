@@ -11,11 +11,13 @@ import {
   FaCog,
   FaCloudUploadAlt,
   FaEdit,
+  FaUserSearch,
 } from "react-icons/fa";
 import { io } from "socket.io-client";
 import { Line, Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto"; // Required for react-chartjs-2 to work
 import { url } from "../../url";
+import { FaUserCheck } from "react-icons/fa";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -205,6 +207,12 @@ const HomePage = () => {
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
                 <FaFileInvoice size={24} className="mr-2" /> Bills
+              </Link>
+              <Link
+                to="/find-user"
+                className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
+              >
+                <FaUserCheck size={24} className="mr-2" /> Find User
               </Link>
               <Link
                 to="/users"
