@@ -4,6 +4,9 @@
   "private": true,
   "homepage": ".",
   "main" : "index.js",
+  "description": "React frontend for HDL Desktop App",
+  "author": "Eshan Maduranga",
+  "license": "ISC",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
