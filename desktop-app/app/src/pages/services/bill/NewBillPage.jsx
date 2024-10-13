@@ -28,12 +28,21 @@ const AddBillForm = () => {
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
 
+  // Define the status options array
+  let statusOptions = ["Pending", "In Progress", "Completed"];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: name === "amount" ? value : value, // Allowing float input for amount
     }));
+    // check if the name is announce_date and it has value then remove "In Progress", "Completed" from statusOptions
+    if (name === "announce_date" && value) {
+      statusOptions = ["Pending"];
+    } else if (name === "handover_date" && value) {
+      statusOptions = ["In Progress", "Completed"];
+    }
   };
 
   const handleImageUpload = async (e) => {
@@ -308,9 +317,11 @@ const AddBillForm = () => {
                   required
                 >
                   <option value="">Select Status</option>
-                  <option value="Pending">Pending</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Completed">Completed</option>
+                  {statusOptions.map((status, index) => (
+                    <option key={index} value={status}>
+                      {status}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -331,7 +342,7 @@ const AddBillForm = () => {
                   required
                 >
                   <option value="">Select RAM Size</option>
-                  <option value="2GB">4GB</option>
+                  <option value="2GB">2GB</option>
                   <option value="4GB">4GB</option>
                   <option value="8GB">8GB</option>
                   <option value="16GB">16GB</option>
