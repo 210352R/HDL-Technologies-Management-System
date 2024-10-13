@@ -103,18 +103,36 @@ const AddBillForm = () => {
     };
 
     try {
-      const response = await axios.post(
-        `${url}/bill/add-new-bill`,
-        formDataWithISODate,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      if (!isUserDetected) {
+        const response = await axios.post(
+          `${url}/bill/add-new-bill`,
+          formDataWithISODate,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      setIsSetQr(true);
-      setQrCode(response.data.qr_code);
+        setIsSetQr(true);
+        setQrCode(response.data.qr_code);
+      } else {
+        const response = await axios.post(
+          `${url}/bill/add-existing-user-bill`,
+          {
+            ...formDataWithISODate,
+            userId: userId,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        setIsSetQr(true);
+        setQrCode(response.data.qr_code);
+      }
     } catch (error) {
       console.error("There was an error!", error);
       alert("There was an error! Please try again.");

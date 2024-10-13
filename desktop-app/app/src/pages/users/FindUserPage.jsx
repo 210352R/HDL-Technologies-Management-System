@@ -112,15 +112,19 @@ const FindUserByPhone = () => {
                 >
                   <div>
                     <strong className="text-gray-300">Bill ID:</strong>{" "}
-                    {bill.id}
+                    {bill.billId}
                   </div>
                   <div>
                     <strong className="text-gray-300">Amount:</strong> $
                     {bill.amount}
                   </div>
                   <div>
-                    <strong className="text-gray-300">Date:</strong>{" "}
-                    {new Date(bill.date).toLocaleDateString()}
+                    <strong className="text-gray-300">Issue:</strong> $
+                    {bill.issue}
+                  </div>
+                  <div>
+                    <strong className="text-gray-300">Status:</strong> $
+                    {bill.status}
                   </div>
                 </div>
               ))}

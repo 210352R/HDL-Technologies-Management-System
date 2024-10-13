@@ -3,6 +3,7 @@ import { createLap } from "../services/lapService.js";
 import {
   createBillForExistingLap,
   createNewBill,
+  createNewBillByUserId,
   getAllBillDetailsWithLaps,
   getAllBills,
   getAllBillsCount,
@@ -109,7 +110,7 @@ bill_router.post("/add-existing-bill", async (req, res) => {
     status,
     images,
   } = req.body;
-  console.log("Request body: ", req.body);
+
   try {
     const bill = {
       lapId,
@@ -124,6 +125,51 @@ bill_router.post("/add-existing-bill", async (req, res) => {
       images,
     };
     const newBill = await createBillForExistingLap(bill);
+
+    res
+      .status(201)
+      .json({ success: true, bill: newBill.id, qr_code: newBill.qr_code });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bill could not be added" });
+  }
+});
+
+// create post method for add bill for Exsisting User
+bill_router.post("/add-existing-user-bill", async (req, res) => {
+  const {
+    billId,
+    userId,
+    brand,
+    model,
+    issue,
+    amount,
+    announce_date,
+    handover_date,
+    status,
+    ram,
+    hard,
+    ssd,
+    images,
+  } = req.body;
+
+  try {
+    const bill = {
+      billId,
+      userId,
+      brand,
+      model,
+      issue,
+      amount,
+      announce_date,
+      handover_date,
+      status,
+      ram,
+      hard,
+      ssd,
+      images,
+    };
+    const newBill = await createNewBillByUserId(bill);
 
     res
       .status(201)
