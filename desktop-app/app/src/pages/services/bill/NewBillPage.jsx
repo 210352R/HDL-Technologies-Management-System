@@ -28,8 +28,14 @@ const AddBillForm = () => {
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
 
-  // Define the status options array
-  let statusOptions = ["Pending", "In Progress", "Completed"];
+  const [statusOptions, setStatusOptions] = useState([
+    "Pending",
+    "In Progress",
+    "Completed",
+  ]);
+
+  const [isHandoverDateDisabled, setIsHandoverDateDisabled] = useState(false);
+  const [isAnnounceDateDisabled, setIsAnnounceDateDisabled] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,10 +45,20 @@ const AddBillForm = () => {
     }));
     // check if the name is announce_date and it has value then remove "In Progress", "Completed" from statusOptions
     if (name === "announce_date" && value) {
-      statusOptions = ["Pending"];
+      setIsHandoverDateDisabled(true);
+      setStatusOptions(["Pending"]);
     } else if (name === "handover_date" && value) {
-      statusOptions = ["In Progress", "Completed"];
+      setIsAnnounceDateDisabled(true);
+      setStatusOptions(["In Progress", "Completed"]);
     }
+  };
+
+  // This function handles the custom SSD input change
+  const handleCustomSsdChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      customSsd: e.target.value,
+    }));
   };
 
   const handleImageUpload = async (e) => {
@@ -279,6 +295,7 @@ const AddBillForm = () => {
                   value={formData.announce_date}
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white"
+                  disabled={isAnnounceDateDisabled}
                 />
               </div>
 
@@ -297,6 +314,7 @@ const AddBillForm = () => {
                   value={formData.handover_date}
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white"
+                  disabled={isHandoverDateDisabled}
                 />
               </div>
 
@@ -352,26 +370,51 @@ const AddBillForm = () => {
 
               {/* SSD Dropdown */}
               <div>
-                <label
-                  className="block text-sm font-medium text-gray-400 mb-2"
-                  htmlFor="ssd"
-                >
-                  SSD
-                </label>
-                <select
-                  id="ssd"
-                  name="ssd"
-                  value={formData.ssd}
-                  onChange={handleChange}
-                  className="select select-bordered w-full bg-gray-700 text-white"
-                  required
-                >
-                  <option value="">Select SSD Size</option>
-                  <option value="128GB">128GB</option>
-                  <option value="256GB">256GB</option>
-                  <option value="512GB">512GB</option>
-                  <option value="1TB">1TB</option>
-                </select>
+                {/* SSD Dropdown */}
+                <div>
+                  <label
+                    className="block text-sm font-medium text-gray-400 mb-2"
+                    htmlFor="ssd"
+                  >
+                    SSD
+                  </label>
+                  <select
+                    id="ssd"
+                    name="ssd"
+                    value={formData.ssd}
+                    onChange={handleChange}
+                    className="select select-bordered w-full bg-gray-700 text-white"
+                  >
+                    <option value="">Select SSD Size</option>
+                    <option value="128GB">128GB</option>
+                    <option value="256GB">256GB</option>
+                    <option value="512GB">512GB</option>
+                    <option value="1TB">1TB</option>
+                    <option value="Custom">Custom</option> {/* Custom Option */}
+                  </select>
+                </div>
+
+                {/* Conditionally render the custom SSD input field */}
+                {formData.ssd === "Custom" && (
+                  <div className="mt-4">
+                    <label
+                      className="block text-sm font-medium text-gray-400 mb-2"
+                      htmlFor="customSsd"
+                    >
+                      Enter Custom SSD Size
+                    </label>
+                    <input
+                      type="text"
+                      id="customSsd"
+                      name="customSsd"
+                      value={formData.customSsd}
+                      onChange={handleCustomSsdChange}
+                      className="input input-bordered w-full bg-gray-700 text-white"
+                      placeholder="Enter SSD Size (e.g., 2TB, 3TB)"
+                      required
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Hard Drive Dropdown */}
@@ -388,7 +431,6 @@ const AddBillForm = () => {
                   value={formData.hard}
                   onChange={handleChange}
                   className="select select-bordered w-full bg-gray-700 text-white"
-                  required
                 >
                   <option value="">Select Hard Drive Size</option>
                   <option value="500GB">500GB</option>

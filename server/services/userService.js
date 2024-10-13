@@ -19,3 +19,19 @@ export const getAllUsers = async () => {
   const users = await prisma.user.findMany();
   return users;
 };
+
+// get user by phone number
+export const getUserByPhone = async (phone) => {
+  const user = await prisma.user.findMany({
+    where: {
+      phone,
+    },
+  });
+  if (user.length === 0) {
+    throw new Error("User not found");
+  }
+  if (user.length > 1) {
+    throw new Error("Multiple users found");
+  }
+  return user[0];
+};
