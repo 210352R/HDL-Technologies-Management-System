@@ -148,30 +148,36 @@ export const getNearestBill = async () => {
   const bills = await prisma.bill.findMany({
     where: {
       // Filter out completed and cancelled bills
-      NOT: [{ status: "Completed" }, { status: "Cancalled" }],
+      NOT: [{ status: "Completed" }, { status: "Cancelled" }],
     },
   });
 
-  // Step 2: Sort the bills based on custom logic
-  const sortedBills = bills.sort((a, b) => {
-    // If the status is "In Progress" or "Overdue", sort by handover_date
-    if (
-      (a.status === "In Progress" || a.status === "Overdue") &&
-      a.handover_date &&
-      b.handover_date
-    ) {
-      return new Date(a.handover_date) - new Date(b.handover_date);
-    }
-    // If the status is "Pending", sort by announce_date
-    if (a.status === "Pending" && a.announce_date && b.announce_date) {
-      return new Date(a.announce_date) - new Date(b.announce_date);
-    }
-
-    // If none of the conditions match, return 0 (do not change the order)
-    return 0;
+  // Step 2: Filter bills to only include those with valid dates
+  const filteredBills = bills.filter((bill) => {
+    return (
+      ((bill.status === "In Progress" || bill.status === "Overdue") &&
+        bill.handover_date &&
+        new Date(bill.handover_date) >= today) ||
+      (bill.status === "Pending" &&
+        bill.announce_date &&
+        new Date(bill.announce_date) >= today)
+    );
   });
 
-  return sortedBills;
+  // Step 3: Sort the filtered bills based on custom logic
+  const sortedBills = filteredBills.sort((a, b) => {
+    if (a.status === "In Progress" || a.status === "Overdue") {
+      return new Date(a.handover_date) - new Date(b.handover_date);
+    } else if (a.status === "Pending") {
+      return new Date(a.announce_date) - new Date(b.announce_date);
+    }
+    return 0; // If none of the conditions match, do not change the order
+  });
+
+  // Step 4: Limit the result to the first 10 nearest bills
+  const nearestBills = sortedBills.slice(0, 10);
+
+  return nearestBills;
 };
 
 // create a function that if handover_date is less than today, then update status to "Overdue" , if handover_date is not given  and announce date is given and less than today set it to "Overdue" , if there handover_date is given and announce date is given if announce date is less than today is no problem
