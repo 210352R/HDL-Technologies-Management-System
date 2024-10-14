@@ -10,23 +10,20 @@ import Icon from "react-native-vector-icons/FontAwesome"; // Change to any icon 
 import { useNavigation } from "@react-navigation/native";
 
 const categories = [
-  {
-    name: "Analytics",
-    icon: "bar-chart",
-    color: "#3F51B5",
-    link: "AnalyticsScreen",
-  },
-  { name: "Customers", icon: "home", color: "#FF9800", link: "Users" },
-  { name: "Orders", icon: "file-text", color: "#E91E63", link: "Bills" },
-  { name: "Laps", icon: "tasks", color: "#4CAF50", link: "Laps" },
-  { name: "Sales", icon: "bell", color: "#FFEB3B", link: "Sales" },
+
+  { name: "Bills", icon: "file-text", color: "#E91E63" },
+  { name: "Update Bill", icon: "tasks", color: "#4CAF50" },
+  { name: "Customers", icon:  "users", color: "#FF9800" },
+  { name: "Tasks", icon: "tasks", color: "#4CAF50" },
+  
 ];
 
 const CategoryButtons = () => {
-  const navigation = useNavigation(); // Hook to get the navigation prop
+  const navigation = useNavigation(); // Use the useNavigation hook to get the navigation object
+  const handleNavigation = (category) => {
+    navigation.navigate(category.name);
 
-  const handlePress = (categoryLink) => {
-    navigation.navigate(categoryLink); // Navigate to the screen with the corresponding name
+
   };
 
   return (
@@ -40,6 +37,7 @@ const CategoryButtons = () => {
           key={index}
           onPress={() => handlePress(category.link)}
           style={[styles.button, { borderColor: category.color }]}
+          onPress={() => handleNavigation(category)}  // Updated this line
         >
           <Icon name={category.icon} size={30} color={category.color} />
           <Text style={styles.buttonText}>{category.name}</Text>
