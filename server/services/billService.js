@@ -261,11 +261,7 @@ export const updateBillStatusToOverdue = async () => {
         });
       }
     } else if (bill.status === "Pending") {
-      if (
-        !bill.handover_date &&
-        bill.announce_date &&
-        bill.announce_date < new Date()
-      ) {
+      if (bill.announce_date < new Date()) {
         // update status to "Overdue"
         await prisma.bill.update({
           where: {
