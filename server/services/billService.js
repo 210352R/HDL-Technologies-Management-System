@@ -203,32 +203,43 @@ export const getNearestBill = async () => {
     },
   });
 
-  // Step 2: Filter bills to only include those with valid dates
-  const filteredBills = bills.filter((bill) => {
-    return (
-      ((bill.status === "In Progress" || bill.status === "Overdue") &&
-        bill.handover_date &&
-        new Date(bill.handover_date) >= today) ||
-      (bill.status === "Pending" &&
-        bill.announce_date &&
-        new Date(bill.announce_date) >= today)
-    );
-  });
+  // Step 2: Get the overdue bills
+  const overDueBills = bills.filter((bill) => bill.status === "Overdue");
 
-  // Step 3: Sort the filtered bills based on custom logic
-  const sortedBills = filteredBills.sort((a, b) => {
-    if (a.status === "In Progress" || a.status === "Overdue") {
-      return new Date(a.handover_date) - new Date(b.handover_date);
-    } else if (a.status === "Pending") {
-      return new Date(a.announce_date) - new Date(b.announce_date);
-    }
-    return 0; // If none of the conditions match, do not change the order
-  });
+  // Step 3: Filter Pending and In Progress bills
+  const pendingAndInProgressBills = bills.filter(
+    (bill) => bill.status === "Pending" || bill.status === "In Progress"
+  );
 
-  // Step 4: Limit the result to the first 10 nearest bills
-  const nearestBills = sortedBills.slice(0, 10);
+  // Step 4: Calculate the time difference for Pending and In Progress bills
+  const nearestBills = pendingAndInProgressBills
+    .map((bill) => {
+      let timeDifference;
+      if (bill.status === "Pending") {
+        // Calculate time difference between today and announce_date for Pending bills
+        if (bill.announce_date) {
+          timeDifference = Math.abs(new Date(bill.announce_date) - today);
+        }
+      } else if (bill.status === "In Progress") {
+        // Calculate time difference between today and handover_date for In Progress bills
+        if (bill.handover_date) {
+          timeDifference = Math.abs(new Date(bill.handover_date) - today);
+        }
+      }
 
-  return nearestBills;
+      return {
+        ...bill,
+        timeDifference,
+      };
+    })
+    .filter((bill) => bill.timeDifference !== undefined) // Filter out bills without timeDifference
+    .sort((a, b) => a.timeDifference - b.timeDifference); // Sort by nearest date
+
+  // make array combine with overdue bills and nearest bills
+  const nearestBillsWithOverdue = [...overDueBills, ...nearestBills];
+
+  // Step 5: Return the nearest bill(s)
+  return nearestBillsWithOverdue;
 };
 
 // create a function that if handover_date is less than today, then update status to "Overdue"
