@@ -231,7 +231,9 @@ export const getNearestBill = async () => {
   return nearestBills;
 };
 
-// create a function that if handover_date is less than today, then update status to "Overdue" , if handover_date is not given  and announce date is given and less than today set it to "Overdue" , if there handover_date is given and announce date is given if announce date is less than today is no problem
+// create a function that if handover_date is less than today, then update status to "Overdue"
+// if handover_date is not given and announce date is given and less than today, set it to "Overdue"
+// if handover_date is given and announce date is given, if announce date is less than today is no problem
 export const updateBillStatusToOverdue = async () => {
   // get all bills
   const bills = await prisma.bill.findMany();
@@ -246,26 +248,34 @@ export const updateBillStatusToOverdue = async () => {
     const bill = filteredBills[i];
 
     // check if handover_date is less than today
-    if (bill.handover_date < new Date()) {
-      // update status to "Overdue"
-      await prisma.bill.update({
-        where: {
-          id: bill.id,
-        },
-        data: {
-          status: "Overdue",
-        },
-      });
-    } else if (!bill.handover_date && bill.announce_date < new Date()) {
-      // update status to "Overdue"
-      await prisma.bill.update({
-        where: {
-          id: bill.id,
-        },
-        data: {
-          status: "Overdue",
-        },
-      });
+    if (bill.status === "In Progress") {
+      if (bill.handover_date && bill.handover_date < new Date()) {
+        // update status to "Overdue"
+        await prisma.bill.update({
+          where: {
+            id: bill.id,
+          },
+          data: {
+            status: "Overdue",
+          },
+        });
+      }
+    } else if (bill.status === "Pending") {
+      if (
+        !bill.handover_date &&
+        bill.announce_date &&
+        bill.announce_date < new Date()
+      ) {
+        // update status to "Overdue"
+        await prisma.bill.update({
+          where: {
+            id: bill.id,
+          },
+          data: {
+            status: "Overdue",
+          },
+        });
+      }
     }
   }
 };
