@@ -371,3 +371,15 @@ bill_router.get("/get-all-bills-by-user-id/:userId", async (req, res) => {
       .json({ error: error, message: "Bills could not be fetched" });
   }
 });
+
+// create end point for delete bill by billId
+bill_router.delete("/delete-bill/:billId", async (req, res) => {
+  const { billId } = req.params;
+  try {
+    const bill = await deleteBill(billId);
+    res.status(200).json({ bill: bill });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bill could not be deleted" });
+  }
+});
