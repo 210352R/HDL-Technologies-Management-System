@@ -14,7 +14,7 @@
     ],
     "crons": [
       {
-        "path": "https://hdl-technologies-management-system.vercel.app/cron/overdue",
+        "path": "/api/cron",
         "schedule": "50 9 * * *"
       }
     ]

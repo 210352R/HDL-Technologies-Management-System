@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
   res.send("Hello HDL ---  World!");
 });
 
-app.post("/cron/overdue", async (req, res) => {
+app.post("/api/cron", async (req, res) => {
   console.log("Running Overdue updation Task ------------------------------- ");
   updateBillStatusToOverdue()
     .then(() => {
@@ -57,7 +57,7 @@ app.use("/users", user_router);
 app.use("/db", db_router);
 
 // set cron job for trigger every day ------------
-cron.schedule("27 9 * * *", async () => {
+cron.schedule("2 9 * * *", async () => {
   console.log("Running Overdue updation Task ------------------------------- ");
   updateBillStatusToOverdue()
     .then(() => {
