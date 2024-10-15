@@ -38,9 +38,15 @@ app.get("/", (req, res) => {
 });
 
 app.post("/user", async (req, res) => {
-  const { messaage } = req.body;
-  console.log("Message received:", messaage);
-  res.json(messaage);
+  console.log("Running Overdue updation Task ------------------------------- ");
+  updateBillStatusToOverdue()
+    .then(() => {
+      console.log("Bill status updated to overdue successfully");
+    })
+    .catch((error) => {
+      console.error("Error updating bill status to overdue:", error);
+    });
+  res.send("User created");
 });
 
 // Use the routes
