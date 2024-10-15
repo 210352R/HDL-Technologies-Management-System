@@ -57,7 +57,7 @@ app.use("/users", user_router);
 app.use("/db", db_router);
 
 // set cron job for trigger every day ------------
-cron.schedule("00 11 * * *", async () => {
+cron.schedule("0 11 * * *", async () => {
   console.log("Running Overdue updation Task ------------------------------- ");
   updateBillStatusToOverdue()
     .then(() => {
