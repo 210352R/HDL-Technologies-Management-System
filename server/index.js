@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
   res.send("Hello HDL ---  World!");
 });
 
-app.post("/api/cron", async (req, res) => {
+app.get("/api/cron", async (req, res) => {
   console.log("Running Overdue updation Task ------------------------------- ");
   updateBillStatusToOverdue()
     .then(() => {
