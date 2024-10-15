@@ -51,7 +51,7 @@ app.use("/users", user_router);
 app.use("/db", db_router);
 
 // set cron job for trigger every day ------------
-cron.schedule("0 10 * * *", async () => {
+cron.schedule("5 9 * * *", async () => {
   console.log("Running Overdue updation Task ------------------------------- ");
   updateBillStatusToOverdue()
     .then(() => {
@@ -63,7 +63,7 @@ cron.schedule("0 10 * * *", async () => {
 });
 
 // set cron job for trigger every day 6.00 am ------------
-cron.schedule("5 10 * * *", async () => {
+cron.schedule("10 9 * * *", async () => {
   sendOverdueBillEmail("eshanmaduranga0329@gmail.com")
     .then(() => {
       console.log("Overdue bill email sent successfully");
