@@ -1,7 +1,9 @@
 import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
+import { AuthProvider } from "./context/auth";
 import { publicRoutes, protectedRoutes } from "./Route";
 import ProtectedRoute from "./ProtectedRoute";
+import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   return (
@@ -32,7 +34,7 @@ function App() {
             ))}
 
             {/* Catch-all route for undefined paths */}
-            <Route path="*" element={<h1>Not Found</h1>} />
+            <Route path="*" element={NotFoundPage} />
           </Routes>
         </Router>
       </AuthProvider>
