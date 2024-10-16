@@ -34,7 +34,7 @@ function App() {
             ))}
 
             {/* Catch-all route for undefined paths */}
-            <Route path="*" element={NotFoundPage} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Router>
       </AuthProvider>
