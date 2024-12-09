@@ -8,6 +8,7 @@ import prisma from "./database/prisma.js";
 import { bill_router } from "./controllers/bill_controller.js";
 import { createUser } from "./services/userService.js";
 import { lap_router } from "./controllers/lap_controller.js";
+import { admin_router } from "./controllers/admin_controller.js";
 
 //for cron jobs
 import cron from "node-cron";
@@ -55,6 +56,7 @@ app.use("/qr", qr_router);
 app.use("/lap", lap_router);
 app.use("/users", user_router);
 app.use("/db", db_router);
+app.use("/admin", admin_router);
 
 // set cron job for trigger every day ------------
 cron.schedule("0 11 * * *", async () => {
