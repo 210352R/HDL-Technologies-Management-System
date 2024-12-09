@@ -5,6 +5,7 @@ import { useAuth } from "../../context/auth/index";
 
 const LoginPage = () => {
   const { userLoggedIn } = useAuth();
+  const { isCompanyUser } = useAuth();
 
   // State for email and password
   const [email, setEmail] = useState("");
@@ -50,7 +51,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      {userLoggedIn && <Navigate to={"/home"} replace={true} />}
+      {userLoggedIn && !isCompanyUser && <Navigate to="/home" replace={true} />}
 
       <div className="min-h-screen flex items-center justify-center bg-gray-400">
         <div className="card w-full max-w-sm shadow-md bg-white">

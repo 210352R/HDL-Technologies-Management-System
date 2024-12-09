@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [isEmailUser, setIsEmailUser] = useState(false);
-
+  const [isCompanyUser, setIsCompanyUser] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,6 +30,7 @@ export function AuthProvider({ children }) {
       const isEmail = user.providerData.some(
         (provider) => provider.providerId === "password"
       );
+      const isCompany = false;
       setIsEmailUser(isEmail);
       setUserLoggedIn(true);
     } else {
@@ -44,6 +45,7 @@ export function AuthProvider({ children }) {
     userLoggedIn,
     isEmailUser,
     currentUser,
+    isCompanyUser,
     setCurrentUser,
   };
 
