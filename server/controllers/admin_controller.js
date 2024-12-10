@@ -78,6 +78,21 @@ admin_router.get("/companies/name/:name", async (req, res) => {
   }
 });
 
+// get company by email
+admin_router.get("/companies/email/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const company = await getCompanyByEmail(email);
+    if (!company) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+    res.status(200).json(company);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Update company by ID
 admin_router.put("/companies/:id", async (req, res) => {
   try {

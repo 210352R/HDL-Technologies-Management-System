@@ -52,6 +52,6 @@ model Company {
   name      String @unique
   address   String
   phone     String
-  email     String
+  email     String @unique
   prefix    String @unique
 }

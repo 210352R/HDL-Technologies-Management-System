@@ -70,6 +70,23 @@ export const getAllCompaniesPrefixes = async () => {
   }
 };
 
+// Create method for get company by email
+export const getCompanyByEmail = async (email) => {
+  try {
+    const company = await prisma.company.findUnique({
+      where: {
+        email,
+      },
+    });
+    return company;
+  } catch (error) {
+    console.error("Error fetching company:", error);
+    throw new Error("An error occurred while fetching company.");
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
 // Create method for get company by prefix
 export const getCompanyByPrefix = async (prefix) => {
   try {
@@ -105,11 +122,11 @@ export const getCompanyByName = async (name) => {
 };
 
 // create method for update company by id
-export const updateCompanyById = async (company_id, company) => {
+export const updateCompanyById = async (id, company) => {
   try {
     const updatedCompany = await prisma.company.update({
       where: {
-        company_id,
+        id,
       },
       data: {
         ...company,
@@ -125,11 +142,11 @@ export const updateCompanyById = async (company_id, company) => {
 };
 
 // create method for delete company by id
-export const deleteCompanyById = async (company_id) => {
+export const deleteCompanyById = async (id) => {
   try {
     const deletedCompany = await prisma.company.delete({
       where: {
-        company_id,
+        id,
       },
     });
     return deletedCompany;

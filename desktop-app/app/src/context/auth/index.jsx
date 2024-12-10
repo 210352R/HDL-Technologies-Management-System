@@ -31,6 +31,7 @@ export function AuthProvider({ children }) {
         (provider) => provider.providerId === "password"
       );
       const isCompany = false;
+      console.log("User Email", user.email);
       setIsEmailUser(isEmail);
       setUserLoggedIn(true);
     } else {
