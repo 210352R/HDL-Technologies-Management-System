@@ -4,8 +4,10 @@ import {
   deleteCompanyById,
   getAllCompanies,
   getAllCompaniesPrefixes,
+  getCompanyByEmail,
   getCompanyByName,
   getCompanyByPrefix,
+  isCompanyEmailExist,
   updateCompanyById,
 } from "../services/adminService.js";
 
@@ -87,6 +89,18 @@ admin_router.get("/companies/email/:email", async (req, res) => {
       return res.status(404).json({ message: "Company not found" });
     }
     res.status(200).json(company);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// create method for isEmailExists
+admin_router.get("/companies/email-exists/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const response = await isCompanyEmailExist(email);
+    res.status(200).json({ exists: response });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });

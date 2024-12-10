@@ -87,6 +87,23 @@ export const getCompanyByEmail = async (email) => {
   }
 };
 
+//creare method that given email is in db return true else return false
+export const isCompanyEmailExist = async (email) => {
+  try {
+    const company = await prisma.company.findUnique({
+      where: {
+        email,
+      },
+    });
+    return company ? true : false;
+  } catch (error) {
+    console.error("Error fetching company:", error);
+    throw new Error("An error occurred while fetching company.");
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
 // Create method for get company by prefix
 export const getCompanyByPrefix = async (prefix) => {
   try {
