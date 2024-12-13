@@ -513,12 +513,26 @@ export const getInProgressBillsCount = async () => {
   return inProgressBillsCount;
 };
 
-// create method for delete bill using bill id
-export const deleteBill = async (billId) => {
-  const deletedBill = await prisma.bill.delete({
+// create method for get bills count for given lapId
+export const getBillsCountByLapId = async (lapId) => {
+  const billsCount = await prisma.bill.count({
     where: {
-      billId: billId,
+      lapId: lapId,
     },
   });
-  return deletedBill;
+  return billsCount;
+};
+
+// create method for delete bill using bill id
+export const deleteBill = async (billId) => {
+  const lap_id = (await getBillDetailsByBillId()).lap.lap.lapId;
+  console.log(lap_id);
+  const billCount = await getBillsCountByLapId(lap_id);
+
+  // const deletedBill = await prisma.bill.delete({
+  //   where: {
+  //     billId: billId,
+  //   },
+  // });
+  return billCount;
 };
