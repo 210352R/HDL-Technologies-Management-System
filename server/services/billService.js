@@ -522,17 +522,34 @@ export const getBillsCountByLapId = async (lapId) => {
   });
   return billsCount;
 };
-
-// create method for delete bill using bill id
+//getSameLapBillCount
 export const deleteBill = async (billId) => {
-  const lap_id = (await getBillDetailsByBillId()).lap.lap.lapId;
+  const lap_id = (await getBillDetailsByBillId(billId)).lap.lapId;
   console.log(lap_id);
   const billCount = await getBillsCountByLapId(lap_id);
 
-  // const deletedBill = await prisma.bill.delete({
-  //   where: {
-  //     billId: billId,
-  //   },
-  // });
+  // if billCount is 1 then delete the lap
+  if (billCount === 1) {
+    const deletedLap = await prisma.lap.delete({
+      where: {
+        lapId: lap_id,
+      },
+    });
+    console.log(deletedLap);
+  }
+
+  const deletedBill = await prisma.bill.delete({
+    where: {
+      billId: billId,
+    },
+  });
+  return deletedBill;
+};
+
+// create method for delete bill using bill id
+export const getSameLapBillCount = async (billId) => {
+  const lap_id = (await getBillDetailsByBillId(billId)).lap.lapId;
+  console.log(lap_id);
+  const billCount = await getBillsCountByLapId(lap_id);
   return billCount;
 };

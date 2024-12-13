@@ -4,6 +4,7 @@ import {
   createBillForExistingLap,
   createNewBill,
   createNewBillByUserId,
+  deleteBill,
   getAllBillDetailsWithLaps,
   getAllBills,
   getAllBillsCount,
@@ -14,6 +15,7 @@ import {
   getNearestBill,
   getOverdueBillsCount,
   getPendingBillsCount,
+  getSameLapBillCount,
   updateBillAmount,
   updateBillAnnounceDate,
   updateBillHandoverDate,
@@ -369,6 +371,18 @@ bill_router.get("/get-all-bills-by-user-id/:userId", async (req, res) => {
     res
       .status(400)
       .json({ error: error, message: "Bills could not be fetched" });
+  }
+});
+
+//create end point for get all same lap bills by given bill id
+bill_router.get("/get-all-same-lap-bills/:billId", async (req, res) => {
+  const { billId } = req.params;
+  try {
+    const bills = await getSameLapBillCount(billId);
+    res.status(200).json({ bills: bills });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bills could not be fetched" });
   }
 });
 
