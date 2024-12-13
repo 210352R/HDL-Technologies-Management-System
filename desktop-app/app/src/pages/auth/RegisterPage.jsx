@@ -12,6 +12,7 @@ const RegisterPage = () => {
   const [isRegistering, setIsRegistering] = useState(false);
 
   const { userLoggedIn } = useAuth();
+  const { isCompanyUser } = useAuth();
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -38,7 +39,10 @@ const RegisterPage = () => {
 
   return (
     <>
-      {userLoggedIn && <Navigate to={"/home"} replace={true} />}
+      {userLoggedIn && !isCompanyUser && <Navigate to="/home" replace={true} />}
+      {userLoggedIn && isCompanyUser && (
+        <Navigate to="/company" replace={true} />
+      )}
 
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="card w-full max-w-sm shadow-md bg-white">

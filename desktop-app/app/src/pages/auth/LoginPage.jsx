@@ -14,6 +14,8 @@ const LoginPage = () => {
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  console.log("Signing in... Is company user", isCompanyUser);
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from refreshing the page
@@ -52,6 +54,9 @@ const LoginPage = () => {
   return (
     <div>
       {userLoggedIn && !isCompanyUser && <Navigate to="/home" replace={true} />}
+      {userLoggedIn && isCompanyUser && (
+        <Navigate to="/company" replace={true} />
+      )}
 
       <div className="min-h-screen flex items-center justify-center bg-gray-400">
         <div className="card w-full max-w-sm shadow-md bg-white">

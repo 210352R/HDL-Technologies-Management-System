@@ -3,6 +3,7 @@ import { FaEdit, FaLock, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import { useAuth } from "../../context/auth/index";
+import { doSignOut } from "../../firebase/auth";
 
 const ProfileScreen = () => {
   const { currentUser, userLoggedIn } = useAuth();
@@ -16,10 +17,11 @@ const ProfileScreen = () => {
     }
   }, [currentUser]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Handle logout logic
     // Firebase auth sign-out could be done here
-    navigate("/login");
+    await doSignOut();
+    navigate("/");
   };
 
   return (

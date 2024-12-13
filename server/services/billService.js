@@ -164,8 +164,26 @@ export const updateBillAnnounceDate = async (billId, announce_date) => {
   return updatedBill;
 };
 
-// update handover_date and status of bill use bill id
-export const updateBillHandoverDate = async (billId, handover_date, issue) => {
+export const updateBillHandoverDate = async (
+  billId,
+  handover_date,
+  newIssue
+) => {
+  // Fetch the current bill
+  const currentBill = await prisma.bill.findUnique({
+    where: {
+      billId: billId,
+    },
+  });
+
+  if (!currentBill) {
+    throw new Error(`Bill with ID ${billId} not found.`);
+  }
+
+  // Concatenate the current issue with the new issue
+  const updatedIssue = `${currentBill.issue || ""} ${newIssue}`.trim();
+
+  // Update the bill with the new values
   const updatedBill = await prisma.bill.update({
     where: {
       billId: billId,
@@ -173,9 +191,10 @@ export const updateBillHandoverDate = async (billId, handover_date, issue) => {
     data: {
       handover_date,
       status: "In Progress",
-      issue,
+      issue: updatedIssue,
     },
   });
+
   return updatedBill;
 };
 

@@ -20,13 +20,13 @@ import UpdateBillIssuePage from "./pages/bill_updates/UpdateBillIsuePage";
 import UpdateAmountPage from "./pages/bill_updates/UpdateAmountPage";
 import UpdateLapDetailsPage from "./pages/bill_updates/UpdateLapDetailsPage";
 import FindUserByPhone from "./pages/users/FindUserPage";
+import CompanyHomePage from "./pages/company/CompanyHomePage";
 
 // Public routes (accessible without authentication)
 export const publicRoutes = [
   { path: "/", element: LoginPage },
   { path: "/register", element: RegisterPage },
 ];
-
 // Protected routes (accessible only after authentication)
 export const protectedRoutes = [
   { path: "/home", element: HomePage },
@@ -46,4 +46,5 @@ export const protectedRoutes = [
   { path: "/update-bill-amount/:billId", element: UpdateAmountPage },
   { path: "/update-lap-details/:billId", element: UpdateLapDetailsPage },
   { path: "/find-user", element: FindUserByPhone },
+  { path: "/company", element: CompanyHomePage },
 ];
