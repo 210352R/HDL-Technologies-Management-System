@@ -36,7 +36,7 @@ export const sendEmailNotification = (bill) => {
   let MailGenerator = new Mailgen({
     theme: "default",
     product: {
-      name: "Tech Repair Center",
+      name: "HDL Computer Solutions -- ",
       link: "https://yourapp.com/",
     },
   });

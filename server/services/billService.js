@@ -53,7 +53,7 @@ export const createNewBill = async (bill) => {
     issue_description: issue,
     price: amount,
     qr_code: lap.qrcode,
-    email: "eshanmaduranga0329@gmail.com",
+    email: "hdlcomputers.ilimba@gmail.com",
   };
   sendEmailNotification(email_bill);
   return { bill: newBill, qr_code: lap.qrcode };
