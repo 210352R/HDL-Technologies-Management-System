@@ -31,12 +31,12 @@ const MarkBillPaidPage = () => {
   }, [billId]);
 
   // Handle marking bill as complete
-  const handleMarkComplete = async () => {
+  const handleMarkPaid = async () => {
     try {
       const response = await axios.put(`${url}/bill/make-status-paid`, {
         billId,
       });
-      setMessage("Bill marked as completed successfully!");
+      setMessage("Bill marked as Paid successfully!");
 
       // Navigate to new page after showing alert
       setTimeout(() => {
@@ -104,7 +104,7 @@ const MarkBillPaidPage = () => {
               </div>
 
               <button
-                onClick={handleMarkComplete}
+                onClick={handleMarkPaid}
                 className={`w-full py-2 rounded-md text-lg font-semibold text-white transition duration-300 shadow-md ${
                   isPaid
                     ? "bg-blue-600 hover:bg-blue-500"
