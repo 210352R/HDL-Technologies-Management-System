@@ -33,28 +33,18 @@ const MarkBillPaidPage = () => {
   // Handle marking bill as complete
   const handleMarkComplete = async () => {
     try {
-      if (isPaid) {
-        const response = await axios.put(`${url}/bill/make-status-paid`, {
-          billId,
-        });
-        setMessage("Bill marked as completed successfully!");
+      const response = await axios.put(`${url}/bill/make-status-paid`, {
+        billId,
+      });
+      setMessage("Bill marked as completed successfully!");
 
-        // Navigate to new page after showing alert
-        setTimeout(() => {
-          navigate(`/choose-option/${billId}`);
-        }, 500);
-      } else {
-        const response = await axios.put(`${url}/bill/make-status-completed`, {
-          billId,
-        });
-        setMessage("Bill marked as completed successfully!");
-
-        // Navigate to new page after showing alert
-        setTimeout(() => {
-          navigate(`/choose-option/${billId}`);
-        }, 500); // Redirect after 2 seconds
-      }
+      // Navigate to new page after showing alert
+      setTimeout(() => {
+        navigate(`/choose-option/${billId}`);
+      }, 500);
     } catch (err) {
+      // Redirect after 2 seconds
+
       setError("Failed to mark the bill as completed.");
       console.error(err);
     }
@@ -70,7 +60,7 @@ const MarkBillPaidPage = () => {
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="bg-gray-800 text-white shadow-xl rounded-lg p-8 w-full max-w-lg transition-transform transform hover:scale-105">
           <h1 className="text-3xl font-bold text-center mb-6">
-            Mark Bill as Completed
+            Mark Bill as Paid
           </h1>
           {bill ? (
             <div className="space-y-4">
@@ -113,22 +103,6 @@ const MarkBillPaidPage = () => {
                 <img src={bill.lap.qrcode} alt="QR Code" />
               </div>
 
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="markPaid"
-                  checked={isPaid}
-                  onChange={() => setIsPaid(!isPaid)}
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <label
-                  htmlFor="markPaid"
-                  className="ml-2 block text-sm text-gray-300"
-                >
-                  Mark as Paid
-                </label>
-              </div>
-
               <button
                 onClick={handleMarkComplete}
                 className={`w-full py-2 rounded-md text-lg font-semibold text-white transition duration-300 shadow-md ${
@@ -137,7 +111,7 @@ const MarkBillPaidPage = () => {
                     : "bg-gray-500 cursor-not-allowed"
                 }`}
               >
-                Mark As Complete
+                Mark As Paid
               </button>
 
               {/* Success Message */}
