@@ -11,6 +11,7 @@ const DeleteBillPage = () => {
   const [bill, setBill] = useState(null);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   // Fetch bill details by billId
   useEffect(() => {
@@ -29,15 +30,25 @@ const DeleteBillPage = () => {
     fetchBillDetails();
   }, [billId]);
 
+  // Handle confirming delete action
+  const handleDeleteConfirmation = () => {
+    setShowConfirmation(true);
+  };
+
+  // Handle cancel deletion
+  const handleCancelDeletion = () => {
+    setShowConfirmation(false);
+  };
+
   // Handle delete bill
   const handleDeleteBill = async () => {
     try {
       await axios.delete(`${url}/bill/delete-bill/${billId}`);
       setMessage("Bill deleted successfully!");
 
-      // Navigate to the main page after showing success message
+      // Navigate to homepage after showing alert
       setTimeout(() => {
-        navigate(`/`);
+        navigate("/");
       }, 500);
     } catch (err) {
       setError("Failed to delete the bill.");
@@ -91,17 +102,41 @@ const DeleteBillPage = () => {
                 </p>
               </div>
 
-              {/* QR Code Display */}
-              <div className="flex justify-center mt-4">
-                <img src={bill.lap.qrcode} alt="QR Code" />
-              </div>
-
+              {/* Delete Button */}
               <button
-                onClick={handleDeleteBill}
+                onClick={handleDeleteConfirmation}
                 className="w-full py-2 rounded-md text-lg font-semibold text-white transition duration-300 shadow-md bg-red-600 hover:bg-red-500"
               >
                 Delete Bill
               </button>
+
+              {/* Confirmation Popup */}
+              {showConfirmation && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="bg-gray-800 text-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+                    <h2 className="text-lg font-bold mb-4 text-center">
+                      Confirm Deletion
+                    </h2>
+                    <p className="mb-6 text-center">
+                      Are you sure you want to delete this bill?
+                    </p>
+                    <div className="flex justify-around">
+                      <button
+                        onClick={handleDeleteBill}
+                        className="px-4 py-2 rounded-md text-lg font-semibold text-white bg-red-600 hover:bg-red-500"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={handleCancelDeletion}
+                        className="px-4 py-2 rounded-md text-lg font-semibold text-white bg-gray-600 hover:bg-gray-500"
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Success Message */}
               {message && (
