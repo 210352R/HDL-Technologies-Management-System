@@ -225,6 +225,18 @@ bill_router.put("/make-status-completed", async (req, res) => {
   }
 });
 
+// add put route for make status as Completed
+bill_router.put("/make-status-paid", async (req, res) => {
+  const { billId } = req.body;
+  try {
+    const updatedBill = await updateBillStatus(billId, "Paid");
+    res.status(200).json({ bill: updatedBill });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Status could not be updated" });
+  }
+});
+
 bill_router.get("/get-recent-bills", async (req, res) => {
   try {
     const recentBills = await getNearestBill();
