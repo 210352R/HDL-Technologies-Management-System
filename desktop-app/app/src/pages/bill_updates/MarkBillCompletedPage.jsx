@@ -32,18 +32,28 @@ const MarkBillCompletedPage = () => {
 
   // Handle marking bill as complete
   const handleMarkComplete = async () => {
-    if (!isPaid) return; // Do not proceed if the checkbox is not checked
-
     try {
-      const response = await axios.put(`${url}/bill/make-status-completed`, {
-        billId,
-      });
-      setMessage("Bill marked as completed successfully!");
+      if (isPaid) {
+        const response = await axios.put(`${url}/bill/make-status-paid`, {
+          billId,
+        });
+        setMessage("Bill marked as completed successfully!");
 
-      // Navigate to new page after showing alert
-      setTimeout(() => {
-        navigate(`/choose-option/${billId}`);
-      }, 2000); // Redirect after 2 seconds
+        // Navigate to new page after showing alert
+        setTimeout(() => {
+          navigate(`/choose-option/${billId}`);
+        }, 500);
+      } else {
+        const response = await axios.put(`${url}/bill/make-status-completed`, {
+          billId,
+        });
+        setMessage("Bill marked as completed successfully!");
+
+        // Navigate to new page after showing alert
+        setTimeout(() => {
+          navigate(`/choose-option/${billId}`);
+        }, 500); // Redirect after 2 seconds
+      }
     } catch (err) {
       setError("Failed to mark the bill as completed.");
       console.error(err);
@@ -126,7 +136,6 @@ const MarkBillCompletedPage = () => {
                     ? "bg-blue-600 hover:bg-blue-500"
                     : "bg-gray-500 cursor-not-allowed"
                 }`}
-                disabled={!isPaid}
               >
                 Mark As Complete
               </button>
