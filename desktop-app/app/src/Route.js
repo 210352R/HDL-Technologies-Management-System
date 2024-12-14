@@ -27,7 +27,7 @@ import DeleteBillPage from "./pages/bill_updates/DeleteBillPage";
 // Public routes (accessible without authentication)
 export const publicRoutes = [
   { path: "/", element: LoginPage },
-  { path: "/register", element: RegisterPage },
+  // { path: "/register", element: RegisterPage },
 ];
 // Protected routes (accessible only after authentication)
 export const protectedRoutes = [

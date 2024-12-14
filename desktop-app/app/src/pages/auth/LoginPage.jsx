@@ -111,19 +111,6 @@ const LoginPage = () => {
                 Forgot Password?
               </Link>
             </div>
-
-            {/* Register link */}
-            <div className="text-center mt-4">
-              <p className="text-sm text-gray-600">
-                Don't have an account?
-                <Link
-                  to="/register"
-                  className="text-blue-500 hover:underline ml-1"
-                >
-                  Register
-                </Link>
-              </p>
-            </div>
           </div>
         </div>
       </div>
