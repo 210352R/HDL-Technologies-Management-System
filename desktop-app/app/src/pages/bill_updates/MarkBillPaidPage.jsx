@@ -9,7 +9,6 @@ const MarkBillPaidPage = () => {
   const { billId } = useParams();
   const navigate = useNavigate(); // For navigation
   const [bill, setBill] = useState(null);
-  const [isPaid, setIsPaid] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
@@ -105,11 +104,7 @@ const MarkBillPaidPage = () => {
 
               <button
                 onClick={handleMarkPaid}
-                className={`w-full py-2 rounded-md text-lg font-semibold text-white transition duration-300 shadow-md ${
-                  isPaid
-                    ? "bg-blue-600 hover:bg-blue-500"
-                    : "bg-gray-500 cursor-not-allowed"
-                }`}
+                className="w-full py-2 rounded-md text-lg font-semibold text-white transition duration-300 shadow-md bg-blue-600 hover:bg-blue-500"
               >
                 Mark As Paid
               </button>

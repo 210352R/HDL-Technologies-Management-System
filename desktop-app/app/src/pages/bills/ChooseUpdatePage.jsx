@@ -12,6 +12,7 @@ import {
   FaCheckCircle,
   FaBan,
   FaLaptop,
+  FaTrashAlt,
 } from "react-icons/fa";
 import { FaMoneyBillAlt } from "react-icons/fa";
 
@@ -63,6 +64,7 @@ const UpdateOptionsPage = () => {
     { name: "Cancel Bill", icon: FaBan },
     { name: "Change Lap Details", icon: FaLaptop },
     { name: "Make Bill Paid", icon: FaMoneyBillAlt },
+    { name: "Delete Bill", icon: FaTrashAlt },
   ];
 
   return (

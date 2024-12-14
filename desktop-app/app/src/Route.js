@@ -21,6 +21,7 @@ import UpdateAmountPage from "./pages/bill_updates/UpdateAmountPage";
 import UpdateLapDetailsPage from "./pages/bill_updates/UpdateLapDetailsPage";
 import FindUserByPhone from "./pages/users/FindUserPage";
 import CompanyHomePage from "./pages/company/CompanyHomePage";
+import MarkBillPaidPage from "./pages/bill_updates/MarkBillPaidPage";
 
 // Public routes (accessible without authentication)
 export const publicRoutes = [
@@ -45,6 +46,7 @@ export const protectedRoutes = [
   { path: "/update-bill-issue/:billId", element: UpdateBillIssuePage },
   { path: "/update-bill-amount/:billId", element: UpdateAmountPage },
   { path: "/update-lap-details/:billId", element: UpdateLapDetailsPage },
+  { path: "/mark-bill-paid/:billId", element: MarkBillPaidPage },
   { path: "/find-user", element: FindUserByPhone },
   { path: "/company", element: CompanyHomePage },
 ];

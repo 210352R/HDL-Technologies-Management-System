@@ -131,11 +131,7 @@ const MarkBillCompletedPage = () => {
 
               <button
                 onClick={handleMarkComplete}
-                className={`w-full py-2 rounded-md text-lg font-semibold text-white transition duration-300 shadow-md ${
-                  isPaid
-                    ? "bg-blue-600 hover:bg-blue-500"
-                    : "bg-gray-500 cursor-not-allowed"
-                }`}
+                className="w-full py-2 rounded-md text-lg font-semibold text-white transition duration-300 shadow-md bg-blue-600 hover:bg-blue-500"
               >
                 Mark As Complete
               </button>
