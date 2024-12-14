@@ -45,6 +45,10 @@ const UpdateOptionsPage = () => {
       case "Change Lap Details":
         navigate(`/update-lap-details/${billId}`);
         break;
+
+      case "Make Bill Paid":
+        navigate(`/mark-bill-paid/${billId}`);
+        break;
       default:
         break;
     }
