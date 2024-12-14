@@ -50,6 +50,10 @@ const UpdateOptionsPage = () => {
       case "Make Bill Paid":
         navigate(`/mark-bill-paid/${billId}`);
         break;
+
+      case "Delete Bill":
+        navigate(`/delete-bill/${billId}`);
+        break;
       default:
         break;
     }
