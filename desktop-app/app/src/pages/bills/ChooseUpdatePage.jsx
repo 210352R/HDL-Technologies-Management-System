@@ -13,6 +13,7 @@ import {
   FaBan,
   FaLaptop,
 } from "react-icons/fa";
+import { FaMoneyBillAlt } from "react-icons/fa";
 
 const UpdateOptionsPage = () => {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const UpdateOptionsPage = () => {
     { name: "Complete Bill", icon: FaCheckCircle },
     { name: "Cancel Bill", icon: FaBan },
     { name: "Change Lap Details", icon: FaLaptop },
+    { name: "Make Bill Paid", icon: FaMoneyBillAlt },
   ];
 
   return (
