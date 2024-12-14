@@ -88,6 +88,7 @@ const BillList = () => {
             "Pending",
             "In Progress",
             "Overdue",
+            "Paid",
           ].map((status) => (
             <button
               key={status}
