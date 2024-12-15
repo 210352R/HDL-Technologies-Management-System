@@ -186,7 +186,7 @@ const CompanyHomePage = () => {
             <h1 className="text-2xl font-bold mb-6">{company?.name}</h1>
             <nav className="space-y-4">
               <Link
-                to="/all-bills"
+                to="/company-bills"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
                 <FaFileInvoice size={24} className="mr-2" /> Bills

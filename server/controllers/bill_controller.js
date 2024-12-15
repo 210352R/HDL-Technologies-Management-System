@@ -10,6 +10,7 @@ import {
   getAllBillsCount,
   getBillDetailsByBillId,
   getBillDetailsById,
+  getBillDetailsByPrefix,
   getCompletedBillsCount,
   getInProgressBillsCount,
   getNearestBill,
