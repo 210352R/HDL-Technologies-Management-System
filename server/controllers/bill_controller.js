@@ -410,3 +410,15 @@ bill_router.delete("/delete-bill/:billId", async (req, res) => {
     res.status(400).json({ error: "Bill could not be deleted" });
   }
 });
+
+// create get end point for get bill details from prefix
+bill_router.get("/get-bill-details-by-prefix/:prefix", async (req, res) => {
+  const { prefix } = req.params;
+  try {
+    const bills = await getBillDetailsByPrefix(prefix);
+    res.status(200).json({ bills: bills });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bills could not be fetched" });
+  }
+});
