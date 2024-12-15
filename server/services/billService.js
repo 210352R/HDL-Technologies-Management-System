@@ -553,3 +553,27 @@ export const getSameLapBillCount = async (billId) => {
   const billCount = await getBillsCountByLapId(lap_id);
   return billCount;
 };
+
+//create method for get all bill details with have given specific-prefix
+export const getBillDetailsByPrefix = async (prefix) => {
+  const bills = await prisma.bill.findMany({
+    where: {
+      billId: {
+        startsWith: prefix,
+      },
+    },
+  });
+
+  // for each bill in bills get lap id and add relevant lap details to the bills
+  for (let i = 0; i < bills.length; i++) {
+    const lap = await getLapDetails(bills[i].lapId);
+    // add new property to the bill object called lap and set it to the lap object
+    let lap_details = {
+      lap_id: lap.lapId,
+      lap_model: lap.model,
+      lap_brand: lap.brand,
+    };
+    bills[i].lap = lap_details;
+  }
+  return bills;
+};
