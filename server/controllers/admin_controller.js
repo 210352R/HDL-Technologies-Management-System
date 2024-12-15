@@ -7,6 +7,7 @@ import {
   getCompanyByEmail,
   getCompanyByName,
   getCompanyByPrefix,
+  getCorrespondingPrefix,
   isCompanyEmailExist,
   updateCompanyById,
 } from "../services/adminService.js";
@@ -126,5 +127,16 @@ admin_router.delete("/companies/:id", async (req, res) => {
     res.status(200).json(deletedCompany);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+// create get end point for get corresponding prefix by given email
+admin_router.get("/get-prefix/:email", async (req, res) => {
+  const { email } = req.params;
+  try {
+    const prefix = await getCorrespondingPrefix(email);
+    res.status(200).json({ prefix: prefix });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Prefix could not be fetched" });
   }
 });

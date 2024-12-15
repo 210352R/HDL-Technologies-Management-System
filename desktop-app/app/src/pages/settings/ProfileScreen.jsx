@@ -21,6 +21,7 @@ const ProfileScreen = () => {
     // Handle logout logic
     // Firebase auth sign-out could be done here
     await doSignOut();
+    localStorage.clear();
     navigate("/");
   };
 

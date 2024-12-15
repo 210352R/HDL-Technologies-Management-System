@@ -18,6 +18,22 @@ export function AuthProvider({ children }) {
   const [isCompanyUser, setIsCompanyUser] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const [prefix, setPrefix] = useState(null);
+  const [error, setError] = useState("");
+
+  const fetchPrefix = async (email) => {
+    try {
+      const response = await axios.get(`${url}/get-prefix/${email}`);
+      setPrefix(response.data.prefix); // Update the state with the fetched prefix
+      setError(""); // Clear any previous errors
+      return response.data.prefix; // Return the fetched prefix if needed
+    } catch (err) {
+      console.error(err);
+      setError("Failed to fetch prefix for the given email.");
+      return null; // Return null in case of an error
+    }
+  };
+
   // Method to check if an email exists
   const checkEmailExists = async (email) => {
     console.log("User Email  --- > ", email);
@@ -62,6 +78,9 @@ export function AuthProvider({ children }) {
         console.log("User is company user-----------------------------------");
         setIsCompanyUser(true);
         console.log("Is company user", isCompanyUser);
+        let prefix = fetchPrefix(user.email);
+        localStorage.setItem("prefix", prefix);
+        console.log("Add prefix to local storage", prefix);
       } else {
         console.log("User is not company user--------------------------------");
         setIsCompanyUser(false);
