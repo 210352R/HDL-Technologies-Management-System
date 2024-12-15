@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
 
   const fetchPrefix = async (email) => {
     try {
-      const response = await axios.get(`${url}/get-prefix/${email}`);
+      const response = await axios.get(`${url}/admin/get-prefix/${email}`);
       setPrefix(response.data.prefix); // Update the state with the fetched prefix
       setError(""); // Clear any previous errors
       return response.data.prefix; // Return the fetched prefix if needed
@@ -78,7 +78,7 @@ export function AuthProvider({ children }) {
         console.log("User is company user-----------------------------------");
         setIsCompanyUser(true);
         console.log("Is company user", isCompanyUser);
-        let prefix = fetchPrefix(user.email);
+        let prefix = await fetchPrefix(user.email);
         localStorage.setItem("prefix", prefix);
         console.log("Add prefix to local storage", prefix);
       } else {
