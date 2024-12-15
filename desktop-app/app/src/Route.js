@@ -24,6 +24,7 @@ import CompanyHomePage from "./pages/company/CompanyHomePage";
 import MarkBillPaidPage from "./pages/bill_updates/MarkBillPaidPage";
 import DeleteBillPage from "./pages/bill_updates/DeleteBillPage";
 import CompanyBillList from "./pages/company/DisplayAllCompanyBills";
+import RegisterCompanyPage from "./pages/company/RegisterCompanyPage";
 
 // Public routes (accessible without authentication)
 export const publicRoutes = [
@@ -53,4 +54,5 @@ export const protectedRoutes = [
   { path: "/find-user", element: FindUserByPhone },
   { path: "/company", element: CompanyHomePage },
   { path: "/company-bills", element: CompanyBillList },
+  { path: "/register-company", element: RegisterCompanyPage },
 ];

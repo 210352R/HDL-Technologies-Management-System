@@ -43,7 +43,7 @@ const RegisterCompanyPage = () => {
         `${url}/admin/register-company`,
         formData
       );
-      console.log("Add company suceefully");
+      console.log("Add company successfully");
       await doCreateUserWithEmailAndPassword(formData.email, formData.password);
       console.log(
         "Registration successful ------------------------------------------------"
@@ -65,7 +65,7 @@ const RegisterCompanyPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <div className="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-md">
+      <div className="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-3xl">
         <h1 className="text-3xl font-bold text-white text-center mb-6">
           Register New Company
         </h1>
@@ -79,7 +79,10 @@ const RegisterCompanyPage = () => {
             {message}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
           <div>
             <label className="block text-white font-semibold mb-2">Name</label>
             <input
@@ -172,12 +175,14 @@ const RegisterCompanyPage = () => {
               placeholder="Confirm Password"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full py-2 rounded bg-blue-600 text-white font-semibold text-lg hover:bg-blue-500 transition duration-300"
-          >
-            Register Company
-          </button>
+          <div className="md:col-span-2 flex justify-center">
+            <button
+              type="submit"
+              className="w-3/5 py-2 rounded bg-blue-600 text-white font-semibold text-lg hover:bg-blue-500 transition duration-300"
+            >
+              Register Company
+            </button>
+          </div>
         </form>
       </div>
     </div>

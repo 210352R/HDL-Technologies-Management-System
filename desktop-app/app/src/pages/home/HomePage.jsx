@@ -12,6 +12,7 @@ import {
   FaCloudUploadAlt,
   FaEdit,
   FaUserSearch,
+  FaBuilding,
 } from "react-icons/fa";
 import { io } from "socket.io-client";
 import { Line, Bar } from "react-chartjs-2";
@@ -225,6 +226,12 @@ const HomePage = () => {
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
                 <FaCog size={24} className="mr-2" /> Settings
+              </Link>
+              <Link
+                to="/register-company"
+                className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
+              >
+                <FaBuilding size={24} className="mr-2" /> Register Company
               </Link>
               <Link
                 to="/memory-backup"
