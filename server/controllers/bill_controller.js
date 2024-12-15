@@ -24,6 +24,7 @@ import {
   updateLapDetailsByBillId,
 } from "../services/billService.js";
 import { getAllBillsByUserId } from "../services/userService.js";
+import { getCorrespondingPrefix } from "../services/adminService.js";
 
 export const bill_router = express.Router();
 
@@ -407,5 +408,17 @@ bill_router.delete("/delete-bill/:billId", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Bill could not be deleted" });
+  }
+});
+
+// create get end point for get corresponding prefix by given email
+bill_router.get("/get-prefix/:email", async (req, res) => {
+  const { email } = req.params;
+  try {
+    const prefix = await getCorrespondingPrefix(email);
+    res.status(200).json({ prefix: prefix });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Prefix could not be fetched" });
   }
 });
