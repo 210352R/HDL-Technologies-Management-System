@@ -18,7 +18,11 @@ const CompanyBillList = () => {
   useEffect(() => {
     const fetchBills = async () => {
       try {
-        const response = await axios.get(`${url}/bill/get-all-bills`);
+        const response = await axios.get(
+          `${url}/bill/get-bill-details-by-prefix/${localStorage.getItem(
+            "prefix"
+          )}`
+        );
         console.log("Fetched bills:", response.data.bills);
         setBills(response.data.bills);
       } catch (error) {
