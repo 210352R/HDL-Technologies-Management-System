@@ -174,3 +174,23 @@ export const deleteCompanyById = async (id) => {
     await prisma.$disconnect();
   }
 };
+
+// crreate method for get corresponding prefix for given email in company
+export const getCorrespondingPrefix = async (email) => {
+  try {
+    const company = await prisma.company.findFirst({
+      where: {
+        email,
+      },
+    });
+    if (company) {
+      return company.prefix;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting corresponding prefix:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
+};
