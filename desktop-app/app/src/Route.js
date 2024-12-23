@@ -29,7 +29,7 @@ import RegisterCompanyPage from "./pages/company/RegisterCompanyPage";
 // Public routes (accessible without authentication)
 export const publicRoutes = [
   { path: "/", element: LoginPage },
-  { path: "/forgot-password", element: LoginPage },
+  { path: "/forgot-password", element: ForgotPassword },
   // { path: "/register", element: RegisterPage },
 ];
 // Protected routes (accessible only after authentication)
