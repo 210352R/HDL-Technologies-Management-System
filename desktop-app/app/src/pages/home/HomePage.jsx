@@ -13,6 +13,7 @@ import {
   FaEdit,
   FaUserSearch,
   FaBuilding,
+  FaList,
 } from "react-icons/fa";
 import { io } from "socket.io-client";
 import { Line, Bar } from "react-chartjs-2";
@@ -232,6 +233,12 @@ const HomePage = () => {
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
                 <FaBuilding size={24} className="mr-2" /> Register Company
+              </Link>
+              <Link
+                to="/companies"
+                className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
+              >
+                <FaList size={24} className="mr-2" /> Companies
               </Link>
               <Link
                 to="/memory-backup"

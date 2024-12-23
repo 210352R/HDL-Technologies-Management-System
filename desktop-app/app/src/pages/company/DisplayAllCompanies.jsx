@@ -1,6 +1,7 @@
 // Import necessary dependencies
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { url } from "../../url";
 
 const DisplayAllCompaniesPage = () => {
   const [companies, setCompanies] = useState([]);
