@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:8000");
 
-function ChatPage() {
+function CompanyChatPage() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
@@ -68,4 +68,4 @@ function ChatPage() {
   );
 }
 
-export default ChatPage;
+export default CompanyChatPage;

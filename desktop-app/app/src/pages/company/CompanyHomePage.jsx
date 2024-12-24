@@ -12,6 +12,7 @@ import {
   FaCloudUploadAlt,
   FaEdit,
   FaUserSearch,
+  FaComments,
 } from "react-icons/fa";
 import { io } from "socket.io-client";
 import { Line, Bar } from "react-chartjs-2";
@@ -190,6 +191,13 @@ const CompanyHomePage = () => {
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
                 <FaFileInvoice size={24} className="mr-2" /> Bills
+              </Link>
+
+              <Link
+                to={`/company/chat/${company?.id}`}
+                className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
+              >
+                <FaComments size={24} className="mr-2" /> Chat
               </Link>
 
               <Link
