@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
-  "main" : "index.js",
+  "main": "index.js",
   "description": "React frontend for HDL Desktop App",
   "author": "Eshan Maduranga",
   "license": "ISC",
@@ -24,7 +24,8 @@
     "react-scripts": "5.0.1",
     "react-spinners": "^0.14.1",
     "react-toastify": "^10.0.5",
-    "socket.io-client": "^4.8.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
