@@ -25,6 +25,7 @@ const AddBillForm = () => {
     ssd: "",
     hard: "",
     customSsd: "",
+    companyUser: false,
   });
   const [isSetQr, setIsSetQr] = useState(false);
   const [qrCode, setQrCode] = useState("");
