@@ -44,6 +44,8 @@ const AddBillForm = () => {
 
   const [isUserDetected, setIsUserDetected] = useState(false);
 
+  const [prefix, setPrefix] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -168,6 +170,17 @@ const AddBillForm = () => {
       fetchUserByPhone(formData.phone);
     }
   }, [formData.phone]);
+
+  const handleCheckboxChange = (e) => {
+    setFormData((prev) => ({ ...prev, companyUser: e.target.checked }));
+    if (!e.target.checked) {
+      setPrefix(""); // Clear prefix if checkbox is unchecked
+    }
+  };
+
+  const handlePrefixChange = (e) => {
+    setPrefix(e.target.value);
+  };
 
   return (
     <div className="min-h-screen bg-gray-900">
