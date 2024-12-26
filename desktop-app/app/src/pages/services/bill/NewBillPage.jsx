@@ -45,6 +45,7 @@ const AddBillForm = () => {
   const [isUserDetected, setIsUserDetected] = useState(false);
 
   const [prefix, setPrefix] = useState("");
+  const [prefixList, setPrefixList] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -221,11 +222,7 @@ const AddBillForm = () => {
                   type="text"
                   id="billId"
                   name="billId"
-                  value={
-                    formData.companyUser && prefix
-                      ? `${prefix}-${formData.billId}`
-                      : formData.billId
-                  }
+                  value={formData.billId}
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
                   placeholder="Enter Bill ID"
