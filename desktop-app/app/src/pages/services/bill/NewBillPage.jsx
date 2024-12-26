@@ -97,6 +97,7 @@ const AddBillForm = () => {
     e.preventDefault();
     const formDataWithISODate = {
       ...formData,
+      billId: prefix === "" ? formData.billId : `${prefix}-${formData.billId}`,
       announce_date: formData.announce_date
         ? new Date(formData.announce_date).toISOString()
         : null,
@@ -166,11 +167,27 @@ const AddBillForm = () => {
     }
   };
 
+  const fetchPrefixes = async () => {
+    try {
+      const response = await axios.get(
+        `${url}/admin/get-all-companies-prefixes`
+      );
+      // Extract the prefixes from the response
+      console.log(response.data.prefixes);
+      setPrefixList(response.data.prefixes);
+    } catch (err) {
+      console.error("Error fetching prefixes:", err);
+    }
+  };
+
   useEffect(() => {
+    if (formData.companyUser) {
+      fetchPrefixes();
+    }
     if (formData.phone.length === 10) {
       fetchUserByPhone(formData.phone);
     }
-  }, [formData.phone]);
+  }, [formData.phone, formData.companyUser]);
 
   const handleCheckboxChange = (e) => {
     setFormData((prev) => ({ ...prev, companyUser: e.target.checked }));
@@ -212,9 +229,11 @@ const AddBillForm = () => {
                     className="select select-bordered bg-gray-700 text-white mb-2"
                   >
                     <option value="">Select Prefix</option>
-                    <option value="COMP-001">COMP-001</option>
-                    <option value="COMP-002">COMP-002</option>
-                    <option value="COMP-003">COMP-003</option>
+                    {prefixList.map((prefixValue, index) => (
+                      <option key={index} value={prefixValue.prefix}>
+                        {prefixValue.prefix}
+                      </option>
+                    ))}
                   </select>
                 )}
 
