@@ -203,16 +203,46 @@ const AddBillForm = () => {
                 >
                   Bill ID
                 </label>
+
+                {formData.companyUser && (
+                  <select
+                    value={prefix}
+                    onChange={handlePrefixChange}
+                    className="select select-bordered bg-gray-700 text-white mb-2"
+                  >
+                    <option value="">Select Prefix</option>
+                    <option value="COMP-001">COMP-001</option>
+                    <option value="COMP-002">COMP-002</option>
+                    <option value="COMP-003">COMP-003</option>
+                  </select>
+                )}
+
                 <input
                   type="text"
                   id="billId"
                   name="billId"
-                  value={formData.billId}
+                  value={
+                    formData.companyUser && prefix
+                      ? `${prefix}-${formData.billId}`
+                      : formData.billId
+                  }
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
                   placeholder="Enter Bill ID"
                   required
                 />
+
+                <div className="mt-2">
+                  <label className="flex items-center space-x-2 text-sm text-gray-400">
+                    <input
+                      type="checkbox"
+                      checked={formData.companyUser}
+                      onChange={handleCheckboxChange}
+                      className="checkbox checkbox-primary"
+                    />
+                    <span>Company User</span>
+                  </label>
+                </div>
               </div>
 
               <div>
