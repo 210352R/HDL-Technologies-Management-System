@@ -31,10 +31,11 @@ const ChatRoomForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form data: ", formData);
     try {
       const response = await axios.post(`${url}/chat/add-chatroom`, formData); // Update API endpoint as needed
       setMessage(response.data.message);
-      setFormData({ name: "", description: "", companyId: "" }); // Reset form
+      setFormData({ name: "", description: "", company_id: "" }); // Reset form
     } catch (error) {
       console.error("Error saving chatroom: ", error);
       setMessage("Failed to save chatroom.");
@@ -89,15 +90,15 @@ const ChatRoomForm = () => {
           </div>
           <div className="mb-4">
             <label
-              htmlFor="companyId"
+              htmlFor="company_id"
               className="block text-sm font-medium mb-1"
             >
               Select Company
             </label>
             <select
-              id="companyId"
-              name="companyId"
-              value={formData.companyId}
+              id="company_id"
+              name="company_id"
+              value={formData.company_id}
               onChange={handleInputChange}
               required
               className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
