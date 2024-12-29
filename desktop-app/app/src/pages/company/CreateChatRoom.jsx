@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { url } from "../../url";
 
 const ChatRoomForm = () => {
   const [companies, setCompanies] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    companyId: "",
+    company_id: "",
   });
   const [message, setMessage] = useState("");
 
@@ -14,8 +15,8 @@ const ChatRoomForm = () => {
     // Fetch company options
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get("/api/companies"); // Update API endpoint as needed
-        setCompanies(response.data);
+        const response = await axios.get(`${url}/admin/get-all-companies`); // Update API endpoint as needed
+        setCompanies(response.data.companies);
       } catch (error) {
         console.error("Error fetching companies: ", error);
       }
@@ -31,7 +32,7 @@ const ChatRoomForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/add-chatroom", formData); // Update API endpoint as needed
+      const response = await axios.post(`${url}/chat/add-chatroom`, formData); // Update API endpoint as needed
       setMessage(response.data.message);
       setFormData({ name: "", description: "", companyId: "" }); // Reset form
     } catch (error) {
