@@ -17,6 +17,7 @@ const ChatPage = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true); // New loading state
 
   // Fetch chat room name based on companyId
   useEffect(() => {
@@ -29,20 +30,23 @@ const ChatPage = () => {
         console.log(response.data.chatRoom);
         setRoomName(response.data.chatRoom.name);
         const email = currentUser.email;
-
         const roomName = response.data.chatRoom.name;
 
         socket.emit("joinRoom", {
           roomName: roomName,
           userName: email,
         });
+
+        // Set loading to false when all data is fetched and socket is connected
+        setLoading(false);
       } catch (err) {
         setError("Failed to fetch chat room.");
+        setLoading(false); // Ensure loading state is false even on error
       }
     };
 
     fetchRoomName();
-  }, []);
+  }, [companyId, currentUser]);
 
   // Listen for messages from the server
   useEffect(() => {
@@ -63,6 +67,25 @@ const ChatPage = () => {
     }
   };
 
+  // Beautiful loading animation component
+  const ProgressIndicator = () => (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+      <div className="relative w-24 h-24 mb-4">
+        <div className="absolute w-24 h-24 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+        <div className="absolute top-0 left-0 w-24 h-24 bg-blue-600 rounded-full opacity-30 animate-pulse"></div>
+      </div>
+      <h2 className="text-2xl font-bold text-gray-100 animate-fadeIn">
+        Chat is Loading...
+      </h2>
+    </div>
+  );
+
+  // Render progress indicator if loading
+  if (loading) {
+    return <ProgressIndicator />;
+  }
+
+  // Main chat page content
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6 flex flex-col">
       <header className="mb-6">

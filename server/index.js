@@ -79,7 +79,6 @@ io.on("connection", (socket) => {
   socket.on("joinRoom", ({ roomName, userName }) => {
     socket.join(roomName);
     console.log(`${userName} joined room ${roomName}`);
-    io.to(roomName).emit("message", `${userName} has joined the room.`);
   });
 
   socket.on("sendMessage", ({ roomName, message, userName }) => {

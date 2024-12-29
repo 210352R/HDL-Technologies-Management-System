@@ -8,6 +8,15 @@ module.exports = {
         "dark-bg": "#1F2937", // Custom dark mode colors
         "dark-text": "#E5E7EB",
       },
+      animation: {
+        fadeIn: "fadeIn 1s ease-in-out",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+      },
     },
   },
   plugins: [require("daisyui")],
