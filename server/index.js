@@ -1,6 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import http from "http";
+import { Server } from "socket.io";
+
 import { qr_router } from "./controllers/qr_controller.js";
 
 // prisma
@@ -29,6 +32,16 @@ import { chat_router } from "./controllers/chat_controller.js";
 
 // create express app ---
 const app = express();
+
+const server = http.createServer(app);
+
+// Socket.io setup
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 // add in-built middleware ----
 app.use(cors());
@@ -94,6 +107,30 @@ cron.schedule("0 0 1 * *", async () => {
 });
 
 // Start Iplement Web socket Implementation for chat process --------------
+
+// Socket.IO events
+io.on("connection", (socket) => {
+  console.log(`User connected: ${socket.id}`);
+
+  socket.on("joinRoom", ({ roomName, userName }) => {
+    socket.join(roomName);
+    console.log(`${userName} joined room ${roomName}`);
+    io.to(roomName).emit("message", `${userName} has joined the room.`);
+  });
+
+  socket.on("sendMessage", ({ roomName, message, userName }) => {
+    console.log(
+      "Message:",
+      message,
+      "In Server -------------------------------------------- "
+    );
+    io.to(roomName).emit("message", `${userName}: ${message}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`User disconnected: ${socket.id}`);
+  });
+});
 
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---
