@@ -13,6 +13,7 @@ import {
   FaBan,
   FaLaptop,
   FaTrashAlt,
+  FaCommentDots,
 } from "react-icons/fa";
 import { FaMoneyBillAlt } from "react-icons/fa";
 
@@ -54,6 +55,9 @@ const UpdateOptionsPage = () => {
       case "Delete Bill":
         navigate(`/delete-bill/${billId}`);
         break;
+      case "Create Chat Room":
+        navigate(`/create-chat-room`);
+        break;
       default:
         break;
     }
@@ -69,6 +73,7 @@ const UpdateOptionsPage = () => {
     { name: "Change Lap Details", icon: FaLaptop },
     { name: "Make Bill Paid", icon: FaMoneyBillAlt },
     { name: "Delete Bill", icon: FaTrashAlt },
+    { name: "Create Chat Room", icon: FaCommentDots },
   ];
 
   return (
