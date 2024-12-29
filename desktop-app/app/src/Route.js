@@ -60,7 +60,7 @@ export const protectedRoutes = [
   { path: "/company-bills", element: CompanyBillList },
   { path: "/register-company", element: RegisterCompanyPage },
   { path: "/companies", element: DisplayAllCompaniesPage },
-  { path: "/company/chat/:companyId", element: CompanyChatPage },
+  { path: "/companies/company/chat/:companyId", element: CompanyChatPage },
   { path: "/admin/chat", element: CompanyChatPage },
   { path: "/create-chat-room", element: ChatRoomForm },
 ];

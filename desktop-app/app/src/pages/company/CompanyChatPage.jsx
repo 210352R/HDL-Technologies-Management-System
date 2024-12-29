@@ -4,13 +4,15 @@ import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 import axios from "axios";
 import { url } from "../../url";
+import { useAuth } from "../../context/auth/index";
 
 // Initialize the Socket.IO client
-const socket = io(url);
+const socket = io("http://localhost:8000/");
 
 const ChatPage = () => {
   const { companyId } = useParams(); // Get the companyId from the URL
   const [roomName, setRoomName] = useState("");
+  const { currentUser } = useAuth();
   const [userName, setUserName] = useState("Guest");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -19,25 +21,28 @@ const ChatPage = () => {
   // Fetch chat room name based on companyId
   useEffect(() => {
     const fetchRoomName = async () => {
+      console.log(currentUser);
       try {
         const response = await axios.get(
           `${url}/chat/get-chat-room-by-company-id/${companyId}`
         );
-        console.log(response.data);
-        setRoomName(response.data.name);
-        socket.emit("joinRoom", { roomName: response.data.name, userName });
+        console.log(response.data.chatRoom);
+        setRoomName(response.data.chatRoom.name);
+        const email = currentUser.email;
+
+        const roomName = response.data.chatRoom.name;
+
+        socket.emit("joinRoom", {
+          roomName: roomName,
+          userName: email,
+        });
       } catch (err) {
         setError("Failed to fetch chat room.");
       }
     };
 
     fetchRoomName();
-
-    // Clean up on component unmount
-    return () => {
-      socket.disconnect();
-    };
-  }, [companyId, userName]);
+  }, []);
 
   // Listen for messages from the server
   useEffect(() => {

@@ -73,6 +73,29 @@ app.use("/db", db_router);
 app.use("/admin", admin_router);
 app.use("/chat", chat_router);
 
+io.on("connection", (socket) => {
+  console.log(`User connected: ${socket.id}`);
+
+  socket.on("joinRoom", ({ roomName, userName }) => {
+    socket.join(roomName);
+    console.log(`${userName} joined room ${roomName}`);
+    io.to(roomName).emit("message", `${userName} has joined the room.`);
+  });
+
+  socket.on("sendMessage", ({ roomName, message, userName }) => {
+    console.log(
+      "Message:",
+      message,
+      "In Server -------------------------------------------- "
+    );
+    io.to(roomName).emit("message", `${userName}: ${message}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`User disconnected: ${socket.id}`);
+  });
+});
+
 // set cron job for trigger every day ------------
 cron.schedule("0 11 * * *", async () => {
   console.log("Running Overdue updation Task ------------------------------- ");
@@ -108,32 +131,8 @@ cron.schedule("0 0 1 * *", async () => {
 
 // Start Iplement Web socket Implementation for chat process --------------
 
-// Socket.IO events
-io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
-
-  socket.on("joinRoom", ({ roomName, userName }) => {
-    socket.join(roomName);
-    console.log(`${userName} joined room ${roomName}`);
-    io.to(roomName).emit("message", `${userName} has joined the room.`);
-  });
-
-  socket.on("sendMessage", ({ roomName, message, userName }) => {
-    console.log(
-      "Message:",
-      message,
-      "In Server -------------------------------------------- "
-    );
-    io.to(roomName).emit("message", `${userName}: ${message}`);
-  });
-
-  socket.on("disconnect", () => {
-    console.log(`User disconnected: ${socket.id}`);
-  });
-});
-
 const port = process.env.PORT || 8000;
 // Set Port to work as server ---
-app.listen(port, () => {
+server.listen(port, () => {
   console.log("server is running on port " + port);
 });
