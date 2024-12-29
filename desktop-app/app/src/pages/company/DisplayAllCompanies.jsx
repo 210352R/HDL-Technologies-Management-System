@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { url } from "../../url";
+import { useNavigate } from "react-router-dom";
+import { FaRobot } from "react-icons/fa";
 
 const DisplayAllCompaniesPage = () => {
   const [companies, setCompanies] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // React Router hook for navigation
 
   // Fetch companies from API
   useEffect(() => {
@@ -20,6 +23,10 @@ const DisplayAllCompaniesPage = () => {
 
     fetchCompanies();
   }, []);
+
+  const handleChatNavigation = (companyId) => {
+    navigate(`company/chat/${companyId}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
@@ -37,7 +44,7 @@ const DisplayAllCompaniesPage = () => {
           {companies.map((company) => (
             <div
               key={company.id}
-              className="bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+              className="bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow relative"
             >
               <h2 className="text-2xl font-semibold text-gray-100 mb-2">
                 {company.name}
@@ -54,6 +61,13 @@ const DisplayAllCompaniesPage = () => {
               <p className="text-gray-400">
                 <strong>Prefix:</strong> {company.prefix}
               </p>
+              <button
+                onClick={() => handleChatNavigation(company.id)}
+                className="absolute bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg focus:outline-none transition-all"
+                aria-label={`Chat with ${company.name}`}
+              >
+                <FaRobot size={24} />
+              </button>
             </div>
           ))}
         </div>

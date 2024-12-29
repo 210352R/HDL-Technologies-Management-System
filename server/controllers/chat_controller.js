@@ -1,5 +1,9 @@
 import express from "express";
-import { getAllChatRooms, saveChat } from "../services/chat_service.js";
+import {
+  getAllChatRooms,
+  getChatRoomByCompanyId,
+  saveChat,
+} from "../services/chat_service.js";
 
 export const chat_router = express.Router();
 
@@ -25,5 +29,17 @@ chat_router.get("/get-all-chat-rooms", async (req, res) => {
   } catch (error) {
     console.log("Error in fetching chats from database: ", error);
     res.status(500).json({ message: "Failed to fetch chats" });
+  }
+});
+
+// create get end point for get chat room by companyid
+chat_router.get("/get-chat-room-by-company-id/:companyId", async (req, res) => {
+  const { companyId } = req.params;
+  try {
+    const chatRoom = await getChatRoomByCompanyId(companyId);
+    res.status(200).json({ chatRoom: chatRoom });
+  } catch (error) {
+    console.log("Error in fetching chat room by company id: ", error);
+    res.status(500).json({ message: "Failed to fetch chat room" });
   }
 });

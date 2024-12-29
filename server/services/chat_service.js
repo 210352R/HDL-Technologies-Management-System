@@ -24,3 +24,18 @@ export const getAllChatRooms = async () => {
     return null;
   }
 };
+
+// create method for get chatRoom by company id
+export const getChatRoomByCompanyId = async (companyId) => {
+  try {
+    const chatRoom = await prisma.room.findFirst({
+      where: {
+        company_id: companyId,
+      },
+    });
+    return chatRoom;
+  } catch (error) {
+    console.log("Error in fetching chat room from database: ", error);
+    return null;
+  }
+};

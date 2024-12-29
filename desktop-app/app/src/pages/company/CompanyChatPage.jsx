@@ -1,104 +1,108 @@
-import React, { useState, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+// Import necessary dependencies
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import io from "socket.io-client";
+import axios from "axios";
+import { url } from "../../url";
 
-const socket = io("http://localhost:8000");
+// Initialize the Socket.IO client
+const socket = io(url);
 
-function CompanyChatPage() {
+const ChatPage = () => {
+  const { companyId } = useParams(); // Get the companyId from the URL
+  const [roomName, setRoomName] = useState("");
+  const [userName, setUserName] = useState("Guest");
+  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const messagesEndRef = useRef(null);
+  const [error, setError] = useState(null);
 
+  // Fetch chat room name based on companyId
   useEffect(() => {
-    // Listen for incoming messages
-    socket.on("receive_message", (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
+    const fetchRoomName = async () => {
+      try {
+        const response = await axios.get(
+          `${url}/chat/get-chat-room-by-company-id/${companyId}`
+        );
+        console.log(response.data);
+        setRoomName(response.data.name);
+        socket.emit("joinRoom", { roomName: response.data.name, userName });
+      } catch (err) {
+        setError("Failed to fetch chat room.");
+      }
+    };
+
+    fetchRoomName();
 
     // Clean up on component unmount
-    return () => socket.off("receive_message");
+    return () => {
+      socket.disconnect();
+    };
+  }, [companyId, userName]);
+
+  // Listen for messages from the server
+  useEffect(() => {
+    socket.on("message", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
+    return () => {
+      socket.off("message");
+    };
   }, []);
 
-  useEffect(() => {
-    // Scroll to the bottom when messages change
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
+  // Handle sending a message
   const sendMessage = () => {
-    if (input.trim() !== "") {
-      const messageData = {
-        id: Date.now(),
-        text: input,
-        // Optionally, add a username or avatar here
-        // username: "User",
-        // avatar: "https://example.com/avatar.png",
-      };
-
-      // Send message to server
-      socket.emit("send_message", messageData);
-
-      // Optionally, add the message to local state immediately
-      setMessages((prevMessages) => [...prevMessages, messageData]);
-
-      // Clear input
-      setInput("");
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      sendMessage();
+    if (message.trim() !== "") {
+      socket.emit("sendMessage", { roomName, message, userName });
+      setMessage("");
     }
   };
 
   return (
-    <div className="flex flex-col w-screen h-screen bg-gray-900 text-white">
-      <header className="flex items-center justify-center bg-gray-800 p-4 shadow-md">
-        <h1 className="text-3xl font-bold">Company Chat</h1>
+    <div className="min-h-screen bg-gray-900 text-white p-6 flex flex-col">
+      <header className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-100">Chat Room</h1>
+        <p className="text-gray-400">
+          {roomName ? `Room: ${roomName}` : "Loading room..."}
+        </p>
       </header>
 
-      <main className="flex-1 overflow-y-auto p-4 bg-gray-700">
-        <div className="flex flex-col space-y-4">
-          {messages.map((message) => (
-            <div key={message.id} className="flex items-start space-x-3">
-              {/* Optional: User Avatar */}
-              {/* <img
-                src={message.avatar}
-                alt="avatar"
-                className="w-10 h-10 rounded-full"
-              /> */}
-              <div>
-                {/* Optional: Username */}
-                {/* <div className="text-sm font-semibold">{message.username}</div> */}
-                <div className="max-w-xs md:max-w-md lg:max-w-lg p-3 bg-blue-600 rounded-lg shadow">
-                  <p className="text-white">{message.text}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-      </main>
+      {error ? (
+        <div className="text-center text-red-500">{error}</div>
+      ) : (
+        <div className="flex flex-col flex-grow">
+          <div className="flex-grow bg-gray-800 rounded-lg p-4 overflow-y-auto mb-4">
+            {messages.length === 0 ? (
+              <p className="text-gray-400">No messages yet.</p>
+            ) : (
+              messages.map((msg, index) => (
+                <p key={index} className="text-gray-300 mb-2">
+                  {msg}
+                </p>
+              ))
+            )}
+          </div>
 
-      <footer className="p-4 bg-gray-800">
-        <div className="flex">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className="flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
-            placeholder="Type a message..."
-          />
-          <button
-            onClick={sendMessage}
-            className="ml-3 px-5 py-2 bg-blue-500 rounded-lg text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 shadow-md"
-          >
-            Send
-          </button>
+          <div className="flex">
+            <input
+              type="text"
+              className="flex-grow bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              placeholder="Type your message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            />
+            <button
+              className="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+              onClick={sendMessage}
+            >
+              Send
+            </button>
+          </div>
         </div>
-      </footer>
+      )}
     </div>
   );
-}
+};
 
-export default CompanyChatPage;
+export default ChatPage;
