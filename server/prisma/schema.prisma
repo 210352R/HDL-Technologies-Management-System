@@ -55,3 +55,9 @@ model Company {
   email     String @unique
   prefix    String @unique
 }
+
+model Room {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  name String @unique 
+}

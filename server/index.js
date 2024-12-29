@@ -25,6 +25,7 @@ import {
 import { db_router } from "./controllers/db_controller.js";
 import { user_router } from "./controllers/user_controller.js";
 import { backupDatabase } from "./services/memoryDumpService.js";
+import { chat_router } from "./controllers/chat_controller.js";
 
 // create express app ---
 const app = express();
@@ -57,6 +58,7 @@ app.use("/lap", lap_router);
 app.use("/users", user_router);
 app.use("/db", db_router);
 app.use("/admin", admin_router);
+app.use("/chat", chat_router);
 
 // set cron job for trigger every day ------------
 cron.schedule("0 11 * * *", async () => {
