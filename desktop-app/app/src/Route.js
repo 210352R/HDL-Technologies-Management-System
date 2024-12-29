@@ -61,4 +61,5 @@ export const protectedRoutes = [
   { path: "/companies", element: DisplayAllCompaniesPage },
   { path: "/company/chat/:id", element: CompanyChatPage },
   { path: "/admin/chat", element: CompanyChatPage },
+  { path: "/create-chat-room", element: CompanyChatPage },
 ];
