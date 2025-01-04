@@ -7,7 +7,7 @@ import { url } from "../../url";
 import { useAuth } from "../../context/auth/index";
 
 // Initialize the Socket.IO client
-const socket = io("http://localhost:8000/");
+const socket = io(url);
 
 const ChatPage = () => {
   const { companyId } = useParams(); // Get the companyId from the URL
