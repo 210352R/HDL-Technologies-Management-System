@@ -1,4 +1,4 @@
-export const url = "http://13.60.171.119";
+export const url = "http://51.20.6.131";
 
 // export const url = "https://hdl-technologies-management-system.vercel.app";
 

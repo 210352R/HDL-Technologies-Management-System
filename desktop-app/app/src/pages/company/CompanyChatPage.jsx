@@ -7,7 +7,9 @@ import { url } from "../../url";
 import { useAuth } from "../../context/auth/index";
 
 // Initialize the Socket.IO client
-const socket = io(url);
+const socket = io(
+  "wss://qragn12i93.execute-api.eu-north-1.amazonaws.com/production/"
+);
 
 const ChatPage = () => {
   const { companyId } = useParams(); // Get the companyId from the URL
