@@ -1,5 +1,6 @@
 import prisma from "../database/prisma.js";
 import { v4 as uuidv4 } from "uuid";
+import { getAllCompanyIds } from "./chat_service.js";
 
 // create a new lap with uniqe prefix
 
@@ -190,6 +191,32 @@ export const getCorrespondingPrefix = async (email) => {
     }
   } catch (error) {
     console.error("Error getting corresponding prefix:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+// create method as call getAllCompanyIds and get company ids that registered and give all other company ids not mentioned in that
+export const getUnregisteredCompanies = async () => {
+  try {
+    const registeredCompanyIds = await getAllCompanyIds();
+    const allCompanyIds = await prisma.company.findMany({
+      select: {
+        id: true,
+      },
+    });
+    console.log("Registered company ids:", registeredCompanyIds);
+    console.log("All company ids:", allCompanyIds);
+
+    const unregisteredCompanyIds = allCompanyIds.filter(
+      (company) =>
+        !registeredCompanyIds.some(
+          (registeredCompany) => registeredCompany.id === company.id
+        )
+    );
+    return unregisteredCompanyIds;
+  } catch (error) {
+    console.error("Error getting unregistered companies:", error);
   } finally {
     await prisma.$disconnect();
   }

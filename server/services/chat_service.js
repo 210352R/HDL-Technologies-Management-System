@@ -39,3 +39,18 @@ export const getChatRoomByCompanyId = async (companyId) => {
     return null;
   }
 };
+
+// Get all company_ids list
+export const getAllCompanyIds = async () => {
+  try {
+    const companyIds = await prisma.company.findMany({
+      select: {
+        id: true,
+      },
+    });
+    return companyIds;
+  } catch (error) {
+    console.log("Error in fetching company ids from database: ", error);
+    return null;
+  }
+};
