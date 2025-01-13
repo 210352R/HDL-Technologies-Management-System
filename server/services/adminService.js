@@ -200,20 +200,18 @@ export const getCorrespondingPrefix = async (email) => {
 export const getUnregisteredCompanies = async () => {
   try {
     const registeredCompanyIds = await getAllCompanyIds();
-    const allCompanyIds = await prisma.company.findMany({
-      select: {
-        id: true,
-      },
-    });
+    const allCompanies = await prisma.company.findMany({});
     console.log("Registered company ids:", registeredCompanyIds);
-    console.log("All company ids:", allCompanyIds);
+    console.log("All company ids:", allCompanies);
 
-    const unregisteredCompanyIds = allCompanyIds.filter(
+    // get all companies that not mentioned thier ids in registeredCompanyIds
+    const unregisteredCompanyIds = allCompanies.filter(
       (company) =>
-        !registeredCompanyIds.some(
-          (registeredCompany) => registeredCompany.id === company.id
+        !registeredCompanyIds.find(
+          (registeredCompany) => registeredCompany.company_id === company.id
         )
     );
+
     return unregisteredCompanyIds;
   } catch (error) {
     console.error("Error getting unregistered companies:", error);

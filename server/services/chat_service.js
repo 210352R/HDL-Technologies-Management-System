@@ -43,9 +43,9 @@ export const getChatRoomByCompanyId = async (companyId) => {
 // Get all company_ids list
 export const getAllCompanyIds = async () => {
   try {
-    const companyIds = await prisma.company.findMany({
+    const companyIds = await prisma.room.findMany({
       select: {
-        id: true,
+        company_id: true,
       },
     });
     return companyIds;
