@@ -28,6 +28,7 @@ import RegisterCompanyPage from "./pages/company/RegisterCompanyPage";
 import DisplayAllCompaniesPage from "./pages/company/DisplayAllCompanies";
 import CompanyChatPage from "./pages/company/CompanyChatPage";
 import ChatRoomForm from "./pages/company/CreateChatRoom";
+import AddChatRoom from "./pages/chat/CreateChatRoom";
 
 // Public routes (accessible without authentication)
 export const publicRoutes = [
@@ -61,6 +62,6 @@ export const protectedRoutes = [
   { path: "/register-company", element: RegisterCompanyPage },
   { path: "/companies", element: DisplayAllCompaniesPage },
   { path: "/companies/company/chat/:companyId", element: CompanyChatPage },
-  { path: "/admin/chat", element: CompanyChatPage },
+  { path: "/admin/chat", element: AddChatRoom },
   { path: "/create-chat-room", element: ChatRoomForm },
 ];
