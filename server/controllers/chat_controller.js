@@ -4,6 +4,7 @@ import {
   getChatRoomByCompanyId,
   saveChat,
 } from "../services/chat_service.js";
+import { getUnregisteredCompanies } from "../services/adminService.js";
 
 export const chat_router = express.Router();
 
@@ -41,5 +42,16 @@ chat_router.get("/get-chat-room-by-company-id/:companyId", async (req, res) => {
   } catch (error) {
     console.log("Error in fetching chat room by company id: ", error);
     res.status(500).json({ message: "Failed to fetch chat room" });
+  }
+});
+
+// create get end point for call  getUnregisteredCompanies function give unregisterd company details
+chat_router.get("/get-unregistered-companies", async (req, res) => {
+  try {
+    const unregisteredCompanies = await getUnregisteredCompanies();
+    res.status(200).json({ unregisteredCompanies });
+  } catch (error) {
+    console.error("Error getting unregistered companies:", error);
+    res.status(500).json({ message: "Failed to get unregistered companies." });
   }
 });
