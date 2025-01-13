@@ -14,7 +14,9 @@ const AddChatRoom = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get(`${url}/admin/get-all-companies`);
+        const response = await axios.get(
+          `${url}/chat/get-unregistered-companies`
+        );
         setCompanies(response.data.companies);
       } catch (error) {
         console.error("Error fetching companies:", error);
