@@ -11,6 +11,7 @@ import {
   getBillDetailsByBillId,
   getBillDetailsById,
   getBillDetailsByPrefix,
+  getBillsWithPagination,
   getCompletedBillsCount,
   getInProgressBillsCount,
   getNearestBill,
@@ -49,7 +50,7 @@ bill_router.get("/get-pagination-bills", async (req, res) => {
     const offset = (pageInt - 1) * limitInt;
 
     const bills = await getBillsWithPagination(limitInt, offset);
-    const totalBills = await getAllBillsCount();
+    const totalBills = getAllBillsCount();
 
     res.status(200).json({
       bills,
