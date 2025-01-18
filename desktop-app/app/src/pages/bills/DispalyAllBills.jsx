@@ -132,9 +132,18 @@ const BillList = () => {
                 <p className="text-gray-700 dark:text-gray-300">
                   <strong>Issue:</strong> {bill.issue}
                 </p>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p
+                  className={`text-gray-700 dark:text-gray-300 ${
+                    bill.status.toLowerCase() === "completed"
+                      ? "text-green-600 dark:text-green-400"
+                      : bill.status.toLowerCase() === "paid"
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-red-600 dark:text-red-400"
+                  }`}
+                >
                   <strong>Status:</strong> {bill.status}
                 </p>
+
                 <p className="text-gray-700 dark:text-gray-300">
                   <strong>Announce Date:</strong> {bill.announce_date}
                 </p>

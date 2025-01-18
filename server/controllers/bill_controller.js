@@ -52,8 +52,6 @@ bill_router.get("/get-pagination-bills", async (req, res) => {
     const bills = await getBillsWithPagination(limitInt, offset);
     const totalBills = await getAllBillsCount();
 
-    console.log("Total Bills : ", totalBills);
-
     res.status(200).json({
       bills,
       pagination: {
