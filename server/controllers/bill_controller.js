@@ -320,7 +320,6 @@ bill_router.put("/update-lap-details", async (req, res) => {
   }
 });
 
-//create endpoint for get total bill coiunt
 bill_router.get("/get-all-bills-count", async (req, res) => {
   try {
     const billCount = await getAllBillsCount();
