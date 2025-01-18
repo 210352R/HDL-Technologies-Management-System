@@ -40,6 +40,32 @@ bill_router.get("/get-all-bills", async (req, res) => {
   }
 });
 
+// Endpoint to fetch bills with pagination
+bill_router.get("/get-pagination-bills", async (req, res) => {
+  try {
+    const { limit = 10, page = 1 } = req.query;
+    const limitInt = parseInt(limit);
+    const pageInt = parseInt(page);
+    const offset = (pageInt - 1) * limitInt;
+
+    const bills = await getBillsWithPagination(limitInt, offset);
+    const totalBills = await getAllBillsCount();
+
+    res.status(200).json({
+      bills,
+      pagination: {
+        total: totalBills,
+        page: pageInt,
+        limit: limitInt,
+        totalPages: Math.ceil(totalBills / limitInt),
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: "Bills could not be fetched" });
+  }
+});
+
 // create post method for add lap
 bill_router.post("/add-lap", async (req, res) => {
   const { brand, model } = req.body;
