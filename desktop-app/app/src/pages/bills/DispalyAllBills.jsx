@@ -148,37 +148,39 @@ const BillList = () => {
         </div>
 
         {/* Page Navigation Bar */}
-        <div className="fixed bottom-0 left-0 right-0 bg-gray-700 text-white py-4">
-          <div className="flex justify-center items-center space-x-2">
+        <div className="fixed bottom-0 left-0 right-0  text-white py-4 shadow-md">
+          <div className="flex justify-center items-center space-x-4">
             {/* Backward Navigation */}
             <button
               onClick={() =>
                 currentPage > 1 && handlePageChange(currentPage - 1)
               }
               disabled={currentPage === 1}
-              className={`px-4 py-2 rounded-md text-sm font-medium ${
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                 currentPage === 1
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : "bg-gray-800 hover:bg-blue-600"
+                  ? "bg-gray-600 cursor-not-allowed opacity-50"
+                  : "bg-blue-600 hover:bg-blue-700 shadow-lg"
               }`}
             >
               &lt;
             </button>
 
             {/* Page Numbers */}
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 rounded-md text-sm font-medium ${
-                  currentPage === index + 1
-                    ? "bg-blue-500"
-                    : "bg-gray-800 hover:bg-blue-600"
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
+            <div className="flex space-x-2">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                    currentPage === index + 1
+                      ? "bg-blue-500 text-white shadow-md scale-105"
+                      : "bg-gray-800 hover:bg-blue-500 hover:text-white"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
 
             {/* Forward Navigation */}
             <button
@@ -186,16 +188,17 @@ const BillList = () => {
                 currentPage < totalPages && handlePageChange(currentPage + 1)
               }
               disabled={currentPage === totalPages}
-              className={`px-4 py-2 rounded-md text-sm font-medium ${
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                 currentPage === totalPages
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : "bg-gray-800 hover:bg-blue-600"
+                  ? "bg-gray-600 cursor-not-allowed opacity-50"
+                  : "bg-blue-600 hover:bg-blue-700 shadow-lg"
               }`}
             >
               &gt;
             </button>
           </div>
         </div>
+
         {/* Popup for bill details */}
         {isPopupOpen && selectedBill && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
