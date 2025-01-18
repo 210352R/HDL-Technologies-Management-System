@@ -156,6 +156,19 @@ export const getBillsWithPagination = async (limit, offset) => {
     skip: offset,
     take: limit,
   });
+  for (let i = 0; i < bills.length; i++) {
+    const lap = await getLapDetails(bills[i].lapId);
+    // add new property to the bill object called lap and set it to the lap object
+    let lap_details = {
+      lap_id: lap.lapId,
+      lap_model: lap.model,
+      lap_brand: lap.brand,
+      lap_ram: lap.ram,
+      lap_hard: lap.hard,
+      lap_ssd: lap.ssd,
+    };
+    bills[i].lap = lap_details;
+  }
   return bills;
 };
 
