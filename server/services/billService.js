@@ -150,6 +150,15 @@ export const getAllBills = async () => {
   return bills;
 };
 
+// Method to fetch all bills with pagination
+export const getBillsWithPagination = async (limit, offset) => {
+  const bills = await prisma.bill.findMany({
+    skip: offset,
+    take: limit,
+  });
+  return bills;
+};
+
 // update announce_date and status of bill use bill id
 export const updateBillAnnounceDate = async (billId, announce_date) => {
   const updatedBill = await prisma.bill.update({
