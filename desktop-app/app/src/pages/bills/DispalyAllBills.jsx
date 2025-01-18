@@ -21,11 +21,11 @@ const BillList = () => {
   const fetchBills = async (page = 1, pageSize = 10) => {
     try {
       const response = await axios.get(
-        `${url}/bill/get-pagination-bills?limit=${pageSize}&page=${page}`
+        `${url}/bill/get-paginated-bills?limit=${pageSize}&page=${page}`
       );
       console.log(response.data);
       setBills(response.data.bills);
-      setTotalPages(response.data.pagination.totalPages); // Update total pages
+      setTotalPages(response.data.totalPages); // Update total pages
     } catch (error) {
       console.error("Error fetching bills:", error);
     }
