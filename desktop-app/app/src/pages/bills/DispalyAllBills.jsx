@@ -148,13 +148,29 @@ const BillList = () => {
         </div>
 
         {/* Page Navigation Bar */}
-        <div className="fixed bottom-0 left-0 right-0 bg-gray-700 text-white">
-          <div className="flex justify-center">
+        <div className="fixed bottom-0 left-0 right-0 bg-gray-700 text-white py-4">
+          <div className="flex justify-center items-center space-x-2">
+            {/* Backward Navigation */}
+            <button
+              onClick={() =>
+                currentPage > 1 && handlePageChange(currentPage - 1)
+              }
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-md text-sm font-medium ${
+                currentPage === 1
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-gray-800 hover:bg-blue-600"
+              }`}
+            >
+              &lt;
+            </button>
+
+            {/* Page Numbers */}
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index + 1}
                 onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 m-2 rounded-md text-sm font-medium ${
+                className={`px-4 py-2 rounded-md text-sm font-medium ${
                   currentPage === index + 1
                     ? "bg-blue-500"
                     : "bg-gray-800 hover:bg-blue-600"
@@ -163,6 +179,21 @@ const BillList = () => {
                 {index + 1}
               </button>
             ))}
+
+            {/* Forward Navigation */}
+            <button
+              onClick={() =>
+                currentPage < totalPages && handlePageChange(currentPage + 1)
+              }
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-md text-sm font-medium ${
+                currentPage === totalPages
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-gray-800 hover:bg-blue-600"
+              }`}
+            >
+              &gt;
+            </button>
           </div>
         </div>
         {/* Popup for bill details */}
