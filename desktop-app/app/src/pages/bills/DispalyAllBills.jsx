@@ -21,11 +21,12 @@ const BillList = () => {
   const fetchBills = async (page = 1, pageSize = 10) => {
     try {
       const response = await axios.get(
-        `${url}/bill/get-paginated-bills?limit=${pageSize}&page=${page}`
+        `${url}/bill/get-pagination-bills?limit=${pageSize}&page=${page}`
       );
       console.log(response.data);
       setBills(response.data.bills);
-      setTotalPages(response.data.totalPages); // Update total pages
+      console.log("Total_pages ", response.data.pagination.totalPages);
+      setTotalPages(response.data.pagination.totalPages); // Update total pages
     } catch (error) {
       console.error("Error fetching bills:", error);
     }
@@ -146,20 +147,23 @@ const BillList = () => {
           )}
         </div>
 
-        <div className="flex justify-center mt-6">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index + 1}
-              onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 m-2 rounded-md text-sm font-medium ${
-                currentPage === index + 1
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
+        {/* Page Navigation Bar */}
+        <div className="fixed bottom-10 left-10 right-10 bg-gray-700 text-white py-4">
+          <div className="flex justify-center">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-4 py-2 m-2 rounded-md text-sm font-medium ${
+                  currentPage === index + 1
+                    ? "bg-blue-500"
+                    : "bg-gray-800 hover:bg-blue-600"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </>
