@@ -4,12 +4,6 @@ const QrCodeReader = () => {
   const [scannedData, setScannedData] = useState("");
 
   useEffect(() => {
-    if (scannedData) {
-      console.log("Barcode Scanned:", scannedData);
-    }
-  }, []);
-
-  useEffect(() => {
     const handleKeyPress = (event) => {
       // Append each key to the scanned data
       setScannedData((prev) => prev + event.key);
