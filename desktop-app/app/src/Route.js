@@ -30,6 +30,7 @@ import CompanyChatPage from "./pages/company/CompanyChatPage";
 import ChatRoomForm from "./pages/company/CreateChatRoom";
 import AddChatRoom from "./pages/chat/CreateChatRoom";
 import QrCodeReader from "./pages/services/bill/QrCodeReader";
+import AddExtBillForm from "./pages/bills/AddExistingBillPage";
 
 // Public routes (accessible without authentication)
 export const publicRoutes = [
@@ -66,4 +67,5 @@ export const protectedRoutes = [
   { path: "/admin/chat", element: AddChatRoom },
   { path: "/create-chat-room", element: ChatRoomForm },
   { path: "/qr-code-reader", element: QrCodeReader },
+  { path: "/add-ext-bill/:lapId", element: AddExtBillForm },
 ];
