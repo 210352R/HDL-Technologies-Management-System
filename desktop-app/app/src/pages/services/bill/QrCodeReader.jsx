@@ -5,6 +5,7 @@ import { url } from "../../../url";
 const QrCodeReader = () => {
   const [scannedData, setScannedData] = useState("");
   const [lapDetails, setLapDetails] = useState(null);
+  const [lapId, setLapId] = useState("");
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,6 +18,7 @@ const QrCodeReader = () => {
         const trimmedData = scannedData.trim();
         console.log("Scanned LapID:", trimmedData);
         fetchLapDetails(trimmedData);
+        setLapId(trimmedData);
         setScannedData("");
       }
     };
@@ -58,6 +60,18 @@ const QrCodeReader = () => {
         </p>
 
         {error && <p className="text-red-500 font-medium">{error}</p>}
+
+        {/* Add Bill Button */}
+        {bills.length > 0 && (
+          <div className="absolute top-6 right-6">
+            <button
+              className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-lg space-x-2 transition"
+              onClick={() => console.log("Add Bill Button Clicked")}
+            >
+              <span>Add Bill</span>
+            </button>
+          </div>
+        )}
 
         {loading && (
           <div className="flex justify-center items-center mt-4">

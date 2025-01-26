@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import DateTimePicker from "react-datetime-picker";
-import QRCodeDisplayScreen from "../qr_code/QRCodeDisplayScreen";
 import { url } from "../../url";
+import QRCodeDisplay from "../../qr/QRCodeDisplay";
 
 const AddExtBillForm = ({ route }) => {
   const { lapId } = route.params; // lapId passed as a param from navigation
@@ -43,7 +44,9 @@ const AddExtBillForm = ({ route }) => {
       }
     };
 
-    fetchLapDetails(lapId);
+    if (lapId) {
+      fetchLapDetails(lapId); // Call the function if lapId is available
+    }
   }, [lapId]);
 
   const handleChange = (name, value) => {
@@ -94,12 +97,10 @@ const AddExtBillForm = ({ route }) => {
   if (isSetQr) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <QRCodeDisplayScreen
-          qrCode={qrCode}
-          customerName={formData.name}
-          laptopModel={formData.model}
-          laptopBrand={formData.brand}
-          onDownload={downloadQRCode}
+        <QRCodeDisplay
+          qrCodeUrl={qrCode}
+          brand={formData.brand}
+          model={formData.model}
         />
       </div>
     );
