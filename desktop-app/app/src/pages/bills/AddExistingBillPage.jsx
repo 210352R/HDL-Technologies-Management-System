@@ -5,7 +5,7 @@ import DateTimePicker from "react-datetime-picker";
 import { url } from "../../url";
 import QRCodeDisplay from "../../qr/QRCodeDisplay";
 
-const AddExtBillForm = ({ route }) => {
+const AddExtBillForm888 = ({ route }) => {
   const { lapId } = useParams();
   const [formData, setFormData] = useState({
     name: "",
@@ -206,4 +206,4 @@ const AddExtBillForm = ({ route }) => {
   );
 };
 
-export default AddExtBillForm;
+export default AddExtBillForm888;

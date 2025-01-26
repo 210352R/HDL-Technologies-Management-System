@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import Navbar from "../../../components/navbar/Navbar"; // Import the Navbar component
 import QRCodeDisplay from "../../../qr/QRCodeDisplay";
 import { url } from "../../../url";
 
 const AddExtBillForm = ({ lapId }) => {
+  const { lapid } = useParams();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -26,7 +28,7 @@ const AddExtBillForm = ({ lapId }) => {
   useEffect(() => {
     const fetchLapDetails = async () => {
       try {
-        const response = await axios.get(`${url}/get-lap/${lapId}`);
+        const response = await axios.get(`${url}/lap/get-lap/${lapid}`);
         const { brand, model, lapId } = response.data.lap;
         setFormData((prev) => ({
           ...prev,
@@ -58,26 +60,28 @@ const AddExtBillForm = ({ lapId }) => {
       handover_date: new Date(formData.handover_date).toISOString(),
       amount: parseFloat(formData.amount),
     };
-    try {
-      const response = await axios.post(
-        `${url}/bill/add-new-bill`,
-        formDataWithISODate,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.data.qr_code) {
-        setIsSetQr(true);
-        setQrCode(response.data.qr_code);
-      } else {
-        alert("There was an error generating the QR Code!");
-      }
-    } catch (error) {
-      console.error("Error submitting bill:", error);
-      alert("Error submitting bill! Please try again.");
-    }
+
+    console.log("Form Data:", formDataWithISODate);
+    // try {
+    //   const response = await axios.post(
+    //     `${url}/bill/add-new-bill`,
+    //     formDataWithISODate,
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   );
+    //   if (response.data.qr_code) {
+    //     setIsSetQr(true);
+    //     setQrCode(response.data.qr_code);
+    //   } else {
+    //     alert("There was an error generating the QR Code!");
+    //   }
+    // } catch (error) {
+    //   console.error("Error submitting bill:", error);
+    //   alert("Error submitting bill! Please try again.");
+    // }
   };
 
   return (
