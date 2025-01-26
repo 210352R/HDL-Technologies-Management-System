@@ -144,6 +144,38 @@ export const createNewBillByUserId = async (bill) => {
   return { bill: newBill, qr_code: lap.qrcode };
 };
 
+//create a new bill with given userId and LapId
+export const createNewBillByUserIdAndLapId = async (bill) => {
+  const {
+    billId,
+    userId,
+    lapId,
+    issue,
+    amount,
+    announce_date,
+    handover_date,
+    status,
+    images,
+  } = bill;
+  const date = new Date().toISOString(); // current date
+  const newBill = await prisma.bill.create({
+    data: {
+      billId,
+      lapId,
+      userId,
+      issue,
+      amount,
+      date,
+      announce_date,
+      handover_date,
+      status,
+      images,
+    },
+  });
+  const qrcode = await getQRCode(lapId);
+  return { bill: newBill, qr_code: qrcode };
+};
+
 // create method for get all bills
 export const getAllBills = async () => {
   const bills = await prisma.bill.findMany();

@@ -95,7 +95,7 @@ const AddNewExtBillForm = () => {
     };
 
     fetchLapDetails();
-  }, [lapId]);
+  }, [lapid]);
 
   const handleCustomSsdChange = (e) => {
     setFormData((prev) => ({
@@ -134,41 +134,45 @@ const AddNewExtBillForm = () => {
 
     console.log("BillBody", formDataWithISODate);
 
-    // try {
-    //   if (!isUserDetected) {
-    //     const response = await axios.post(
-    //       `${url}/bill/add-new-bill`,
-    //       formDataWithISODate,
-    //       {
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //       }
-    //     );
+    try {
+      if (!isUserDetected) {
+        const response = await axios.post(
+          `${url}/bill/add-existing-bill`,
+          {
+            ...formDataWithISODate,
+            lapId: lapid,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-    //     setIsSetQr(true);
-    //     setQrCode(response.data.qr_code);
-    //   } else {
-    //     const response = await axios.post(
-    //       `${url}/bill/add-existing-user-bill`,
-    //       {
-    //         ...formDataWithISODate,
-    //         userId: userId,
-    //       },
-    //       {
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //       }
-    //     );
+        setIsSetQr(true);
+        setQrCode(response.data.qr_code);
+      } else {
+        const response = await axios.post(
+          `${url}/bill/add-existing-user-lap-bill`,
+          {
+            ...formDataWithISODate,
+            lapId: lapid,
+            userId: userId,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-    //     setIsSetQr(true);
-    //     setQrCode(response.data.qr_code);
-    //   }
-    // } catch (error) {
-    //   console.error("There was an error!", error);
-    //   alert("There was an error! Please try again.");
-    // }
+        setIsSetQr(true);
+        setQrCode(response.data.qr_code);
+      }
+    } catch (error) {
+      console.error("There was an error!", error);
+      alert("There was an error! Please try again.");
+    }
   };
 
   const fetchUserByPhone = async (phone) => {
@@ -367,7 +371,7 @@ const AddNewExtBillForm = () => {
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
                   placeholder="Dell, HP, etc."
-                  required
+                  readOnly
                 />
               </div>
 
@@ -387,7 +391,7 @@ const AddNewExtBillForm = () => {
                   onChange={handleChange}
                   className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
                   placeholder="Inspiron 15, MacBook Pro"
-                  required
+                  readOnly
                 />
               </div>
 
@@ -500,69 +504,36 @@ const AddNewExtBillForm = () => {
                 >
                   RAM
                 </label>
-                <select
-                  id="ram"
-                  name="ram"
+                <input
+                  type="text"
+                  id="brand"
+                  name="brand"
                   value={formData.ram}
                   onChange={handleChange}
-                  className="select select-bordered w-full bg-gray-700 text-white"
-                >
-                  <option value="">Select RAM Size</option>
-                  <option value="2GB">2GB</option>
-                  <option value="4GB">4GB</option>
-                  <option value="8GB">8GB</option>
-                  <option value="16GB">16GB</option>
-                  <option value="32GB">32GB</option>
-                </select>
+                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
+                  placeholder="Dell, HP, etc."
+                  readOnly
+                />
               </div>
 
               {/* SSD Dropdown */}
               <div>
-                {/* SSD Dropdown */}
-                <div>
-                  <label
-                    className="block text-sm font-medium text-gray-400 mb-2"
-                    htmlFor="ssd"
-                  >
-                    SSD
-                  </label>
-                  <select
-                    id="ssd"
-                    name="ssd"
-                    value={formData.ssd}
-                    onChange={handleChange}
-                    className="select select-bordered w-full bg-gray-700 text-white"
-                  >
-                    <option value="">Select SSD Size</option>
-                    <option value="128GB">128GB</option>
-                    <option value="256GB">256GB</option>
-                    <option value="512GB">512GB</option>
-                    <option value="1TB">1TB</option>
-                    <option value="Custom">Custom</option> {/* Custom Option */}
-                  </select>
-                </div>
-
-                {/* Conditionally render the custom SSD input field */}
-                {formData.ssd === "Custom" && (
-                  <div className="mt-4">
-                    <label
-                      className="block text-sm font-medium text-gray-400 mb-2"
-                      htmlFor="customSsd"
-                    >
-                      Enter Custom SSD Size
-                    </label>
-                    <input
-                      type="text"
-                      id="customSsd"
-                      name="customSsd"
-                      value={formData.customSsd}
-                      onChange={handleCustomSsdChange}
-                      className="input input-bordered w-full bg-gray-700 text-white"
-                      placeholder="Enter SSD Size (e.g., 2TB, 3TB)"
-                      required
-                    />
-                  </div>
-                )}
+                <label
+                  className="block text-sm font-medium text-gray-400 mb-2"
+                  htmlFor="ssd"
+                >
+                  SSD
+                </label>
+                <input
+                  type="text"
+                  id="brand"
+                  name="brand"
+                  value={formData.ssd}
+                  onChange={handleChange}
+                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
+                  placeholder="Dell, HP, etc."
+                  readOnly
+                />
               </div>
 
               {/* Hard Drive Dropdown */}
@@ -571,20 +542,18 @@ const AddNewExtBillForm = () => {
                   className="block text-sm font-medium text-gray-400 mb-2"
                   htmlFor="hard"
                 >
-                  Hard Drive
+                  Hard
                 </label>
-                <select
-                  id="hard"
-                  name="hard"
+                <input
+                  type="text"
+                  id="brand"
+                  name="brand"
                   value={formData.hard}
                   onChange={handleChange}
-                  className="select select-bordered w-full bg-gray-700 text-white"
-                >
-                  <option value="">Select Hard Drive Size</option>
-                  <option value="500GB">500GB</option>
-                  <option value="1TB">1TB</option>
-                  <option value="2TB">2TB</option>
-                </select>
+                  className="input input-bordered w-full bg-gray-700 text-white placeholder-gray-500"
+                  placeholder="Dell, HP, etc."
+                  readOnly
+                />
               </div>
 
               {/* Image Upload */}
