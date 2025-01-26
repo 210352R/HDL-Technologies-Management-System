@@ -65,5 +65,5 @@ export const protectedRoutes = [
   { path: "/companies/company/chat/:companyId", element: CompanyChatPage },
   { path: "/admin/chat", element: AddChatRoom },
   { path: "/create-chat-room", element: ChatRoomForm },
-  { path: "/qr-reader", element: QrCodeReader },
+  { path: "/qr-code-reader", element: QrCodeReader },
 ];

@@ -13,6 +13,7 @@ import {
   FaEdit,
   FaUserSearch,
   FaBuilding,
+  FaQrcode,
   FaList,
   FaComments,
 } from "react-icons/fa";
@@ -200,6 +201,12 @@ const HomePage = () => {
                 <FaFileInvoice size={24} className="mr-2" /> New Bill
               </Link>
               <Link
+                to="/qr-code-reader"
+                className="flex items-center hover:bg-gray-700 px-4 py-2 rounded mt-2"
+              >
+                <FaQrcode size={24} className="mr-2" /> QR Code Reader
+              </Link>
+              <Link
                 to="/update-bills"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
               >
@@ -211,6 +218,7 @@ const HomePage = () => {
               >
                 <FaFileInvoice size={24} className="mr-2" /> Bills
               </Link>
+
               <Link
                 to="/find-user"
                 className="flex items-center hover:bg-gray-700 px-4 py-2 rounded"
