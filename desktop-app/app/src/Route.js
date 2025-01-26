@@ -67,5 +67,5 @@ export const protectedRoutes = [
   { path: "/admin/chat", element: AddChatRoom },
   { path: "/create-chat-room", element: ChatRoomForm },
   { path: "/qr-code-reader", element: QrCodeReader },
-  { path: "/add-ext-bill/:lapId", element: AddExtBillForm },
+  { path: "/qr-code-reader/add-ext-bill/:lapId", element: AddExtBillForm },
 ];

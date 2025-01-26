@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { url } from "../../../url";
 
 const QrCodeReader = () => {
@@ -9,6 +10,7 @@ const QrCodeReader = () => {
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -45,6 +47,11 @@ const QrCodeReader = () => {
     }
   };
 
+  // Navigate to Add Bill page
+  const navigateToAddBill = () => {
+    navigate(`add-ext-bill/${lapId}`);
+  };
+
   return (
     <div className="p-6 max-w-4xl mx-auto bg-gray-900 text-gray-100 min-h-screen">
       <h1 className="text-3xl font-extrabold mb-6 text-center text-blue-400">
@@ -66,7 +73,7 @@ const QrCodeReader = () => {
           <div className="absolute top-6 right-6">
             <button
               className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-lg space-x-2 transition"
-              onClick={() => console.log("Add Bill Button Clicked")}
+              onClick={navigateToAddBill}
             >
               <span>Add Bill</span>
             </button>
