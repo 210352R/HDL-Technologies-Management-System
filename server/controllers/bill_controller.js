@@ -24,6 +24,7 @@ import {
   updateBillHandoverDate,
   updateBillIssue,
   updateBillStatus,
+  updateBillStatusToOverdue,
   updateLapDetailsByBillId,
 } from "../services/billService.js";
 import { getAllBillsByUserId } from "../services/userService.js";
@@ -485,5 +486,24 @@ bill_router.get("/get-bill-details-by-prefix/:prefix", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: "Bills could not be fetched" });
+  }
+});
+
+bill_router.get("/update-overdue-bills", async (req, res) => {
+  try {
+    console.log(
+      "Running Overdue updation Task ------------------------------- "
+    );
+    updateBillStatusToOverdue()
+      .then(() => {
+        console.log("Bill status updated to overdue successfully");
+      })
+      .catch((error) => {
+        console.error("Error updating bill status to overdue:", error);
+      });
+    res.status(200).json({ message: "Bill Overdue Operartion Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "Bills could not Updated " });
   }
 });

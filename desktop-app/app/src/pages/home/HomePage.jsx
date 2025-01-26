@@ -17,7 +17,6 @@ import {
   FaList,
   FaComments,
 } from "react-icons/fa";
-import { io } from "socket.io-client";
 import { Line, Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto"; // Required for react-chartjs-2 to work
 import { url } from "../../url";
@@ -36,6 +35,19 @@ const HomePage = () => {
     overdueBills: 0,
     inProgressBills: 0,
   });
+
+  useEffect(() => {
+    const updateOverdueBills = async () => {
+      try {
+        const response = await axios.get(`${url}/bill/update-overdue-bills`);
+        console.log("Overdue updation Task:", response.data.message);
+      } catch (error) {
+        console.error("Error Overdue Updation Task:", error);
+      }
+    };
+
+    updateOverdueBills();
+  }, []);
 
   useEffect(() => {
     const fetchRecentBills = async () => {
