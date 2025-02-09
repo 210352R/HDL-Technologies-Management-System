@@ -4,6 +4,7 @@ import { useAuth } from "./context/auth";
 
 const ProtectedRoute = ({ children }) => {
   const { userLoggedIn } = useAuth();
+  console.log("Check LOGIN VALIDATION ---------------------");
   if (!userLoggedIn) {
     return <Navigate to="/" />;
   }
