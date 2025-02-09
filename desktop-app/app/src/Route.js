@@ -31,6 +31,7 @@ import ChatRoomForm from "./pages/company/CreateChatRoom";
 import AddChatRoom from "./pages/chat/CreateChatRoom";
 import QrCodeReader from "./pages/services/bill/QrCodeReader";
 import AddNewExtBillForm from "./pages/services/bill/NewExtBillPage";
+import ExportComponent from "./pages/backup/ExportComponent";
 
 // Public routes (accessible without authentication)
 export const publicRoutes = [
@@ -43,7 +44,7 @@ export const protectedRoutes = [
   { path: "/home", element: HomePage },
   { path: "/admin/newbill", element: AddBillForm },
   { path: "/forgot-password", element: ForgotPassword },
-  { path: "/memory-backup", element: BackupScreen },
+  { path: "/memory-backup", element: ExportComponent },
   { path: "/all-bills", element: BillList },
   { path: "/users", element: UserList },
   { path: "/settings", element: ProfileScreen },
