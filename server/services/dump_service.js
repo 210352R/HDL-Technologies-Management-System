@@ -20,5 +20,5 @@ export const generateJSON = async () => {
   const filePath = path.join(__dirname, "../database_dump.json");
 
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-  return filePath; // Return file path for controller to send response
+  return filePath;
 };

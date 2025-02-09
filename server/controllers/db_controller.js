@@ -28,3 +28,17 @@ db_router.get("/getDetails", async (req, res) => {
       .json({ message: "Database details failed", error: error.message });
   }
 });
+
+db_router.get("/backup-json", async (req, res) => {
+  try {
+    const filePath = await generateJSON();
+
+    res.download(filePath, "database_dump.json", async () => {
+      await fs.unlink(filePath).catch(console.error); // Delete file after download
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to export JSON", details: error.message });
+  }
+});
