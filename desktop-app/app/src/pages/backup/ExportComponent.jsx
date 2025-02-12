@@ -6,6 +6,19 @@ import { url } from "../../url";
 import Navbar from "../../components/navbar/Navbar";
 
 const ExportComponent = () => {
+  const [daysSinceLast, setDaysSinceLast] = useState(null);
+
+  useEffect(() => {
+    const fetchDaysSinceLastExport = async () => {
+      try {
+        const { data } = await axios.get(`${url}/db/days-since-last-export`);
+        setDaysSinceLast(data.daysSinceLastExport);
+      } catch (error) {
+        console.error("Failed to fetch last export date", error);
+      }
+    };
+    fetchDaysSinceLastExport();
+  }, []);
   const handleExport = async (type) => {
     try {
       const axios_url = `${url}/db/backup-json`;
@@ -34,6 +47,15 @@ const ExportComponent = () => {
           <h2 className="text-xl font-semibold text-white flex items-center justify-center gap-2">
             <FiDatabase className="text-yellow-400" size={24} /> Export Database
           </h2>
+
+          {daysSinceLast !== null && (
+            <p className="mb-8 mt-6 text-gray-300">
+              Last export:{" "}
+              {daysSinceLast === "Last Export"
+                ? "Never exported before"
+                : `${daysSinceLast} days ago`}
+            </p>
+          )}
 
           <div className="mt-6 space-y-4">
             <button
