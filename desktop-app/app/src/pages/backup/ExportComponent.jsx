@@ -26,7 +26,8 @@ const ExportComponent = () => {
     setIsDownloading(true);
     try {
       const response = await axios.get(`${url}/db/backup-json`);
-      const jsonData = JSON.stringify(response.data, null, 2);
+      console.log("Response Data ----------- : ", response.data.data);
+      const jsonData = JSON.stringify(response.data.data, null, 2);
 
       // Generate timestamp-based filename
       const now = new Date();
