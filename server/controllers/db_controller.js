@@ -9,11 +9,14 @@ import {
   getDaysSinceLastExport,
 } from "../services/dump_service.js";
 
+import prisma from "../database/prisma.js";
+
 export const db_router = express.Router();
 
 db_router.post("/backup", async (req, res) => {
   try {
     await backupDatabase(); // Call the async backup method
+
     res.status(200).json({ message: "Backup successful" });
   } catch (error) {
     console.error("Backup failed:", error);
@@ -39,12 +42,17 @@ db_router.get("/backup-json", async (req, res) => {
   try {
     const data = await fetchData();
     console.log("Succcessfully get all Daatabase Data  ----------- ");
+    // Save log in database
+    await prisma.exportLogs.create({
+      data: { fileType: "JSON", status: "Success" },
+    });
+    console.log("Save Log in Database ------------------------ ");
     res.status(200).json({ data: data });
   } catch (error) {
     console.log("Error in Exporting JSON: ", error);
     res
       .status(500)
-      .json({ error: "Failed to export JSON", details: error.message });
+      .json({ error: "Failed to export JSON Data", details: error.message });
   }
 });
 
