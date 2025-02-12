@@ -20,5 +20,10 @@ export const generateJSON = async () => {
   const filePath = path.join(__dirname, "../database_dump.json");
 
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
+  // Save log in database
+  await prisma.exportLogs.create({
+    data: { fileType: "xlsx" },
+  });
+  console.log("Save Log in Database ------------------------ ");
   return filePath;
 };
