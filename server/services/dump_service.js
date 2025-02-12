@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Fetch all data from DB
-const fetchData = async () => ({
+export const fetchData = async () => ({
   users: await prisma.user.findMany(),
   bills: await prisma.bill.findMany(),
   laps: await prisma.lap.findMany(),

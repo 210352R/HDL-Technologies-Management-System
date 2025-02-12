@@ -4,6 +4,7 @@ import {
   getFileDetails,
 } from "../services/memoryDumpService.js";
 import {
+  fetchData,
   generateJSON,
   getDaysSinceLastExport,
 } from "../services/dump_service.js";
@@ -36,13 +37,9 @@ db_router.get("/getDetails", async (req, res) => {
 db_router.get("/backup-json", async (req, res) => {
   console.log("Comes To Json Backup Endpoint method -------------");
   try {
-    const filePath = await generateJSON();
-
-    console.log("File Path: ", filePath);
-
-    res.download(filePath, "database_dump.json", async () => {
-      await fs.unlink(filePath).catch(console.error); // Delete file after download
-    });
+    const data = await fetchData();
+    console.log("Succcessfully get all Daatabase Data  ----------- ");
+    res.status(200).json({ data: data });
   } catch (error) {
     console.log("Error in Exporting JSON: ", error);
     res
