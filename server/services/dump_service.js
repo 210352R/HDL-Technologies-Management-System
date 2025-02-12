@@ -22,8 +22,21 @@ export const generateJSON = async () => {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
   // Save log in database
   await prisma.exportLogs.create({
-    data: { fileType: "xlsx" },
+    data: { fileType: "JSON" },
   });
   console.log("Save Log in Database ------------------------ ");
   return filePath;
+};
+
+export const getDaysSinceLastExport = async () => {
+  const lastExport = await prisma.exportLogs.findFirst({
+    orderBy: { timestamp: "desc" }, // Get the latest export
+  });
+
+  if (!lastExport) return null; // No previous exports
+
+  const lastExportDate = new Date(lastExport.timestamp);
+  const currentDate = new Date();
+  const diffTime = currentDate - lastExportDate;
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
 };
