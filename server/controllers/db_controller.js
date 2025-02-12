@@ -3,7 +3,10 @@ import {
   backupDatabase,
   getFileDetails,
 } from "../services/memoryDumpService.js";
-import { generateJSON } from "../services/dump_service.js";
+import {
+  generateJSON,
+  getDaysSinceLastExport,
+} from "../services/dump_service.js";
 
 export const db_router = express.Router();
 
@@ -45,5 +48,18 @@ db_router.get("/backup-json", async (req, res) => {
     res
       .status(500)
       .json({ error: "Failed to export JSON", details: error.message });
+  }
+});
+
+// create endpoint for get days since last export
+db_router.get("/days-since-last-export", async (req, res) => {
+  try {
+    const days = await getDaysSinceLastExport();
+    res.status(200).json({ days });
+  } catch (error) {
+    console.error("Fetch days since last export failed:", error);
+    res
+      .status(500)
+      .json({ message: "Days since last export failed", error: error.message });
   }
 });
