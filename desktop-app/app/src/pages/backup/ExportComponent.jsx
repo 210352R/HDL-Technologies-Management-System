@@ -14,7 +14,7 @@ const ExportComponent = () => {
       try {
         const { data } = await axios.get(`${url}/db/days-since-last-export`);
         console.log("Days Data ----------- : ", data.days);
-        setDaysSinceLast(1);
+        setDaysSinceLast(data.days);
       } catch (error) {
         console.error("Failed to fetch last export date", error);
       }
@@ -30,9 +30,19 @@ const ExportComponent = () => {
         type: response.headers["content-type"],
       });
 
+      // Generate timestamp-based filename
+      const now = new Date();
+      const formattedDate = now
+        .toISOString()
+        .replace(/T/, "_") // Replace T with _
+        .replace(/:/g, "-") // Replace : with -
+        .split(".")[0]; // Remove milliseconds
+      const filename = `${formattedDate}_dump.json`;
+
+      // Create download link
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `database_dump.json`;
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
