@@ -28,6 +28,7 @@ const HomePage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [notification, setNotification] = useState("");
   const [bills, setBills] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
   const [metrics, setMetrics] = useState({
     completedBills: 0,
     totalBills: 0,
@@ -35,6 +36,20 @@ const HomePage = () => {
     overdueBills: 0,
     inProgressBills: 0,
   });
+  const [daysSinceLast, setDaysSinceLast] = useState(null);
+
+  useEffect(() => {
+    const fetchDaysSinceLastExport = async () => {
+      try {
+        const { data } = await axios.get(`${url}/db/days-since-last-export`);
+        console.log("Days Data ----------- : ", data.days);
+        setDaysSinceLast(data.days);
+      } catch (error) {
+        console.error("Failed to fetch last export date", error);
+      }
+    };
+    fetchDaysSinceLastExport();
+  }, []);
 
   useEffect(() => {
     const updateOverdueBills = async () => {
@@ -48,6 +63,19 @@ const HomePage = () => {
 
     updateOverdueBills();
   }, []);
+
+  useEffect(() => {
+    if (daysSinceLast > 12) {
+      setShowAlert(true);
+
+      // Auto-hide alert after 10 seconds
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 10000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [daysSinceLast]);
 
   useEffect(() => {
     const fetchRecentBills = async () => {
@@ -195,6 +223,21 @@ const HomePage = () => {
 
   return (
     <div className={`${isDarkMode ? "dark" : ""} flex min-h-screen`}>
+      {/* Custom Sliding Alert */}
+      {showAlert && (
+        <div className="fixed top-10 right-0 mr-4 z-50 transition-transform transform translate-x-0 animate-slide-in bg-red-600 text-white p-4 rounded-lg shadow-lg flex items-center">
+          <span className="mr-4">
+            ⚠️ It's been over {daysSinceLast} days since your last Database
+            Export!
+          </span>
+          <button
+            onClick={() => navigate("/memory-backup")}
+            className="bg-white text-red-600 font-semibold px-3 py-1 rounded hover:bg-gray-200 transition"
+          >
+            Go to Export
+          </button>
+        </div>
+      )}
       {isSidebarOpen && (
         <aside className="w-64 bg-gray-800 text-white min-h-screen transition-all duration-300">
           <div className="p-6">
