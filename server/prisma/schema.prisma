@@ -62,3 +62,11 @@ model Room {
   name String @unique 
   company_id String @unique
 }
+
+model ExportLogs {
+  id        Int      @id @default(autoincrement())
+  fileType  String
+  timestamp DateTime @default(now())
+  status  String
+}
+
