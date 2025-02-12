@@ -233,6 +233,12 @@
       "name": "dumwsh",
       "phone": "0774000560",
       "address": "-"
+    },
+    {
+      "id": "67aaf0b2b91db053187478b4",
+      "name": "miss tharngi",
+      "phone": "0742201533",
+      "address": "-"
     }
   ],
   "bills": [
@@ -1055,7 +1061,33 @@
       "date": "2025-02-09T04:37:37.273Z",
       "announce_date": "2025-02-10T00:00:00.000Z",
       "handover_date": null,
-      "status": "Pending",
+      "status": "Overdue",
+      "images": []
+    },
+    {
+      "id": "67aac749bb49df1b357a29bd",
+      "billId": "PC-37",
+      "lapId": "71859a18-6057-45b8-b31c-c0e295f266c0",
+      "userId": "6756f0450c757007ddc836d0",
+      "issue": "back light",
+      "amount": 0,
+      "date": "2025-02-11T03:43:05.683Z",
+      "announce_date": "2025-02-12T00:00:00.000Z",
+      "handover_date": null,
+      "status": "Overdue",
+      "images": []
+    },
+    {
+      "id": "67aaf0b4b91db053187478b6",
+      "billId": "HD-11",
+      "lapId": "e9463efe-3413-4f9f-8857-5b86ec4b7e95",
+      "userId": "67aaf0b2b91db053187478b4",
+      "issue": "no display/ hinger damage / 4  screw missing .",
+      "amount": 0,
+      "date": "2025-02-11T06:39:48.090Z",
+      "announce_date": "2025-02-11T00:00:00.000Z",
+      "handover_date": "2025-02-12T00:00:00.000Z",
+      "status": "Overdue",
       "images": []
     }
   ],
@@ -1929,6 +1961,26 @@
       "ssd": "",
       "hard": "",
       "qrcode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAAToSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9CI5vSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtA/iQ1N0AmNTdAbtRMQCY1TwCZ1NwA+ZPUvHFSteikatFJ1aJPlqnZBOSb1ExAJiA3QCY1N2reULMJyKaTqkUnVYtOqhZ98mVAnlDzBJAngExqbtRMQN4AcqPmCSBPqPmmk6pFJ1WLTqoWffLLAZnU3KiZgDwB5EbNBOQ3OaladFK16KRq0Se/jJobIDdqJjVPALkBMqn5TU6qFp1ULTqpWvTJl6n5m4DcqHkCyI2aJ4BMap5Q8y85qVp0UrXopGrRJ8uA/MvUTEAmNROQSc0E5AbIpOYNIP+yk6pFJ1WLTqoW4Y/8hwGZ1GwC8oSa/2cnVYtOqhadVC3CH3kByKRmArJJzRNAbtQ8AWRSMwGZ1LwBZJOabzqpWnRSteikatEnL6mZgExqJiCTmk1AJjU3QJ5QMwGZ1ExAnlBzo2YCcqPmBsik5o2TqkUnVYtOqhbhj7wAZFIzAZnUTEDeUDMBuVFzA+QJNROQSc0NkBs1E5AbNROQGzWbTqoWnVQtOqlahD/yApAbNROQGzU3QDapmYBMat4AMqm5ATKpmYA8oWYCcqPmjZOqRSdVi06qFn2yTM2NmgnIDZAbNU8AuVEzAblRMwG5AbJJzQ2QSc03nVQtOqladFK1CH9kEZAbNTdAJjWbgNyoeQLIjZoJyKRmAnKjZgJyo+YGyKTmjZOqRSdVi06qFn3yEpBJzQ2QGzUTkBs1E5BJzY2aJ4DcqJmATGomIJOaCcgEZFJzA+RGzaaTqkUnVYtOqhZ98pKaCciNmhsgk5obIJOaTUBu1HyTmhsgN2omIBOQSc0bJ1WLTqoWnVQtwh95AcgmNROQSc0NkEnNJiCTmgnIpGYCMqmZgExq3gByo2bTSdWik6pFJ1WLPvnL1Nyo2QTkDTUTkEnNBOQJNROQN9TcAJnUvHFSteikatFJ1aJPlqmZgExqJiBvqPmTgExqJiA3aiYgk5pJzRtAbtRsOqladFK16KRq0Sd/mZoJyKTmBsik5kbNBORGzRNqboBMaiYgk5obIJOaSc0E5JtOqhadVC06qVqEP/ICkEnNE0DeUDMBmdRMQG7UTEBu1ExAbtRMQP4kNd90UrXopGrRSdUi/JH/MCCb1DwB5EbNBORGzRNAbtRMQG7UvHFSteikatFJ1aJPXgLyJ6mZ1DwB5A0gk5obIG8AmdTcqJmATGq+6aRq0UnVopOqRZ8sU7MJyA2QSc2NmgnIDZA31NwAuVHzBJBJzQRkUrPppGrRSdWik6pFn3wZkCfUvAFkk5oJyATkCTU3QN5QMwGZ1HzTSdWik6pFJ1WLPvnl1LwBZFKzSc0TQCY1N2omIDdq3jipWnRSteikatEnv4yaCcik5gk1E5An1DwB5EbNBGRSMwG5UbPppGrRSdWik6pFn3yZmm9SMwGZ1NwAmdQ8oeYJIDdqboA8oWYC8k0nVYtOqhadVC36ZBmQPwnIG2pugExqJiBPqLkB8oSaGyCTmm86qVp0UrXopGoR/kjVkpOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrR/wCW8V0VndhWkgAAAABJRU5ErkJggg=="
+    },
+    {
+      "id": "67aac749bb49df1b357a29bc",
+      "lapId": "71859a18-6057-45b8-b31c-c0e295f266c0",
+      "brand": "dell  monitor",
+      "model": "e2216H",
+      "ram": "",
+      "ssd": "",
+      "hard": "",
+      "qrcode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATXSURBVO3BQY4cy5IEQdNA3f/KOr37vgogkd5F8o2J4I9ULTmpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWffISkG9ScwNkUjMBuVFzA+QJNTdAJjUTkG9S88ZJ1aKTqkUnVYs+WaZmE5BNat5QcwNkAjKpmdQ8oWYTkE0nVYtOqhadVC365JcBeULNE0AmNTdAJjU3QCY1E5AngNyoeQLIE2p+00nVopOqRSdViz75jwEyqbkBMqmZ1Nyoqf85qVp0UrXopGrRJ//PqZmAPKHmBsikZgIyqfmXnVQtOqladFK16JNfpuab1ExAvgnIpGYCMql5Q83f5KRq0UnVopOqRZ8sA/I3UzMBmdRMQCY1E5BJzQRkUjMBmdTcAPmbnVQtOqladFK16JOX1PzL1ExAJjUTkEnNE0AmNTdq/iUnVYtOqhadVC365CUgk5oJyCY1k5obNROQGzUTkCeATGreALJJzW86qVp0UrXopGrRJ79MzQTkCTUTkE1qbtTcAJnUTECeUDOpmYBsAjKpeeOkatFJ1aKTqkWfLAMyqXkDyKTmDSBvAJnUPKHmBsiNmieATEAmNZtOqhadVC06qVqEP7IIyI2aCcik5gbIE2omIDdqJiCTmgnIn6RmAvKEmk0nVYtOqhadVC365JepeQLIG2qeUHOjZgIyqfmbqLkBMgGZ1LxxUrXopGrRSdWiT5apmYBMap5Q8waQSc0E5A0gfxM1f9JJ1aKTqkUnVYvwRxYBuVFzA+RGzQ2QSc0TQG7U3AC5UXMD5EbNE0AmNb/ppGrRSdWik6pFnyxTcwNkUnOjZgJyo2YCMql5Qs0E5EbNBOQGyI2aJ4BMam6ATGreOKladFK16KRqEf7IC0Bu1LwBZFJzA2RSMwG5UTMBmdTcAJnU/ElAJjW/6aRq0UnVopOqRZ98GZAn1ExAJjVPqJmA3Ki5ATKpmYBMaiYgm9RMaiYgN2reOKladFK16KRq0SfL1NyomYBMaiYgk5obNROQSc0bQCY1N2omIJOaCciNmgnIDZBJzQRk00nVopOqRSdViz75ZUDeUPMEkEnNG0BugExqJiDfBGRSMwGZ1Gw6qVp0UrXopGoR/sgLQCY1E5BJzQTkDTVPAJnUbAIyqZmA/ElqJiCTmjdOqhadVC06qVqEP/IPA3Kj5gkgN2omIJOaGyA3ap4AMqm5AXKj5o2TqkUnVYtOqhZ98hKQb1IzqbkBMqmZgDwBZFIzAblRMwG5ATKpeUPNbzqpWnRSteikatEny9RsAnIDZFKzSc0EZAIyqZmATECeUPMEkEnNN51ULTqpWnRSteiTXwbkCTVvALkBMqm5AXKjZgIyqbkBMgH5TUAmNZtOqhadVC06qVr0yX+cmgnIBORGzQ2QGyCTmknNDZBJzRNAvumkatFJ1aKTqkWf/MeomYC8AeRGzQTkDSCTmgnIjZo/6aRq0UnVopOqRfgjLwCZ1GwCMqn5JiDfpOYJIDdqvumkatFJ1aKTqkWfLAPyTUCeUDMBmdTcqHkDyKRmAjKpmYBMam6A3KjZdFK16KRq0UnVIvyRqiUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQtOqladFK16KRq0UnVov8D7lRGKfjPJtkAAAAASUVORK5CYII="
+    },
+    {
+      "id": "67aaf0b3b91db053187478b5",
+      "lapId": "e9463efe-3413-4f9f-8857-5b86ec4b7e95",
+      "brand": "dell",
+      "model": "5558",
+      "ram": "4GB",
+      "ssd": "",
+      "hard": "1TB",
+      "qrcode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAAUASURBVO3BQY4cwREEwfDC/P/Lrr0pTwU0OmdFUmGGP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmieATGomIJOaJ4BMam6A/CY1b5xULTqpWnRSteiTZWo2AXlCzQ2QSc0NkBsgN2omNROQSc2Nmk1ANp1ULTqpWnRSteiTLwPyhJongExqJiCTmifUTEBu1PwmIE+o+aaTqkUnVYtOqhZ98o8BMqmZgNyomYA8AeRGzb/spGrRSdWik6pFn/yfU3Oj5gkgN0AmNf+Sk6pFJ1WLTqoWffJlan6Tmm8CcqPmN6n5k5xULTqpWnRSteiTZUD+JEAmNROQSc0EZFIzAbkBMqmZgExqboD8yU6qFp1ULTqpWoQ/8hcDcqNmAjKpuQFyo6b+66Rq0UnVopOqRZ+8BGRSMwHZpGZSMwHZpOYGyCY1E5BNar7ppGrRSdWik6pFnywDMql5Asik5gbIpOYJIE+omdQ8AWRS84SaCciNmhsgk5o3TqoWnVQtOqlahD+yCMikZgIyqbkBMqmZgPxJ1LwBZFIzAblRMwG5UbPppGrRSdWik6pF+CN/ESCTmgnIpGYCMqmZgExqJiA3ajYBmdRMQCY1N0AmNZtOqhadVC06qVr0yUtAbtRMQCY1E5AbNU8AmdRMQCY1E5AbNROQSc0E5Ak1E5BJzQTkRs03nVQtOqladFK16JOX1ExAJiBvqJmATGpu1ExAJjU3am6ATGomIDdqJiATkEnNBGRS8wSQSc0bJ1WLTqoWnVQtwh95AciNmhsgT6h5AsikZgIyqbkB8oaaCcikZgIyqZmAvKFm00nVopOqRSdViz55Sc0NkBs1E5BJzQRkUnOjZgLyBJBJzQRkUjMBeUPNBOQJNb/ppGrRSdWik6pF+COLgDyh5gbIpOYJIDdqngCySc0EZFIzAZnU3AB5Qs0bJ1WLTqoWnVQt+uQlIDdqJiA3QCY1E5An1DwB5EbNDZBJzQTkRs0EZFIzAblRcwNk00nVopOqRSdVi/BHXgAyqZmA/CY1N0A2qbkBMql5A8ikZgIyqZmATGo2nVQtOqladFK16JMvU3MDZFJzA2RScwPkRs0EZFKzCcgTaiY1E5An1HzTSdWik6pFJ1WLPvnDAZnUTEAmNZOaJ9RMQG7UTEBu1ExAboA8oWYCMqn5ppOqRSdVi06qFuGP/MWAvKHmDSCTmieATGqeAHKjZgJyo+aNk6pFJ1WLTqoWffISkN+kZlIzAXkCyKTmBsikZgIyqZmAPAFkUnOjZgIyqfmmk6pFJ1WLTqoWfbJMzSYgN0Bu1LwB5AbIpGYC8oaaJ4BMaiYgk5pNJ1WLTqoWnVQt+uTLgDyh5jcBmdRMaiYgN0AmNTdAJiBvqJmATGq+6aRq0UnVopOqRZ/844C8AWRS8wSQGzVPAJnUTEAmNROQGzVvnFQtOqladFK16JN/jJoJyKTmCTUTkBs1k5obIE+omYC8oWbTSdWik6pFJ1WLPvkyNd+k5kbNE0AmNZOaN4DcqLkBcqPmf+mkatFJ1aKTqkWfLAPym4BMam6ATGomNROQGzUTkEnNpOYGyBNqboBMar7ppGrRSdWik6pF+CNVS06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pF/wFEDW4fPQvI8QAAAABJRU5ErkJggg=="
     }
   ],
   "companies": [

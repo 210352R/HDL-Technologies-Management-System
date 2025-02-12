@@ -22,7 +22,7 @@ export const generateJSON = async () => {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
   // Save log in database
   await prisma.exportLogs.create({
-    data: { fileType: "JSON" },
+    data: { fileType: "JSON", status: "Success" },
   });
   console.log("Save Log in Database ------------------------ ");
   return filePath;

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FiDownload, FiDatabase } from "react-icons/fi";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { url } from "../../url";
 import Navbar from "../../components/navbar/Navbar";
+import { MdWarning } from "react-icons/md"; // Import warning icon
 
 const ExportComponent = () => {
   const [daysSinceLast, setDaysSinceLast] = useState(null);
@@ -12,7 +13,8 @@ const ExportComponent = () => {
     const fetchDaysSinceLastExport = async () => {
       try {
         const { data } = await axios.get(`${url}/db/days-since-last-export`);
-        setDaysSinceLast(data.daysSinceLastExport);
+        console.log("Days Data ----------- : ", data.days);
+        setDaysSinceLast(1);
       } catch (error) {
         console.error("Failed to fetch last export date", error);
       }
@@ -49,12 +51,28 @@ const ExportComponent = () => {
           </h2>
 
           {daysSinceLast !== null && (
-            <p className="mb-8 mt-6 text-gray-300">
-              Last export:{" "}
-              {daysSinceLast === "Last Export"
-                ? "Never exported before"
-                : `${daysSinceLast} days ago`}
-            </p>
+            <div
+              className={`mb-8 mt-6 px-4 py-2 rounded-lg text-center ${
+                daysSinceLast > 12
+                  ? "bg-red-800 text-red-400 border border-red-500 shadow-lg"
+                  : "text-gray-300"
+              }`}
+            >
+              {daysSinceLast > 12 && (
+                <div className="flex items-center justify-center mb-1">
+                  <MdWarning className="text-2xl text-red-400 animate-pulse" />
+                  <span className="ml-2 font-semibold">
+                    Critical: Data not exported!
+                  </span>
+                </div>
+              )}
+              <p className="font-medium text-lg">
+                Last export:{" "}
+                {daysSinceLast === "First export"
+                  ? "Never exported before"
+                  : `${daysSinceLast} days ago`}
+              </p>
+            </div>
           )}
 
           <div className="mt-6 space-y-4">
