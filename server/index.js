@@ -38,11 +38,7 @@ const server = http.createServer(app);
 const corsOptions = {
   origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "ngrok-skip-browser-warning",
-  ],
+  allowedHeaders: "*",
   preflightContinue: false,
 };
 
