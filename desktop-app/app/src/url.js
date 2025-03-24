@@ -6,3 +6,6 @@ export const url = "https://hdl-technologies-management-system.vercel.app";
 // export const url = "http://localhost:8000";
 
 // export const url = "https://fkekyfys8i.execute-api.eu-north-1.amazonaws.com";
+
+// Gmail-pcpalace.horana@gmail.com
+// Password-laptoprepair@hdl

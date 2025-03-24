@@ -46,7 +46,7 @@ const corsOptions = {
 const io = new Server(server, {
   cors: corsOptions,
 });
-
+app.options("*", cors()); // Allow all preflight requests
 // add in-built middleware ----
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
