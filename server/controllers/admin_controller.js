@@ -129,6 +129,7 @@ admin_router.delete("/companies/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 // create get end point for get corresponding prefix by given email
 admin_router.get("/get-prefix/:email", async (req, res) => {
   const { email } = req.params;

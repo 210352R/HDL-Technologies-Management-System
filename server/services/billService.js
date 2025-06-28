@@ -609,20 +609,26 @@ export const getSameLapBillCount = async (billId) => {
 };
 
 //create method for get all bill details with have given specific-prefix
-export const getBillDetailsByPrefix = async (prefix) => {
+export const getBillDetailsByPrefix = async (prefix, page = 1, limit = 10) => {
+  const skip = (page - 1) * limit;
+
   const bills = await prisma.bill.findMany({
     where: {
       billId: {
         startsWith: prefix,
       },
     },
+    orderBy: {
+      date: "desc", // Sort by most recent
+    },
+    skip: skip,
+    take: limit,
   });
 
-  // for each bill in bills get lap id and add relevant lap details to the bills
+  // Add lap details for each bill
   for (let i = 0; i < bills.length; i++) {
     const lap = await getLapDetails(bills[i].lapId);
-    // add new property to the bill object called lap and set it to the lap object
-    let lap_details = {
+    bills[i].lap = {
       lap_id: lap.lapId,
       lap_model: lap.model,
       lap_brand: lap.brand,
@@ -630,7 +636,7 @@ export const getBillDetailsByPrefix = async (prefix) => {
       lap_hard: lap.hard,
       lap_ssd: lap.ssd,
     };
-    bills[i].lap = lap_details;
   }
+
   return bills;
 };

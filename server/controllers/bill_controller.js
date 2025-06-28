@@ -480,11 +480,14 @@ bill_router.delete("/delete-bill/:billId", async (req, res) => {
 // create get end point for get bill details from prefix
 bill_router.get("/get-bill-details-by-prefix/:prefix", async (req, res) => {
   const { prefix } = req.params;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
   try {
-    const bills = await getBillDetailsByPrefix(prefix);
-    res.status(200).json({ bills: bills });
+    const bills = await getBillDetailsByPrefix(prefix, page, limit);
+    res.status(200).json({ bills });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(400).json({ error: "Bills could not be fetched" });
   }
 });
