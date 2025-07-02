@@ -222,20 +222,3 @@ npm run build:mobile    # Mobile app APK/IPA
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## 📞 Contact
-
-**HDL Technologies**
-- Email: contact@hdltechnologies.lk
-- Phone: +94 XX XXX XXXX
-- Website: [hdltechnologies.lk](https://hdltechnologies.lk)
-
-## 🙏 Acknowledgments
-
-- Thanks to all contributors who helped build this system
-- Special thanks to the Sri Lankan tech community
-- Built with ❤️ for local businesses
-
----
-
-**Made with 💻 in Sri Lanka 🇱🇰**
